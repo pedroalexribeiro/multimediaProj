@@ -13,59 +13,24 @@ function Main_Menu() {
     var stage = new createjs.Stage(canvas);
     stage.enableMouseOver(10);
 
-    /*Sera que se pode por tudo dentro de um array e diminuir linhas codigo? ask teacher*/
-    //SinglePlayer Button
-    var singlePlayer = new createjs.Text("SinglePlayer", "35px Georgia", "#ffffff");
-    customize(singlePlayer, canvas, 0);
-    var hit_SP = new createjs.Shape(); //Creates Hitbox
-    hit_SP.graphics.beginFill("#000").drawRect(0, 0, singlePlayer.getMeasuredWidth(), singlePlayer.getMeasuredHeight());
-    singlePlayer.hitArea = hit_SP;
-    singlePlayer.on("mouseover", mouseHandler);
-    singlePlayer.on("mouseout", mouseHandler);
-    stage.addChild(singlePlayer);
+    var arrayButtons = new Array();
+    var iterator = 0;
+    arrayButtons.push(new createjs.Text("SinglePlayer", "35px Georgia", "#ffffff"));
+    arrayButtons.push(new createjs.Text("MultiPlayer", "35px Georgia", "#ffffff"));
+    arrayButtons.push(new createjs.Text("Arcade", "35px Georgia", "#ffffff"));
+    arrayButtons.push(new createjs.Text("Extras", "35px Georgia", "#ffffff"));
+    arrayButtons.push(new createjs.Text("Quit", "35px Georgia", "#ffffff"));
 
-
-    //Multiplayer Button
-    var multiPlayer = new createjs.Text("MultiPlayer", "35px Georgia", "#ffffff");
-    customize(multiPlayer, canvas, 1);
-    var hit_MP = new createjs.Shape();
-    hit_MP.graphics.beginFill("#000").drawRect(0, 0, multiPlayer.getMeasuredWidth(), multiPlayer.getMeasuredHeight());
-    multiPlayer.hitArea = hit_MP;
-    multiPlayer.on("mouseover", mouseHandler);
-    multiPlayer.on("mouseout", mouseHandler);
-    stage.addChild(multiPlayer);
-
-    //Arcade Button
-    var arcade = new createjs.Text("Arcade", "35px Georgia", "#ffffff");
-    customize(arcade, canvas, 2);
-    var hit_AC = new createjs.Shape();
-    hit_AC.graphics.beginFill("#000").drawRect(0, 0, arcade.getMeasuredWidth(), arcade.getMeasuredHeight());
-    arcade.hitArea = hit_AC;
-    arcade.on("mouseover", mouseHandler);
-    arcade.on("mouseout", mouseHandler);
-    stage.addChild(arcade);
-
-
-    //Extras Button
-    var extras = new createjs.Text("Extras", "35px Georgia", "#ffffff");
-    customize(extras, canvas, 3);
-    var hit_EX = new createjs.Shape();
-    hit_EX.graphics.beginFill("#000").drawRect(0, 0, extras.getMeasuredWidth(), extras.getMeasuredHeight());
-    extras.hitArea = hit_EX;
-    extras.on("mouseover", mouseHandler);
-    extras.on("mouseout", mouseHandler);
-    stage.addChild(extras);
-
-    //Quit Button
-    var quit = new createjs.Text("Quit", "35px Georgia", "#ffffff");
-    customize(quit, canvas, 4);
-    var hit_Q = new createjs.Shape();
-    hit_Q.graphics.beginFill("#000").drawRect(0, 0, quit.getMeasuredWidth(), quit.getMeasuredHeight());
-    quit.hitArea = hit_Q;
-    quit.on("mouseover", mouseHandler);
-    quit.on("mouseout", mouseHandler);
-    stage.addChild(quit);
-
+    for(let text of arrayButtons){
+        customize(text, canvas, iterator);
+        iterator += 1;
+        var hit = new createjs.Shape(); //Creates Hitbox
+        hit.graphics.beginFill("#000").drawRect(0, 0, text.getMeasuredWidth(), text.getMeasuredHeight());
+        text.hitArea = hit;
+        text.on("mouseover", mouseHandler);
+        text.on("mouseout", mouseHandler);
+        stage.addChild(text);
+    }
 
     //Options Button
     var help = new Image();
