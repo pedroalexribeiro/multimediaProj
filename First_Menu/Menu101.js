@@ -207,14 +207,7 @@ function mainMenu() {
             };
         }
     }
-<<<<<<< HEAD
     createjs.Ticker.framerate(60);
-=======
-
-
-
-    createjs.Ticker.setFPS(60);
->>>>>>> fd7cbd2c587a5e19212c2e6a80438367a960367b
     createjs.Ticker.addEventListener("tick", stage);
 }
 
