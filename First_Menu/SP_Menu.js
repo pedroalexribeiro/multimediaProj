@@ -1,33 +1,22 @@
 "use strict";
 
-(function()
-{
-    window.addEventListener("load", mainMenu);
-}());
-
-function mainMenu() {
-    document.getElementById("Menu").style.backgroundImage="url(Resources/Background.png)";
+function SP_Menu() {
+    document.getElementById("Menu").style.backgroundImage="url(Resources/test.png)";
     var canvas = document.getElementById("Menu");
     var stage = new createjs.Stage(canvas);
     stage.enableMouseOver(10);
 
     var isCanvas = true;
 
-
-
-
     var mouseFunction = function(ev){
         mouseHandler(ev, isCanvas);
     };
 
-
     var arrayButtons = new Array();
     var iterator = 0;
-    arrayButtons.push(new createjs.Text("SinglePlayer", "35px Georgia", "#ffffff"));
-    arrayButtons.push(new createjs.Text("MultiPlayer", "35px Georgia", "#ffffff"));
-    arrayButtons.push(new createjs.Text("Arcade", "35px Georgia", "#ffffff"));
-    arrayButtons.push(new createjs.Text("Extras", "35px Georgia", "#ffffff"));
-    arrayButtons.push(new createjs.Text("Quit", "35px Georgia", "#ffffff"));
+    arrayButtons.push(new createjs.Text("Student", "35px Georgia", "#ffffff"));
+    arrayButtons.push(new createjs.Text("Teacher", "35px Georgia", "#ffffff"));
+    arrayButtons.push(new createjs.Text("Back", "35px Georgia", "#ffffff"));
 
     for(let text of arrayButtons){
         customize(text, canvas, iterator);
@@ -37,31 +26,40 @@ function mainMenu() {
         text.hitArea = hit;
         text.on("mouseover", mouseFunction);
         text.on("mouseout", mouseFunction);
-        text.on("click",clickHandler_SP_MP_AC);
+        text.on("click",text_clickHandler);
         stage.addChild(text);
     }
 
 
 
+    function text_clickHandler(ev){
+        if(ev.target.text === "Back") {
+            stage.removeAllChildren();
+            mainMenu();
+        }
+    }
+
+
+
+    //Help Button
     var help = new Image();
+    help.src = "Resources/Help.png";
+    help.onload = function (ev) {
+        var bitmap = new createjs.Bitmap(ev.target);
+        bitmap.x = 720;
+        bitmap.y = 500;
+        bitmap.alpha = 0.8;
+        bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+        stage.addChild(bitmap);
 
-        help.src = "Resources/Help.png";
-        help.onload = function (ev) {
-            var bitmap = new createjs.Bitmap(ev.target);
-            bitmap.x = 720;
-            bitmap.y = 500;
-            bitmap.alpha = 0.8;
-            bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-            stage.addChild(bitmap);
-
-            var hit_HP = new createjs.Shape();
-            hit_HP.graphics.beginFill("#000").drawRect(0, 0, help.width, help.height);
-            bitmap.hitArea = hit_HP;
-            help.bitmap = bitmap;
-            bitmap.on("mouseover", mouseFunction);
-            bitmap.on("mouseout", mouseFunction);
-            bitmap.on("click", clickHandler_HP_OP);
-        };
+        var hit_HP = new createjs.Shape();
+        hit_HP.graphics.beginFill("#000").drawRect(0, 0, help.width, help.height);
+        bitmap.hitArea = hit_HP;
+        help.bitmap = bitmap;
+        bitmap.on("mouseover", mouseFunction);
+        bitmap.on("mouseout", mouseFunction);
+        bitmap.on("click",clickHandler);
+    };
 
     //options Button
     var options = new Image();
@@ -80,31 +78,10 @@ function mainMenu() {
         options.bitmap = bitmap;
         bitmap.on("mouseover", mouseFunction);
         bitmap.on("mouseout", mouseFunction);
-        bitmap.on("click", clickHandler_HP_OP);
+        bitmap.on("click", clickHandler);
     };
 
-
-
-    function clickHandler_SP_MP_AC(ev){
-        console.log(ev.target.text);
-        if(ev.target.text === "SinglePlayer") {
-
-            createjs.Ticker.addEventListener("tick",stage);
-            createjs.Tween.get(options)
-                .to({alpha:0},3000)
-                .call(x);
-
-            }
-        }
-
-
-
-    function x(){
-        stage.removeAllChildren();
-        SP_Menu();
-    }
-
-    function clickHandler_HP_OP(ev) {
+    function clickHandler(ev) {
         if(isCanvas){
             //makes button look like disabled
             ev.target.shadow = new createjs.Shadow("#000000", 5, 5, 10);
@@ -207,25 +184,12 @@ function mainMenu() {
             };
         }
     }
-<<<<<<< HEAD
-    createjs.Ticker.framerate(60);
-=======
-
-
-
     createjs.Ticker.setFPS(60);
->>>>>>> fd7cbd2c587a5e19212c2e6a80438367a960367b
     createjs.Ticker.addEventListener("tick", stage);
 }
 
 
-
-
-
-
-
 function change_container_pos(ev,height){
-    //console.log(ev.target);
     createjs.Tween.get(ev.target).to({y:(height)},750,createjs.Ease.linear);
 }
 function mouseHandler(ev, isCanvas){
@@ -242,37 +206,3 @@ function customize(object,canvas,number){
     object.alpha = 0.8;
 }
 
-
-    //ESTE FUNCIONA E METE BONECO A MEXER DE UM LADO PARA O OUTRO, MAS SEMPRE A MESMA IMAGEM.. ELE NAO CORRE!!!
-   /* var char = new Image();
-    char.src = "Resources/Running/R1.png";
-    char.onload = function (ev) {
-        var x = new Character(ev.target, 100, 500);
-        stage.addChild(x.bitmap);
-        createjs.Tween.get(x.bitmap).call(test);
-
-        function test(ev){
-            createjs.Tween.get(ev.target)
-            .to({x:650,y:500},5000);
-        }
-    };*/
-
-
-/* TENTATIVA DE POR A ANIMACAO DE O BONECO A CORRER, HOWEVER NAO FUNCIONA IDK WHY.. NAO DA ERROS AO CORRER!
-    var data = ({
-        framerate: 30,
-        "images": ["Resources/Running/R_SpriteSheet.png"],
-        "frames": {"height":75,"count":3,"width":48,"regX":100,"regY":100},
-        "animations": {
-            run : [0,2,"run",2] // Start - end - next - speed
-        }
-    });
-    var spriteSheet = new createjs.SpriteSheet(data);
-    var char = new createjs.Sprite(spriteSheet, "run");
-    stage.addChild(char);
-
-    createjs.Ticker.on("tick",handles);
-    function handles(ev){
-        stage.update(ev);
-    }
-*/
