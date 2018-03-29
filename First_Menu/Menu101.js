@@ -5,13 +5,16 @@
     window.addEventListener("load", mainMenu);
 }());
 
-
-var isCanvas = true;
-
 function mainMenu() {
     var canvas = document.getElementById("Menu");
     var stage = new createjs.Stage(canvas);
     stage.enableMouseOver(10);
+
+    var isCanvas = true;
+
+    var mouseFunction = function(ev){
+        mouseHandler(ev, isCanvas);
+    }
 
     var arrayButtons = new Array();
     var iterator = 0;
@@ -27,12 +30,12 @@ function mainMenu() {
         var hit = new createjs.Shape(); //Creates Hitbox
         hit.graphics.beginFill("#000").drawRect(0, 0, text.getMeasuredWidth(), text.getMeasuredHeight());
         text.hitArea = hit;
-        text.on("mouseover", mouseHandler);
-        text.on("mouseout", mouseHandler);
+        text.on("mouseover", mouseFunction);
+        text.on("mouseout", mouseFunction);
         stage.addChild(text);
     }
 
-    //Options Button
+    //Help Button
     var help = new Image();
     help.src = "Resources/Help.png";
     help.onload = function (ev) {
@@ -47,10 +50,9 @@ function mainMenu() {
         hit_HP.graphics.beginFill("#000").drawRect(0, 0, help.width, help.height);
         bitmap.hitArea = hit_HP;
         help.bitmap = bitmap;
-        bitmap.on("mouseover", mouseHandler);
-        bitmap.on("mouseout", mouseHandler);
+        bitmap.on("mouseover", mouseFunction);
+        bitmap.on("mouseout", mouseFunction);
         bitmap.on("click",clickHandler);
-
     };
 
     //options Button
@@ -68,9 +70,9 @@ function mainMenu() {
         hit_OP.graphics.beginFill("#000").drawRect(0, 0, help.width, help.height);
         bitmap.hitArea = hit_OP;
         options.bitmap = bitmap;
-        bitmap.on("mouseover", mouseHandler);
-        bitmap.on("mouseout", mouseHandler);
-        bitmap.on("click",clickHandler);
+        bitmap.on("mouseover", mouseFunction);
+        bitmap.on("mouseout", mouseFunction);
+        bitmap.on("click", clickHandler);
     };
 
     function clickHandler(ev) {
@@ -185,10 +187,10 @@ function change_container_pos(ev,height){
     //console.log(ev.target);
     createjs.Tween.get(ev.target).to({y:(height)},750,createjs.Ease.linear);
 }
-function mouseHandler(ev){
+function mouseHandler(ev, isCanvas){
     if(isCanvas || ev.target.text === "Back" || ev.target.text === "On"|| ev.target.text === "Off") {
         ev.target.alpha = (ev.type === "mouseover") ? 1 : 0.8;
-        ev.target.shadow = (ev.type === "mouseover") ? ev.target.shadow = new createjs.Shadow("#000000", 15, 15, 10) : ev.target.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+        ev.target.shadow = (ev.type === "mouseover") ? new createjs.Shadow("#000000", 15, 15, 10) : new createjs.Shadow("#000000", 5, 5, 10);
     }
 }
 function customize(object,canvas,number){
