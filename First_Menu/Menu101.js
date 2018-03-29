@@ -89,20 +89,21 @@ function mainMenu() {
         console.log(ev.target.text);
         if(ev.target.text === "SinglePlayer") {
 
-            createjs.Ticker.addEventListener("tick",stage);
-            createjs.Tween.get(options)
-                .to({alpha:0},3000)
-                .call(x);
-
-            }
+            createjs.Ticker.addEventListener("tick",asd);
+            createjs.Tween.get(stage)
+                .to({alpha:0},2000)
+                .call(end);
         }
+    }
 
-
-
-    function x(){
+    function asd(){
+        stage.update();
+    }
+    function end(){
         stage.removeAllChildren();
         SP_Menu();
     }
+
 
     function clickHandler_HP_OP(ev) {
         if(isCanvas){
@@ -207,7 +208,10 @@ function mainMenu() {
             };
         }
     }
-    createjs.Ticker.framerate(60);
+
+
+
+    createjs.Ticker.setFPS(60);
     createjs.Ticker.addEventListener("tick", stage);
 }
 
