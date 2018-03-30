@@ -6,7 +6,27 @@
 }());
 
 function mainMenu() {
+    /*Sound Stuff*/
+    var audioPath ="Resources/";
+    var sounds = [
+        {id:"Music",src:"Audio1.mp3"}
+    ];
+    createjs.Sound.alternateExtensions = ["mp3"];
+    createjs.Sound.addEventListener("fileload",sound_handler);
+    createjs.Sound.registerSounds(sounds,audioPath);
+
+    function sound_handler(ev) {/*TURN THIS ON TO ALLOW MUSIC*/
+        //var instance = createjs.Sound.play("Music");
+        //instance.on("complete", sound_handler);
+
+
+    }
+
+
+    /*Background Information*/
     document.getElementById("Menu").style.backgroundImage="url(Resources/Background.png)";
+
+    /*Stage Loader*/
     var canvas = document.getElementById("Menu");
     var stage = new createjs.Stage(canvas);
     stage.enableMouseOver(10);
@@ -19,7 +39,6 @@ function mainMenu() {
     var mouseFunction = function(ev){
         mouseHandler(ev, isCanvas);
     };
-
 
     var arrayButtons = new Array();
     var iterator = 0;
@@ -44,7 +63,6 @@ function mainMenu() {
 
 
     var help = new Image();
-
         help.src = "Resources/Help.png";
         help.onload = function (ev) {
             var bitmap = new createjs.Bitmap(ev.target);
@@ -87,22 +105,15 @@ function mainMenu() {
 
     function clickHandler_SP_MP_AC(ev){
         console.log(ev.target.text);
-        if(ev.target.text === "SinglePlayer") {
-
-            createjs.Ticker.addEventListener("tick",asd);
-            createjs.Tween.get(stage)
-                .to({alpha:0},2000)
-                .call(end);
+        if(isCanvas && ev.target.text === "SinglePlayer") {
+            stage.removeAllChildren();
+            SP_Menu();
+        }
+        if(isCanvas && ev.target.text === "Quit"){
+            //window.close();
         }
     }
 
-    function asd(){
-        stage.update();
-    }
-    function end(){
-        stage.removeAllChildren();
-        SP_Menu();
-    }
 
 
     function clickHandler_HP_OP(ev) {
@@ -138,9 +149,9 @@ function mainMenu() {
                 back.hitArea = hit_B;
                 back.on("mouseover", mouseHandler);
                 back.on("mouseout", mouseHandler);
-                function change(ev){
+                function change(){
                     change_container_pos(createjs.Tween.get(container),-350);
-                    isCanvas = true;
+                    isCanvas = true; // Make it just in the end
                 }
                 back.on("click",change);
                 container.addChild(back);
@@ -173,29 +184,33 @@ function mainMenu() {
                         sounds.y = img.height * 0.55;
                         container.addChild(sounds);
 
-                        var sound = new createjs.Text("On", "35px Georgia", "#ffffff");
-                        sound.alpha=0.8;
-                        sound.x = img.width/2 - sound.getMeasuredWidth()/2;
-                        sound.y = img.height * 0.55;
-                        sound.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+                        var Sound_btn = new createjs.Text("On", "35px Georgia", "#ffffff");
+                        Sound_btn.id = "Sound_btn";
+                        Sound_btn.alpha=0.8;
+                        Sound_btn.x = img.width/2 - Sound_btn.getMeasuredWidth()/2;
+                        Sound_btn.y = img.height * 0.55;
+                        Sound_btn.shadow = new createjs.Shadow("#000000", 5, 5, 10);
                         var hit_ON = new createjs.Shape();
-                        hit_ON.graphics.beginFill("#000").drawRect(0, 0, sound.getMeasuredWidth(), sound.getMeasuredHeight());
-                        sound.hitArea = hit_ON;
-                        sound.on("mouseover", mouseHandler);
-                        sound.on("mouseout", mouseHandler);
-                        container.addChild(sound);
+                        hit_ON.graphics.beginFill("#000").drawRect(0, 0, Sound_btn.getMeasuredWidth(), Sound_btn.getMeasuredHeight());
+                        Sound_btn.hitArea = hit_ON;
+                        Sound_btn.on("mouseover", mouseHandler);
+                        Sound_btn.on("mouseout", mouseHandler);
+                        Sound_btn.on("click",click_Handler_OP);
+                        container.addChild(Sound_btn);
 
-                        var musicc = new createjs.Text("On", "35px Georgia", "#ffffff");
-                        musicc.alpha=0.8;
-                        musicc.x = img.width/2 - musicc.getMeasuredWidth()/2;
-                        musicc.y = img.height * 0.4;
-                        musicc.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+                        var Music_btn = new createjs.Text("On", "35px Georgia", "#ffffff");
+                        Music_btn.id = "Music_btn";
+                        Music_btn.alpha=0.8;
+                        Music_btn.x = img.width/2 - Music_btn.getMeasuredWidth()/2;
+                        Music_btn.y = img.height * 0.4;
+                        Music_btn.shadow = new createjs.Shadow("#000000", 5, 5, 10);
                         var hit_ON_M = new createjs.Shape();
-                        hit_ON_M.graphics.beginFill("#000").drawRect(0, 0, musicc.getMeasuredWidth(), musicc.getMeasuredHeight());
-                        musicc.hitArea = hit_ON_M;
-                        musicc.on("mouseover", mouseHandler);
-                        musicc.on("mouseout", mouseHandler);
-                        container.addChild(musicc);
+                        hit_ON_M.graphics.beginFill("#000").drawRect(0, 0, Music_btn.getMeasuredWidth(), Music_btn.getMeasuredHeight());
+                        Music_btn.hitArea = hit_ON_M;
+                        Music_btn.on("mouseover", mouseHandler);
+                        Music_btn.on("mouseout", mouseHandler);
+                        Music_btn.on("click",click_Handler_OP);
+                        container.addChild(Music_btn);
                         break;
                 }
 
@@ -217,27 +232,47 @@ function mainMenu() {
 
 
 
+function click_Handler_OP(ev){
+    if(ev.target.id === "Sound_btn"){
+        if (ev.target.text === "On") {
+            ev.target.text = "Off";
+        }
+        else if (ev.target.text === "Off") {
+            ev.target.text = "On";
+        }
+
+    }
+    else if(ev.target.id === "Music_btn") {
+        if (ev.target.text === "On") {
+            createjs.Sound.stop("Music");
+            ev.target.text = "Off";
+        }
+        else if (ev.target.text === "Off") {
+            createjs.Sound.play("Music");
+            ev.target.text = "On";
+        }
+    }
+}
 
 
 
 
 function change_container_pos(ev,height){
-    //console.log(ev.target);
     createjs.Tween.get(ev.target).to({y:(height)},750,createjs.Ease.linear);
 }
-function mouseHandler(ev, isCanvas){
-    if(isCanvas || ev.target.text === "Back" || ev.target.text === "On"|| ev.target.text === "Off") {
+function mouseHandler(ev, isCanvas) {
+    if (isCanvas || ev.target.text === "Back" || ev.target.text === "On" || ev.target.text === "Off") {
         ev.target.alpha = (ev.type === "mouseover") ? 1 : 0.8;
         ev.target.shadow = (ev.type === "mouseover") ? new createjs.Shadow("#000000", 15, 15, 10) : new createjs.Shadow("#000000", 5, 5, 10);
     }
 }
-function customize(object,canvas,number){
-    var b = object.getBounds();
-    object.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-    object.x = (canvas.width/2) - (b.width/2);
-    object.y = (canvas.height/2.3) + number*50;
-    object.alpha = 0.8;
-}
+function customize(object, canvas, number) {
+        var b = object.getBounds();
+        object.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+        object.x = (canvas.width / 2) - (b.width / 2);
+        object.y = (canvas.height / 2.3) + number * 50;
+        object.alpha = 0.8;
+    }
 
 
     //ESTE FUNCIONA E METE BONECO A MEXER DE UM LADO PARA O OUTRO, MAS SEMPRE A MESMA IMAGEM.. ELE NAO CORRE!!!
