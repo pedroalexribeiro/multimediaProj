@@ -26,17 +26,24 @@ function SP_Menu() {
         text.hitArea = hit;
         text.on("mouseover", mouseFunction);
         text.on("mouseout", mouseFunction);
-        text.on("click",text_clickHandler);
+        text.on("click",clickHandler_ST_TC);
         stage.addChild(text);
     }
 
 
 
-    function text_clickHandler(ev){
-        if(ev.target.text === "Back") {
+
+    function clickHandler_ST_TC(ev){
+        console.log("asdsd");
+        if(isCanvas && ev.target.text === "Student") {
+            stage.removeAllChildren();
+            Student_Menu();
+        }
+        else if(ev.target.text === "Back") {
             stage.removeAllChildren();
             mainMenu();
         }
+
     }
 
 
@@ -189,7 +196,7 @@ function SP_Menu() {
             };
         }
     }
-    createjs.Ticker.setFPS(60);
+    createjs.Ticker.framerate =60;
     createjs.Ticker.addEventListener("tick", stage);
 }
 
