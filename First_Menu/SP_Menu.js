@@ -37,7 +37,8 @@ function SP_Menu() {
         console.log("asdsd");
         if(isCanvas && ev.target.text === "Student") {
             stage.removeAllChildren();
-            Student_Menu();
+            /*Student_Menu();*/
+            var maps = new Maps();
         }
         else if(ev.target.text === "Back") {
             stage.removeAllChildren();
