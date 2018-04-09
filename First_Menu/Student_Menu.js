@@ -14,23 +14,69 @@ function Student_Menu() {
 
 
     var arrayBoxes = new Array();
-    var level = 0;
-
-
+    arrayBoxes.push(new createjs.Shape);
+    arrayBoxes.push(new createjs.Shape);
+    arrayBoxes.push(new createjs.Shape);
+    arrayBoxes.push(new createjs.Shape);
     arrayBoxes.push(new createjs.Shape);
 
+
+    var count=1;
+    var width=100;
+    var height=100;
+    var x = canvas.width/6 - width/2;
+    var y = canvas.height/2 - height/3;
     for(let level of arrayBoxes){
-        /*Push more.. and make function to change Height..*/
-        level.graphics.beginStroke("#fff");
-        level.graphics.setStrokeStyle(2);
-        level.snapToPixel = true;
-        level.graphics.drawRect(0, 0, 100, 100);
-        level.x = canvas.width/x - b.width/2;
-        level.y = canvas.height/2;
-        stage.addChild(level);
+        var img = new Image();
+        img.src = "Resources/test.png";
+        img.onload = function () {
+            //Image
+            var m = new createjs.Matrix2D();
+            m.translate(x,y);
+            m.scale(width/img.width,height/img.height);
+
+            //level Draw
+            level.graphics.beginStroke("#fff");
+            level.graphics.beginBitmapFill(img,"no-repeat",m);
+            level.graphics.drawRect(x,y,width,height);
+
+
+            //Hitbox && Effects
+            var hit_HP = new createjs.Shape();
+            hit_HP.graphics.beginFill("#ff000").drawRect(x,y,width,height);
+            level.hitArea = hit_HP;
+            level.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+            level.alpha = 0.8;
+
+            //Events
+            level.on("click", Click_Handler);
+            level.on("mouseover",mouseFunction);
+            level.on("mouseout",mouseFunction);
+
+
+            //Title
+            var title = new createjs.Text("Level"+count, "22px Georgia", "#fff");
+            title.x = x + title.getMeasuredWidth()/3;
+            title.y = y + 110;
+            stage.addChild(title);
+
+
+            //Update
+            level.text = "level" + count;
+            stage.addChild(level);
+            count += 1;
+            x +=130;
+        };
+
+
+
     }
 
-    function Student_Level_Handler(ev){
+
+
+    function Click_Handler(ev){
+        console.log(ev.target.text);
+
         if(ev.target.text === "Back") {
             stage.removeAllChildren();
             SP_Menu();
@@ -47,7 +93,7 @@ function Student_Menu() {
     back.hitArea = hit;
     back.on("mouseover", mouseFunction);
     back.on("mouseout", mouseFunction);
-    back.on("click",Student_Level_Handler);
+    back.on("click",Click_Handler);
     stage.addChild(back);
 
 
@@ -204,7 +250,6 @@ function Student_Menu() {
 }
 
 function click_Handler_OP(ev){
-    console.log("testing");
     if(ev.target.id === "Sound_btn"){
         if (ev.target.text === "On") {
             ev.target.text = "Off";
@@ -212,7 +257,6 @@ function click_Handler_OP(ev){
         else if (ev.target.text === "Off") {
             ev.target.text = "On";
         }
-
     }
     else if(ev.target.id === "Music_btn") {
         if (ev.target.text === "On") {
@@ -225,10 +269,11 @@ function click_Handler_OP(ev){
         }
     }
 }
-
 function change_container_pos(ev,height){
     createjs.Tween.get(ev.target).to({y:(height)},750,createjs.Ease.linear);
 }
+
+
 function mouseHandler(ev, isCanvas){
     if(isCanvas || ev.target.text === "Back" || ev.target.text === "On"|| ev.target.text === "Off") {
         ev.target.alpha = (ev.type === "mouseover") ? 1 : 0.8;

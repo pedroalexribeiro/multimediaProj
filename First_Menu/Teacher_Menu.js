@@ -1,6 +1,7 @@
 "use strict";
 
-function SP_Menu() {
+function Teacher_Menu() {
+    console.log("test");
     document.getElementById("Menu").style.backgroundImage="url(Resources/test.png)";
     var canvas = document.getElementById("Menu");
     var stage = new createjs.Stage(canvas);
@@ -12,43 +13,86 @@ function SP_Menu() {
         mouseHandler(ev, isCanvas);
     };
 
-    var arrayButtons = new Array();
-    var iterator = 0;
-    arrayButtons.push(new createjs.Text("Student", "35px Georgia", "#ffffff"));
-    arrayButtons.push(new createjs.Text("Teacher", "35px Georgia", "#ffffff"));
-    arrayButtons.push(new createjs.Text("Back", "35px Georgia", "#ffffff"));
 
-    for(let text of arrayButtons){
-        customize(text, canvas, iterator);
-        iterator += 1;
-        var hit = new createjs.Shape(); //Creates Hitbox
-        hit.graphics.beginFill("#000").drawRect(0, 0, text.getMeasuredWidth(), text.getMeasuredHeight());
-        text.hitArea = hit;
-        text.on("mouseover", mouseFunction);
-        text.on("mouseout", mouseFunction);
-        text.on("click",clickHandler_ST_TC);
-        stage.addChild(text);
+    var arrayBoxes = new Array();
+    arrayBoxes.push(new createjs.Shape);
+    arrayBoxes.push(new createjs.Shape);
+    arrayBoxes.push(new createjs.Shape);
+    arrayBoxes.push(new createjs.Shape);
+    arrayBoxes.push(new createjs.Shape);
+
+
+    var count=1;
+    var width=100;
+    var height=100;
+    var x = canvas.width/6 - width/2;
+    var y = canvas.height/2 - height/3;
+    for(let level of arrayBoxes){
+        var img = new Image();
+        img.src = "Resources/Background.png";
+        img.onload = function () {
+            //Image
+            var m = new createjs.Matrix2D();
+            m.translate(x,y);
+            m.scale(width/img.width,height/img.height);
+
+            //level Draw
+            level.graphics.beginStroke("#fff");
+            level.graphics.beginBitmapFill(img,"no-repeat",m);
+            level.graphics.drawRect(x,y,width,height);
+
+
+            //Hitbox && Effects
+            var hit_HP = new createjs.Shape();
+            hit_HP.graphics.beginFill("#ff000").drawRect(x,y,width,height);
+            level.hitArea = hit_HP;
+            level.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+            level.alpha = 0.8;
+
+            //Events
+            level.on("click", Click_Handler);
+            level.on("mouseover",mouseFunction);
+            level.on("mouseout",mouseFunction);
+
+
+            //Title
+            var title = new createjs.Text("Level"+count, "22px Georgia", "#fff");
+            title.x = x + title.getMeasuredWidth()/3;
+            title.y = y + 110;
+            stage.addChild(title);
+
+
+            //Update
+            level.text = "level" + count;
+            stage.addChild(level);
+            count += 1;
+            x +=130;
+        };
     }
 
 
 
+    function Click_Handler(ev){
+        console.log(ev.target.text);
 
-    function clickHandler_ST_TC(ev){
-        if(isCanvas && ev.target.text === "Student") {
+        if(ev.target.text === "Back") {
             stage.removeAllChildren();
-            Student_Menu();
+            SP_Menu();
         }
-        else if( isCanvas && ev.target.text === "Teacher") {
-            stage.removeAllChildren();
-            Teacher_Menu();
-        }
-        else if(ev.target.text === "Back") {
-            stage.removeAllChildren();
-            mainMenu();
-        }
-
     }
 
+
+
+    //Back Button
+    var back = (new createjs.Text("Back", "35px Georgia", "#ffffff"));
+    customize(back,canvas,4);
+    var hit = new createjs.Shape(); //Creates Hitbox
+    hit.graphics.beginFill("#000").drawRect(0, 0, back.getMeasuredWidth(), back.getMeasuredHeight());
+    back.hitArea = hit;
+    back.on("mouseover", mouseFunction);
+    back.on("mouseout", mouseFunction);
+    back.on("click",Click_Handler);
+    stage.addChild(back);
 
 
     //Help Button
@@ -204,7 +248,6 @@ function SP_Menu() {
 }
 
 function click_Handler_OP(ev){
-    console.log("testing");
     if(ev.target.id === "Sound_btn"){
         if (ev.target.text === "On") {
             ev.target.text = "Off";
@@ -212,7 +255,6 @@ function click_Handler_OP(ev){
         else if (ev.target.text === "Off") {
             ev.target.text = "On";
         }
-
     }
     else if(ev.target.id === "Music_btn") {
         if (ev.target.text === "On") {
@@ -225,10 +267,11 @@ function click_Handler_OP(ev){
         }
     }
 }
-
 function change_container_pos(ev,height){
     createjs.Tween.get(ev.target).to({y:(height)},750,createjs.Ease.linear);
 }
+
+
 function mouseHandler(ev, isCanvas){
     if(isCanvas || ev.target.text === "Back" || ev.target.text === "On"|| ev.target.text === "Off") {
         ev.target.alpha = (ev.type === "mouseover") ? 1 : 0.8;
