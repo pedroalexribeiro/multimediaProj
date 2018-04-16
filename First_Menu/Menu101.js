@@ -16,8 +16,8 @@ function mainMenu() {
     createjs.Sound.registerSounds(sounds,audioPath);
 
     function sound_handler(ev) {/*TURN THIS ON TO ALLOW MUSIC*/
-        //var instance = createjs.Sound.play("Music");
-        //instance.on("complete", sound_handler);
+        var instance = createjs.Sound.play("Music");
+        instance.on("complete", sound_handler);
 
 
     }
@@ -59,6 +59,8 @@ function mainMenu() {
         text.on("click",clickHandler_SP_MP_AC);
         stage.addChild(text);
     }
+
+
 
     var help = new Image();
         help.src = "Resources/Help.png";
@@ -248,6 +250,8 @@ function click_Handler_OP(ev){
         }
     }
 }
+
+
 
 
 function change_container_pos(ev,height){

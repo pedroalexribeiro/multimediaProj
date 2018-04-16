@@ -40,7 +40,8 @@ function SP_Menu() {
         }
         else if( isCanvas && ev.target.text === "Teacher") {
             stage.removeAllChildren();
-            Teacher_Menu();
+            //Teacher_Menu();
+            Maps();
         }
         else if(ev.target.text === "Back") {
             stage.removeAllChildren();
