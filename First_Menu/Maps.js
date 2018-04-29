@@ -3,11 +3,11 @@
 function Maps(stage){
     var levelOne = new LevelOne(stage);
 
-
-    function handle(ev){
+    createjs.Ticker.addEventListener("tick", handle);
+    function handle(){
 
         if(createjs.Ticker.getTime(true) > 5000){
-            console.log(levelOne.objects[0].bitmap);
+            /*Dar reset*/
             levelOne.objects[0].Move(200);
             createjs.Ticker.removeEventListener("tick",handle);
 
@@ -59,23 +59,15 @@ class Platform {
 
 class Object{
     constructor(stage,src,init_x, init_y) {
-        var object= new Image();
-        this.bitmap =null;
-        object.onload = function (ev) {
-            this.bitmap = new createjs.Bitmap(ev.target);
-            this.bitmap.x = init_x;
-            this.bitmap.y = init_y;
-            this.bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-            stage.addChild(this.bitmap);
-            console.log("ola");
-        };
-        object.src = src;
+        this.object= new Image();
+        this.object.bitmap = new createjs.Bitmap(src);
+        this.object.bitmap.x = init_x;
+        this.object.bitmap.y = init_y;
+        this.object.bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+        stage.addChild(this.object.bitmap);
     }
 
-    Move(asd){
-        console.log("Here???");
-        console.log(createjs.Tween.get(this));
-        console.log(asd);
-        createjs.Tween.get(this).to({y:(asd)},1000,createjs.Ease.linear);
+    Move(y){
+        createjs.Tween.get(this.object.bitmap).to({y:(y)},1000,createjs.Ease.linear);
     }
 }
