@@ -6,6 +6,7 @@
 }());
 
 function mainMenu() {
+    var queue = new createjs.LoadQueue(true);
     /*Sound Stuff*/
     var audioPath ="Resources/";
     var sounds = [
@@ -13,13 +14,11 @@ function mainMenu() {
     ];
     createjs.Sound.alternateExtensions = ["mp3"];
     createjs.Sound.addEventListener("fileload",sound_handler);
-    createjs.Sound.registerSounds(sounds,audioPath);
+    //createjs.Sound.registerSounds(sounds,audioPath);
 
     function sound_handler(ev) {/*TURN THIS ON TO ALLOW MUSIC*/
         var instance = createjs.Sound.play("Music");
         instance.on("complete", sound_handler);
-
-
     }
 
 
