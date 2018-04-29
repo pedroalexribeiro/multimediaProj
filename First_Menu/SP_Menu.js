@@ -126,7 +126,7 @@ function SP_Menu() {
                 back.on("mouseover", mouseHandler);
                 back.on("mouseout", mouseHandler);
                 function change(){
-                    change_container_pos(createjs.Tween.get(container),-350);
+                        change_container_pos(createjs.Tween.get(container),-350);
                     isCanvas = true;
                 }
                 back.on("click",change);

@@ -55,7 +55,7 @@ function Student_Menu() {
 
 
             //Title
-            var title = new createjs.Text("Level"+count, "22px Georgia", "#fff");
+            var title = new createjs.Text("Level" + count, "22px Georgia", "#fff");
             title.x = x + title.getMeasuredWidth()/3;
             title.y = y + 110;
             stage.addChild(title);

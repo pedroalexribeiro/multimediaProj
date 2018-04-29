@@ -7,7 +7,7 @@
 
 function mainMenu() {
     /*Sound Stuff*/
-    var audioPath ="Resources/";
+    /*var audioPath ="Resources/";
     var sounds = [
         {id:"Music",src:"Audio1.mp3"}
     ];
@@ -15,12 +15,10 @@ function mainMenu() {
     createjs.Sound.addEventListener("fileload",sound_handler);
     createjs.Sound.registerSounds(sounds,audioPath);
 
-    function sound_handler(ev) {/*TURN THIS ON TO ALLOW MUSIC*/
+    function sound_handler(ev) {
         var instance = createjs.Sound.play("Music");
         instance.on("complete", sound_handler);
-
-
-    }
+    }*/
 
 
     /*Background Information*/
@@ -34,7 +32,41 @@ function mainMenu() {
     var isCanvas = true;
 
 
+    var spriteSheet = new createjs.SpriteSheet({
+        images: ["Resources/Running/R_SpriteSheet.png"],
+        frames: {"height": 75,"width": 48, "regX": 100, "regY":-500},
+        animations: {"run":{
+            frames: [0,1,2,1],
+            next: "run",
+            speed: 0.15
+        }
+        }
+    });
 
+    var grant = new createjs.Sprite(spriteSheet, "run");
+    createjs.Ticker.addEventListener("tick", tick);
+    stage.addEventListener("stagemousedown", handleJumpStart);
+
+    function handleJumpStart(ev) {
+        setInterval(salta, 100);
+    }
+
+    function salta(){
+        if(grant.y > -400){
+            var position = grant.y - 150 * 0.1;
+            var grantW = grant.getBounds().height * grant.scaleY;
+            grant.y = (position >= canvas.width + grantW) ? -grantW : position;
+            stage.update(event);
+        }
+    }
+    function tick(event) {
+        var deltaS = event.delta / 1000;
+        var position = grant.x + 150 * deltaS;
+        var grantW = grant.getBounds().width * grant.scaleX;
+        grant.x = (position >= canvas.width + 2*grantW) ? -grantW : position;
+        stage.update(event);
+    }
+    stage.addChild(grant);
 
     var mouseFunction = function(ev){
         mouseHandler(ev, isCanvas);
