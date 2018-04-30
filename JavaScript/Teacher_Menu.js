@@ -2,7 +2,7 @@
 
 function Teacher_Menu() {
     console.log("test");
-    document.getElementById("Menu").style.backgroundImage="url(Resources/test.png)";
+    document.getElementById("Menu").style.backgroundImage="url(../Resources/test.png)";
     var canvas = document.getElementById("Menu");
     var stage = new createjs.Stage(canvas);
     stage.enableMouseOver(10);
@@ -29,7 +29,7 @@ function Teacher_Menu() {
     var y = canvas.height/2 - height/3;
     for(let level of arrayBoxes){
         var img = new Image();
-        img.src = "Resources/Background.png";
+        img.src = "../Resources/Background.png";
         img.onload = function () {
             //Image
             var m = new createjs.Matrix2D();
@@ -97,7 +97,7 @@ function Teacher_Menu() {
 
     //Help Button
     var help = new Image();
-    help.src = "Resources/Help.png";
+    help.src = "../Resources/Options/Help.png";
     help.onload = function (ev) {
         var bitmap = new createjs.Bitmap(ev.target);
         bitmap.x = 720;
@@ -117,7 +117,7 @@ function Teacher_Menu() {
 
     //options Button
     var options = new Image();
-    options.src = "Resources/Options.png";
+    options.src = "../Resources/Options/Options.png";
     options.onload = function (ev) {
         var bitmap = new createjs.Bitmap(ev.target);
         bitmap.x = 10;
@@ -145,7 +145,7 @@ function Teacher_Menu() {
 
             //Loads container
             var img = new Image();
-            img.src = "Resources/ChalkBoard.png";
+            img.src = "../Resources/Options/ChalkBoard.png";
             img.onload = function(){
                 var container = new createjs.Container();
                 container.x = canvas.width / 2 - img.width / 2;

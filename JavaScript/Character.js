@@ -11,7 +11,7 @@ class Character{
         this.keys = new Array();
         this.isMoving = false;
         var spriteSheet = new createjs.SpriteSheet({
-            images: ["Resources/Running/R_SpriteSheet.png"],
+            images: ["../Resources/Character/Running/R_SpriteSheet.png"],
             frames: {"height": 75,"width": 48, "regX": -100, "regY": -450},
             animations: {"run":{
                             frames: [0,1,2,1],

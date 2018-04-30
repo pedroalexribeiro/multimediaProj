@@ -1,7 +1,7 @@
 "use strict";
 
 function Student_Menu() {
-    document.getElementById("Menu").style.backgroundImage="url(Resources/Background.png)";
+    document.getElementById("Menu").style.backgroundImage="url(../Resources/Background.png)";
     var canvas = document.getElementById("Menu");
     var stage = new createjs.Stage(canvas);
     stage.enableMouseOver(10);
@@ -28,7 +28,7 @@ function Student_Menu() {
     var y = canvas.height/2 - height/3;
     for(let level of arrayBoxes){
         var img = new Image();
-        img.src = "Resources/test.png";
+        img.src = "../Resources/test.png";
         img.onload = function () {
             //Image
             var m = new createjs.Matrix2D();
@@ -99,7 +99,7 @@ function Student_Menu() {
 
     //Help Button
     var help = new Image();
-    help.src = "Resources/Help.png";
+    help.src = "../Resources/Options/Help.png";
     help.onload = function (ev) {
         var bitmap = new createjs.Bitmap(ev.target);
         bitmap.x = 720;
@@ -119,7 +119,7 @@ function Student_Menu() {
 
     //options Button
     var options = new Image();
-    options.src = "Resources/Options.png";
+    options.src = "../Resources/Options/Options.png";
     options.onload = function (ev) {
         var bitmap = new createjs.Bitmap(ev.target);
         bitmap.x = 10;
@@ -147,7 +147,7 @@ function Student_Menu() {
 
             //Loads container
             var img = new Image();
-            img.src = "Resources/ChalkBoard.png";
+            img.src = "../Resources/Options/ChalkBoard.png";
             img.onload = function(){
                 var container = new createjs.Container();
                 container.x = canvas.width / 2 - img.width / 2;

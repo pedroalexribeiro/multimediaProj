@@ -24,7 +24,7 @@ function mainMenu() {
 
 
     /*Background Information*/
-    document.getElementById("Menu").style.backgroundImage="url(Resources/Background.png)";
+    document.getElementById("Menu").style.backgroundImage="url(../Resources/Background.png)";
 
     /*Stage Loader*/
     var canvas = document.getElementById("Menu");
@@ -43,7 +43,7 @@ function mainMenu() {
                 ch.spriteA.gotoAndPlay("run");
             }
         }else{
-            if(!ch.keys[37] && !ch.key[38] && !ch.keys[39] && !ch.keys[40] && ch.isMoving ==  true){
+            if(!ch.keys[37] && !ch.keys[38] && !ch.keys[39] && !ch.keys[40] && ch.isMoving ==  true){
                 ch.isMoving = false;
                 ch.spriteA.gotoAndStop("idle");
             }
@@ -82,7 +82,7 @@ function mainMenu() {
     }
 
     var help = new Image();
-        help.src = "Resources/Help.png";
+        help.src = "../Resources/Options/Help.png";
         help.onload = function (ev) {
             var bitmap = new createjs.Bitmap(ev.target);
             bitmap.x = 720;
@@ -102,7 +102,7 @@ function mainMenu() {
 
     //options Button
     var options = new Image();
-    options.src = "Resources/Options.png";
+    options.src = "../Resources/Options/Options.png";
     options.onload = function (ev) {
         var bitmap = new createjs.Bitmap(ev.target);
         bitmap.x = 10;
@@ -145,7 +145,7 @@ function mainMenu() {
 
             //Loads container
             var img = new Image();
-            img.src = "Resources/ChalkBoard.png";
+            img.src = "../Resources/Options/ChalkBoard.png";
             img.onload = function(){
                 var container = new createjs.Container();
                 container.x = canvas.width / 2 - img.width / 2;

@@ -88,10 +88,10 @@ class Map {
 class LevelOne extends Map {
     constructor(stage) {
         super(stage);
-        document.getElementById("Menu").style.backgroundImage = "url(Resources/Background.png)";
-        this.platforms.push(new Platform(stage, "Resources/levels/platform_grass.png", 92.5, 400));
-        this.platforms.push(new Platform(stage, "Resources/levels/platform_grass.png", 297.5, 400));
-        this.platforms.push(new Platform(stage, "Resources/levels/platform_grass.png", 502.5, 400));
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platform_grass.png", 92.5, 400));
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platform_grass.png", 297.5, 400));
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platform_grass.png", 502.5, 400));
 
 
 
@@ -100,7 +100,7 @@ class LevelOne extends Map {
         var yinit = Math.floor((Math.random() * 340 + 280));
 
         /*In this level, Only horizontal*/
-        this.objects.push(new Object(stage, "Resources/levels/small_beer_test.png", -50, yinit));
+        this.objects.push(new Object(stage, "../Resources/levels/Extras/small_beer_test.png", -50, yinit));
     }
 
     ObjectArea(widthObj,heightObj,canvas){ /*For level One*/
