@@ -25,22 +25,6 @@ class Character{
             }
         });
         this.spriteA = new createjs.Sprite(spriteSheet, "idle");
-
-        // start playing the first sequence:
-        //this.spriteA.gotoAndPlay(2);     //animate
-
-        // set up a shadow. Note that shadows are ridiculously expensive. You could display hundreds
-        // of animated rats if you disabled the shadow.
-        this.spriteA.shadow = new createjs.Shadow("#454", 0, 5, 4);
-
-        this.spriteA.name = "monster1";
-        this.spriteA.direction = 90;
-        this.spriteA.vX = 4;
-        this.spriteA.x = 16;
-        this.spriteA.y = 32;
-
-        // have each monster start at a specific frame
-        this.spriteA.currentFrame = 0;
         stage.addChild(this.spriteA);
     }
 
