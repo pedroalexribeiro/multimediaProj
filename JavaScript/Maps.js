@@ -8,17 +8,9 @@
 * */
 function Maps(stage) {
     var levelOne = new LevelOne(stage);
-
-    /*createjs.Ticker.addEventListener("tick", handle);
-    function handle(){
-        if(createjs.Ticker.getTime(true) > 5000){
-            levelOne.objects[0].Move(0,200,1000); //x not being used yet
-            createjs.Ticker.removeEventListener("tick",handle);
-
-        }
-    }*/
-
     var canvas = document.getElementById("Menu");
+
+
 
     var gameStart = new Date();
     var counter = 830;
