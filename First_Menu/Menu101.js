@@ -30,45 +30,32 @@ function mainMenu() {
     var canvas = document.getElementById("Menu");
     var stage = new createjs.Stage(canvas);
     stage.enableMouseOver(10);
-
     var isCanvas = true;
 
+//###############################################################################
 
-    var spriteSheet = new createjs.SpriteSheet({
-        images: ["Resources/Running/R_SpriteSheet.png"],
-        frames: {"height": 75,"width": 48, "regX": 100, "regY":-500},
-        animations: {"run":{
-            frames: [0,1,2,1],
-            next: "run",
-            speed: 0.15
-        }
-        }
-    });
-
-    var grant = new createjs.Sprite(spriteSheet, "run");
-    createjs.Ticker.addEventListener("tick", tick);
-    stage.addEventListener("stagemousedown", handleJumpStart);
-
-    function handleJumpStart(ev) {
-        setInterval(salta, 100);
-    }
-
-    function salta(){
-        if(grant.y > -400){
-            var position = grant.y - 150 * 0.1;
-            var grantW = grant.getBounds().height * grant.scaleY;
-            grant.y = (position >= canvas.width + grantW) ? -grantW : position;
-            stage.update(event);
+    var ch = new Character(stage);
+    var keyHandlers = function(ev) {
+        ch.keys[ev.keyCode] = (ev.type == "keydown");
+        if(ev.type == "keydown"){
+            if((ev.keyCode == 37 || ev.keyCode == 38 || ev.keyCode == 39 || ev.keyCode == 40) && ch.isMoving == false) {
+                ch.isMoving = true;
+                ch.spriteA.gotoAndPlay("run");
+            }
+        }else{
+            if(!ch.keys[37] && !ch.key[38] && !ch.keys[39] && !ch.keys[40] && ch.isMoving ==  true){
+                ch.isMoving = false;
+                ch.spriteA.gotoAndStop("idle");
+            }
         }
     }
-    function tick(event) {
-        var deltaS = event.delta / 1000;
-        var position = grant.x + 150 * deltaS;
-        var grantW = grant.getBounds().width * grant.scaleX;
-        grant.x = (position >= canvas.width + 2*grantW) ? -grantW : position;
-        stage.update(event);
-    }
-    stage.addChild(grant);
+
+    window.addEventListener("keydown",keyHandlers);
+    window.addEventListener('keyup', keyHandlers);
+
+
+//################################################################################
+
 
     var mouseFunction = function(ev){
         mouseHandler(ev, isCanvas);
@@ -93,8 +80,6 @@ function mainMenu() {
         text.on("click",clickHandler_SP_MP_AC);
         stage.addChild(text);
     }
-
-
 
     var help = new Image();
         help.src = "Resources/Help.png";
@@ -257,9 +242,13 @@ function mainMenu() {
         }
     }
 
+    function tickHandler(ev){
+        stage.update();
+        ch.move();
+    }
 
     createjs.Ticker.framerate =60;
-    createjs.Ticker.addEventListener("tick", stage);
+    createjs.Ticker.addEventListener("tick", tickHandler);
 }
 
 

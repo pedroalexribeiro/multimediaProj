@@ -1,14 +1,64 @@
 "use strict";
 
 class Character{
-    constructor(init_x,init_y){ /*Test, need to implemente character shit over here*/
-        this.bitmap = new createjs.Bitmap();
-        this.bitmap.x = init_x;
-        this.bitmap.y = init_y;
+    constructor(stage){ /*Test, need to implemente character shit over here*/
+        /*this.object = new Image();
+        this.object.bitmap = new createjs.Bitmap(src);
+        this.object.bitmap.x = init_x;
+        this.object.bitmap.y = init_y;
+        //this.object.bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+        stage.addChild(this.object.bitmap);*/
+        this.keys = new Array();
+        this.isMoving = false;
+        var spriteSheet = new createjs.SpriteSheet({
+            images: ["Resources/Running/R_SpriteSheet.png"],
+            frames: {"height": 75,"width": 48, "regX": -100, "regY": -450},
+            animations: {"run":{
+                            frames: [0,1,2,1],
+                            next: "run",
+                            speed: 0.15
+                        },
+                        "idle": {
+                            frames: [2],
+                            next: "idle"
+                        }
+            }
+        });
+        this.spriteA = new createjs.Sprite(spriteSheet, "idle");
+
+        // start playing the first sequence:
+        //this.spriteA.gotoAndPlay(2);     //animate
+
+        // set up a shadow. Note that shadows are ridiculously expensive. You could display hundreds
+        // of animated rats if you disabled the shadow.
+        this.spriteA.shadow = new createjs.Shadow("#454", 0, 5, 4);
+
+        this.spriteA.name = "monster1";
+        this.spriteA.direction = 90;
+        this.spriteA.vX = 4;
+        this.spriteA.x = 16;
+        this.spriteA.y = 32;
+
+        // have each monster start at a specific frame
+        this.spriteA.currentFrame = 0;
+        stage.addChild(this.spriteA);
     }
 
-    Animation(){
-        /*Depois as animacoes tem de ficar aqui!!! */
+    move(){
+        if(this.isMoving == true) {
+            if (this.keys[37]) {
+                this.spriteA.x += -2;
+            }
+            if (this.keys[39]) {
+                this.spriteA.x += 2;
+            }
+            if (this.keys[38]) {
+                this.spriteA.y += -2;
+            }
+            if (this.keys[40]) {
+                this.spriteA.y += 2;
+            }
+        }
     }
 }
 
