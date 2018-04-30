@@ -3,8 +3,47 @@
   <component name="ChangeListManager">
     <list default="true" id="67c76d5a-c8c4-48ae-bb58-2d766c2cc810" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/First_Menu/Character.js" beforeDir="false" afterPath="$PROJECT_DIR$/First_Menu/Character.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/First_Menu/Menu101.js" beforeDir="false" afterPath="$PROJECT_DIR$/First_Menu/Menu101.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Character/Running/Running_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Character/Running/Running_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Character/Running/Running_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Character/Waving_Hello/waving_hello_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Character/Waving_Hello/waving_hello_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Character/Waving_Hello/waving_hello_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Character.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/First_Menu.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Maps.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Menu101.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Menu101.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Options.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Audio1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Audio2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Background.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/ChalkBoard.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Help.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Options.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Running/R1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Running/R2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Running/R3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Running/R3_modified.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Running/R_SpriteSheet.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Running/Running_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Running/Running_SpriteSheet.tps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Running/running2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/Running/running3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/SoundOn.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/levels/Sand.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/levels/Stairs.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/levels/Stone.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/levels/beer_test.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/levels/platform_grass.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/levels/small_beer_test.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/soundOff.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Resources/test.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/SP_Menu.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Student_Menu.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/Teacher_Menu.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/First_Menu/http_code.createjs.com_1.0.0_createjs.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main.js" beforeDir="false" afterPath="$PROJECT_DIR$/Main.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,56 +57,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="First_Menu.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/First_Menu/First_Menu.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="68" selection-start-line="11" selection-start-column="68" selection-end-line="11" selection-end-column="68" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Main.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Menu101.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/First_Menu/Menu101.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Maps.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/First_Menu/Maps.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="683">
-              <caret line="72" column="1" lean-forward="true" selection-start-line="72" selection-start-column="1" selection-end-line="72" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Character.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/First_Menu/Character.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret lean-forward="true" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Menu101.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/First_Menu/Menu101.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret lean-forward="true" />
+            <state relative-caret-position="238">
+              <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -96,11 +90,11 @@
       <list>
         <option value="$PROJECT_DIR$/First_Menu/First_Menu/Menu101.js" />
         <option value="$PROJECT_DIR$/Main.html" />
-        <option value="$PROJECT_DIR$/Main.js" />
         <option value="$PROJECT_DIR$/First_Menu/Menu101.css" />
         <option value="$PROJECT_DIR$/First_Menu/First_Menu.html" />
         <option value="$PROJECT_DIR$/First_Menu/Menu101.js" />
         <option value="$PROJECT_DIR$/First_Menu/Character.js" />
+        <option value="$PROJECT_DIR$/Main.js" />
       </list>
     </option>
   </component>
@@ -138,24 +132,6 @@
             <path>
               <item name="Project" type="b2602c69:ProjectViewProjectNode" />
               <item name="Project" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Project" type="462c0819:PsiDirectoryNode" />
-              <item name="First_Menu" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Project" type="462c0819:PsiDirectoryNode" />
-              <item name="First_Menu" type="462c0819:PsiDirectoryNode" />
-              <item name="Resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Project" type="462c0819:PsiDirectoryNode" />
-              <item name="First_Menu" type="462c0819:PsiDirectoryNode" />
-              <item name="Resources" type="462c0819:PsiDirectoryNode" />
-              <item name="Running" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -217,18 +193,18 @@
       <workItem from="1522001126074" duration="8279000" />
       <workItem from="1522077535053" duration="23004000" />
       <workItem from="1525024196052" duration="15049000" />
-      <workItem from="1525101720183" duration="2370000" />
+      <workItem from="1525101720183" duration="3105000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53917000" />
+    <option name="totallyTimeSpent" value="54652000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1488" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.2944369" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2944369" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
@@ -438,31 +414,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/First_Menu/Menu101.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../ficha04/code/ficha04.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="178" column="4" selection-start-line="178" selection-start-column="4" selection-end-line="181" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/First_Menu/Maps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="683">
-          <caret line="72" column="1" lean-forward="true" selection-start-line="72" selection-start-column="1" selection-end-line="72" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -477,6 +432,36 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret lean-forward="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/First_Menu/Maps.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="683">
+          <caret line="155" column="1" lean-forward="true" selection-start-line="155" selection-start-column="1" selection-end-line="155" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/First_Menu/Menu101.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/http_code.createjs.com_1.0.0_createjs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
         </state>
       </provider>
     </entry>
