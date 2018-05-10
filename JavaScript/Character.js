@@ -28,7 +28,7 @@ class Character{
 
     move(){
     	this.velocity.y += 0.5;
-        if(this.isMoving == true) {
+        if(this.isMoving === true) {
             if (this.keys[37]) {
                 this.spriteA.x += -5;
             }

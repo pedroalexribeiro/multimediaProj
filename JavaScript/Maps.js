@@ -29,9 +29,9 @@ function Maps(stage) {
         createjs.Ticker.framerate = 60;
 
         var keyHandlers = function(ev) {
-                level.hero.keys[ev.keyCode] = (ev.type == "keydown");
-                if(ev.type == "keydown"){
-                    if((ev.keyCode == 37 || ev.keyCode == 38 || ev.keyCode == 39 || ev.keyCode == 40) && level.hero.isMoving == false) {
+                level.hero.keys[ev.keyCode] = (ev.type === "keydown");
+                if(ev.type === "keydown"){
+                    if((ev.keyCode === 37 || ev.keyCode === 38 || ev.keyCode === 39 || ev.keyCode === 40) && level.hero.isMoving === false) {
                         level.hero.isMoving = true;
                         level.hero.spriteA.gotoAndPlay("run");
                     }
@@ -40,10 +40,10 @@ function Maps(stage) {
                         level.hero.isMoving = false;
                     }
                 }
-                if(level.hero.isMoving==false){
+                if(level.hero.isMoving===false){
                     level.hero.spriteA.gotoAndStop("idle");
                 }
-            }
+            };
 
             window.addEventListener("keydown",keyHandlers);
             window.addEventListener('keyup', keyHandlers);
@@ -264,12 +264,6 @@ function Maps(stage) {
         timer = new createjs.Text("", "50px monospace", "#000");
         timer.x = stage.canvas.width / 2 - 130;
         stage.addChild(timer);
-
-
-        /*var border = new Image();
-        border.bitmap = new createjs.Bitmap("");
-        border.bitmap.x = 250;
-        stage.addChild(border.bitmap);*/
     }
 
     function KeyHandler(ev) {

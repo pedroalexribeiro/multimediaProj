@@ -1,4 +1,4 @@
-"use strict";
+"   use strict";
 
 function Student_Menu(stage) {
     document.getElementById("Menu").style.backgroundImage="url(../Resources/Background.png)";
