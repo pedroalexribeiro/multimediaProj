@@ -1,13 +1,9 @@
 "use strict";
 
-function SP_Menu() {
+function SP_Menu(stage) {
     document.getElementById("Menu").style.backgroundImage="url(../Resources/test.png)";
-    var canvas = document.getElementById("Menu");
-    var stage = new createjs.Stage(canvas);
-    stage.enableMouseOver(10);
 
     var isCanvas = true;
-
     var mouseFunction = function(ev){
         mouseHandler(ev, isCanvas);
     };
@@ -19,7 +15,7 @@ function SP_Menu() {
     arrayButtons.push(new createjs.Text("Back", "35px Georgia", "#ffffff"));
 
     for(let text of arrayButtons){
-        customize(text, canvas, iterator);
+        customize(text, stage.canvas, iterator);
         iterator += 1;
         var hit = new createjs.Shape(); //Creates Hitbox
         hit.graphics.beginFill("#000").drawRect(0, 0, text.getMeasuredWidth(), text.getMeasuredHeight());
@@ -36,7 +32,7 @@ function SP_Menu() {
     function clickHandler_ST_TC(ev){
         if(isCanvas && ev.target.text === "Student") {
             stage.removeAllChildren();
-            Student_Menu();
+            Student_Menu(stage);
         }
         else if( isCanvas && ev.target.text === "Teacher") {
             stage.removeAllChildren();
@@ -105,7 +101,7 @@ function SP_Menu() {
             img.src = "../Resources/Options/ChalkBoard.png";
             img.onload = function(){
                 var container = new createjs.Container();
-                container.x = canvas.width / 2 - img.width / 2;
+                container.x = stage.canvas.width / 2 - img.width / 2;
                 container.y = -300;
                 stage.addChild(container);
 
@@ -192,9 +188,9 @@ function SP_Menu() {
                 }
 
                 function changes(ev){
-                    change_container_pos(ev,canvas.height/5);
+                    change_container_pos(ev,stage.canvas.height/5);
                 }
-
+                console.log(container);
                 createjs.Tween.get(container).call(changes);
 
             };
@@ -203,44 +199,3 @@ function SP_Menu() {
     createjs.Ticker.framerate =60;
     createjs.Ticker.addEventListener("tick", stage);
 }
-
-function click_Handler_OP(ev){
-    console.log("testing");
-    if(ev.target.id === "Sound_btn"){
-        if (ev.target.text === "On") {
-            ev.target.text = "Off";
-        }
-        else if (ev.target.text === "Off") {
-            ev.target.text = "On";
-        }
-
-    }
-    else if(ev.target.id === "Music_btn") {
-        if (ev.target.text === "On") {
-            createjs.Sound.stop("Music");
-            ev.target.text = "Off";
-        }
-        else if (ev.target.text === "Off") {
-            createjs.Sound.play("Music");
-            ev.target.text = "On";
-        }
-    }
-}
-
-function change_container_pos(ev,height){
-    createjs.Tween.get(ev.target).to({y:(height)},750,createjs.Ease.linear);
-}
-function mouseHandler(ev, isCanvas){
-    if(isCanvas || ev.target.text === "Back" || ev.target.text === "On"|| ev.target.text === "Off") {
-        ev.target.alpha = (ev.type === "mouseover") ? 1 : 0.8;
-        ev.target.shadow = (ev.type === "mouseover") ? new createjs.Shadow("#000000", 15, 15, 10) : new createjs.Shadow("#000000", 5, 5, 10);
-    }
-}
-function customize(object,canvas,number){
-    var b = object.getBounds();
-    object.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-    object.x = (canvas.width/2) - (b.width/2);
-    object.y = (canvas.height/2.3) + number*50;
-    object.alpha = 0.8;
-}
-
