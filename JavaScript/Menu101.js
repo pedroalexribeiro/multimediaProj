@@ -34,7 +34,7 @@ function mainMenu() {
 
 //###############################################################################
 
-    var ch = new Character(stage);
+    var ch = new Character(stage, 300, -200);
     var keyHandlers = function(ev) {
         ch.keys[ev.keyCode] = (ev.type == "keydown");
         if(ev.type == "keydown"){
@@ -45,8 +45,10 @@ function mainMenu() {
         }else{
             if(!ch.keys[37] && !ch.keys[38] && !ch.keys[39] && !ch.keys[40] && ch.isMoving ==  true){
                 ch.isMoving = false;
-                ch.spriteA.gotoAndStop("idle");
             }
+        }
+        if(ch.isMoving==false){
+            ch.spriteA.gotoAndStop("idle");
         }
     }
 

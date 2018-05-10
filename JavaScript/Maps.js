@@ -32,16 +32,56 @@ function Maps(stage) {
         var init = new Date();
         createjs.Ticker.addEventListener("tick", handle);
 
-        function handle() {
+
+        // #########################################################3333
+            var keyHandlers = function(ev) {
+                levelOne.hero.keys[ev.keyCode] = (ev.type == "keydown");
+                if(ev.type == "keydown"){
+                    if((ev.keyCode == 37 || ev.keyCode == 38 || ev.keyCode == 39 || ev.keyCode == 40) && levelOne.hero.isMoving == false) {
+                        levelOne.hero.isMoving = true;
+                        levelOne.hero.spriteA.gotoAndPlay("run");
+                    }
+                }else{
+                    if(!levelOne.hero.keys[37] && !levelOne.hero.keys[38] && !levelOne.hero.keys[39] && !levelOne.hero.keys[40] && levelOne.hero.isMoving ==  true){
+                        levelOne.hero.isMoving = false;
+                    }
+                }
+                if(levelOne.hero.isMoving==false){
+                    levelOne.hero.spriteA.gotoAndStop("idle");
+                }
+            }
+
+            window.addEventListener("keydown",keyHandlers);
+            window.addEventListener('keyup', keyHandlers);
+
+        // ##########################################################
+        function handle(){
+            //########################333«
+            if(calculateCollision(levelOne.hero.spriteA, levelOne.platforms[0].bitmap)){
+                console.log("1");   
+                levelOne.hero.velocity.y = 0;
+                levelOne.hero.isGround = true;
+            }else if(calculateCollision(levelOne.hero.spriteA, levelOne.platforms[1].bitmap)){
+                  console.log("2");
+                levelOne.hero.velocity.y = 0;
+                levelOne.hero.isGround = true;
+            }else if(calculateCollision(levelOne.hero.spriteA, levelOne.platforms[2].bitmap)){
+                  console.log("3");
+                levelOne.hero.velocity.y = 0;
+                levelOne.hero.isGround = true;
+            }else{
+                console.log("Isto nao funciona");
+                levelOne.hero.isGround = false;
+            }
+            levelOne.hero.move();
+            //#############################3
             if (init.getTime() - gameStart.getTime() < totalTime) {
                 var current_date = new Date();
                 if (current_date.getTime() - init.getTime() > ObjectInterval) {
-                    console.log("dd");
 
                     /*Move 1 Object*/
                     var ObjectOfArray = Math.floor(Math.random() * levelOne.objects.length); //Sempre 0 neste caso?
                     var obj = levelOne.objects[ObjectOfArray];
-                    console.log("asd");
                     obj.Move(counter, obj.object.bitmap.y, speed);
                     createjs.Ticker.removeEventListener("tick", handle);
 
@@ -64,17 +104,6 @@ function Maps(stage) {
     createjs.Ticker.addEventListener("tick", stage);
 
 
-    function randomMovement(xUp, xDown, yUp, yDown, speedUp, speedDown) {
-        var speed = Math.random() * speedUp + speedDown;
-        /*Check Speed u want for objects.. lets make it 1000-1500 for now*/
-        console.log("Speed: " + speed * 1000);
-
-        var x = Math.floor((Math.random() * xUp) + xDown); // If u want to have x unchangable,just give up and down same value and floor will make sure it doenst change? check this truth
-        console.log("x: " + x);
-
-        var y = Math.floor((Math.random() * yUp) + yDown);
-        console.log("y: " + y);
-    }
 }
 
 
@@ -92,6 +121,8 @@ class LevelOne extends Map {
         this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platform_grass.png", 92.5, 400));
         this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platform_grass.png", 297.5, 400));
         this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platform_grass.png", 502.5, 400));
+
+        this.hero = new Character(stage, 200, -200);
 
 
 
@@ -123,14 +154,11 @@ class LevelOne extends Map {
 class Platform {
     constructor(stage, src, init_x, init_y) {
         var platform = new Image();
-        platform.onload = function (ev) {
-            var bitmap = new createjs.Bitmap(ev.target);
-            bitmap.x = init_x;
-            bitmap.y = init_y;
-            bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-            stage.addChild(bitmap);
-        };
-        platform.src = src;
+        this.bitmap = new createjs.Bitmap(src);
+        this.bitmap.x = init_x;
+        this.bitmap.y = init_y;
+        this.bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+        stage.addChild(this.bitmap);
     }
 }
 
