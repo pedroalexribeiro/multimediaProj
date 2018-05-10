@@ -45,11 +45,11 @@ class Character {
         }
         if (!this.isGround) {
             this.spriteA.y += this.velocity.y;
-        }
-        if(this.isGround){
-            this.velocity.y = 0;
-            if (this.keys[38]){
-                this.velocity.y = -17;
+
+        }if (this.isGround) {
+            if (this.keys[38]) {
+                this.spriteA.y -= 10;
+                this.velocity.y = -20;
             }
         }
     }

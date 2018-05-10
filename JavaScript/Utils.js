@@ -5,7 +5,6 @@ function checkBoundingBox(box1, box2, x ,y){
     y = y || 0;
     var b1 = {}, b2 = {};
     var dx, dy;
-    console.log(box2);
     b1.hw = box1.width/2;
     b1.hh = box1.height/2;
     b2.hw = box2.width/2;
