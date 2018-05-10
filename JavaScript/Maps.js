@@ -18,6 +18,9 @@ function Maps(stage) {
     createTimer(stage);
     window.addEventListener("keydown", KeyHandler);
 
+
+    var hero = new Character(stage, 200, -200);
+
     var levelOne = new LevelOne(stage);
     var gameStart = createjs.Ticker.getTime(true);
     game(stage, levelOne);
@@ -29,19 +32,19 @@ function Maps(stage) {
         createjs.Ticker.framerate = 60;
 
         var keyHandlers = function(ev) {
-                level.hero.keys[ev.keyCode] = (ev.type === "keydown");
+                hero.keys[ev.keyCode] = (ev.type === "keydown");
                 if(ev.type === "keydown"){
-                    if((ev.keyCode === 37 || ev.keyCode === 38 || ev.keyCode === 39 || ev.keyCode === 40) && level.hero.isMoving === false) {
-                        level.hero.isMoving = true;
-                        level.hero.spriteA.gotoAndPlay("run");
+                    if((ev.keyCode === 37 || ev.keyCode === 38 || ev.keyCode === 39 || ev.keyCode === 40) && hero.isMoving === false) {
+                        hero.isMoving = true;
+                        hero.spriteA.gotoAndPlay("run");
                     }
                 }else{
-                    if(!level.hero.keys[37] && !level.hero.keys[38] && !level.hero.keys[39] && !level.hero.keys[40] && level.hero.isMoving ==  true){
-                        level.hero.isMoving = false;
+                    if(!hero.keys[37] && !hero.keys[38] && !hero.keys[39] && !hero.keys[40] && hero.isMoving ===  true){
+                        hero.isMoving = false;
                     }
                 }
-                if(level.hero.isMoving===false){
-                    level.hero.spriteA.gotoAndStop("idle");
+                if(hero.isMoving===false){
+                    hero.spriteA.gotoAndStop("idle");
                 }
             };
 
@@ -49,23 +52,22 @@ function Maps(stage) {
             window.addEventListener('keyup', keyHandlers);
 
         function handle(event) {
-            if(calculateCollision(level.hero.spriteA, level.platforms[0].platform.bitmap)){
-                console.log("1");   
-                level.hero.velocity.y = 0;
-                level.hero.isGround = true;
-            }else if(calculateCollision(level.hero.spriteA, level.platforms[1].platform.bitmap)){
-                  console.log("2");
-                level.hero.velocity.y = 0;
-                level.hero.isGround = true;
-            }else if(calculateCollision(level.hero.spriteA, level.platforms[2].platform.bitmap)){
-                  console.log("3");
-                level.hero.velocity.y = 0;
-                level.hero.isGround = true;
+            if(calculateCollision(hero.spriteA, level.platforms[0].platform.bitmap)){
+                hero.velocity.y = 0;
+                hero.isGround = true;
+            }else if(calculateCollision(hero.spriteA, level.platforms[1].platform.bitmap)){
+                hero.velocity.y = 0;
+                hero.isGround = true;
+            }else if(calculateCollision(hero.spriteA, level.platforms[2].platform.bitmap)){
+                hero.velocity.y = 0;
+                hero.isGround = true;
             }else{
-                console.log("Isto nao funciona");
-                level.hero.isGround = false;
+                hero.isGround = false;
             }
-            levelOne.hero.move();
+
+            hero.move();
+
+
             if (!event.paused) {
                 var currTime = createjs.Ticker.getTime(true);
                 if (currTime - gameStart <= level.totalTime) {
@@ -330,8 +332,6 @@ class LevelOne extends Map {
         this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platform_grass.png", 92.5, 400));
         this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platform_grass.png", 297.5, 400));
         this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platform_grass.png", 502.5, 400));
-
-        this.hero = new Character(stage, 200, -200);
 
         //Level Objects
         var initCords = this.Position(100, 100, stage); // Higher than any Object but shouldnt be a problem
