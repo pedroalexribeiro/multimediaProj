@@ -80,14 +80,14 @@ function Maps(stage) {
                 if (current_date.getTime() - init.getTime() > ObjectInterval) {
 
                     /*Move 1 Object*/
-                    var ObjectOfArray = Math.floor(Math.random() * levelOne.objects.length); //Sempre 0 neste caso?
+                    /*var ObjectOfArray = Math.floor(Math.random() * levelOne.objects.length); //Sempre 0 neste caso?
                     var obj = levelOne.objects[ObjectOfArray];
                     obj.Move(counter, obj.object.bitmap.y, speed);
                     createjs.Ticker.removeEventListener("tick", handle);
 
 
                     var cords = levelOne.ObjectArea(obj.object.bitmap.width,obj.object.bitmap.height,canvas);
-                    obj.Reset(cords[0],cords[1]);
+                    obj.Reset(cords[0],cords[1]);*/
                     game(canvas,counter, totalTime, ObjectInterval);
                 }
             }

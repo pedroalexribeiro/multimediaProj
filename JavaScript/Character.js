@@ -42,16 +42,13 @@ class Character{
                 this.spriteA.y += 10;
             }*/
         }
-        console.log(this.isGround)
         if(!this.isGround){
             this.spriteA.y += this.velocity.y;
         }
         if(this.isGround){
-        	console.log("######");
             if (this.keys[38]){
                 this.velocity.y = -17;
             }
-            console.log("$$$$$$$$")
             //this.spriteA.y += this.velocity.y;
         }
     }
