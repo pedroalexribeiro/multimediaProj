@@ -29,19 +29,19 @@ function Maps(stage) {
         createjs.Ticker.framerate = 60;
 
         var keyHandlers = function(ev) {
-                levelOne.hero.keys[ev.keyCode] = (ev.type == "keydown");
+                level.hero.keys[ev.keyCode] = (ev.type == "keydown");
                 if(ev.type == "keydown"){
-                    if((ev.keyCode == 37 || ev.keyCode == 38 || ev.keyCode == 39 || ev.keyCode == 40) && levelOne.hero.isMoving == false) {
-                        levelOne.hero.isMoving = true;
-                        levelOne.hero.spriteA.gotoAndPlay("run");
+                    if((ev.keyCode == 37 || ev.keyCode == 38 || ev.keyCode == 39 || ev.keyCode == 40) && level.hero.isMoving == false) {
+                        level.hero.isMoving = true;
+                        level.hero.spriteA.gotoAndPlay("run");
                     }
                 }else{
-                    if(!levelOne.hero.keys[37] && !levelOne.hero.keys[38] && !levelOne.hero.keys[39] && !levelOne.hero.keys[40] && levelOne.hero.isMoving ==  true){
-                        levelOne.hero.isMoving = false;
+                    if(!level.hero.keys[37] && !level.hero.keys[38] && !level.hero.keys[39] && !level.hero.keys[40] && level.hero.isMoving ==  true){
+                        level.hero.isMoving = false;
                     }
                 }
-                if(levelOne.hero.isMoving==false){
-                    levelOne.hero.spriteA.gotoAndStop("idle");
+                if(level.hero.isMoving==false){
+                    level.hero.spriteA.gotoAndStop("idle");
                 }
             }
 
@@ -49,21 +49,21 @@ function Maps(stage) {
             window.addEventListener('keyup', keyHandlers);
 
         function handle(event) {
-            if(calculateCollision(levelOne.hero.spriteA, levelOne.platforms[0].bitmap)){
+            if(calculateCollision(level.hero.spriteA, level.platforms[0].platform.bitmap)){
                 console.log("1");   
-                levelOne.hero.velocity.y = 0;
-                levelOne.hero.isGround = true;
-            }else if(calculateCollision(levelOne.hero.spriteA, levelOne.platforms[1].bitmap)){
+                level.hero.velocity.y = 0;
+                level.hero.isGround = true;
+            }else if(calculateCollision(level.hero.spriteA, level.platforms[1].platform.bitmap)){
                   console.log("2");
-                levelOne.hero.velocity.y = 0;
-                levelOne.hero.isGround = true;
-            }else if(calculateCollision(levelOne.hero.spriteA, levelOne.platforms[2].bitmap)){
+                level.hero.velocity.y = 0;
+                level.hero.isGround = true;
+            }else if(calculateCollision(level.hero.spriteA, level.platforms[2].platform.bitmap)){
                   console.log("3");
-                levelOne.hero.velocity.y = 0;
-                levelOne.hero.isGround = true;
+                level.hero.velocity.y = 0;
+                level.hero.isGround = true;
             }else{
                 console.log("Isto nao funciona");
-                levelOne.hero.isGround = false;
+                level.hero.isGround = false;
             }
             levelOne.hero.move();
             if (!event.paused) {

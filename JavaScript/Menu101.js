@@ -32,8 +32,6 @@ function mainMenu() {
     var isCanvas = true;
 
 //###############################################################################
-
-<<<<<<< HEAD
     var ch = new Character(stage, 300, -200);
     var keyHandlers = function(ev) {
         ch.keys[ev.keyCode] = (ev.type == "keydown");
