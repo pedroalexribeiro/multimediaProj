@@ -54,3 +54,41 @@ class Character {
         }
     }
 }
+
+/*
+var keyHandlers = function(ev) {
+                hero.keys[ev.keyCode] = (ev.type === "keydown");
+                if(ev.type === "keydown"){
+                    if((ev.keyCode === 37 || ev.keyCode === 38 || ev.keyCode === 39 || ev.keyCode === 40) && hero.isMoving === false) {
+                        hero.isMoving = true;
+                        hero.spriteA.gotoAndPlay("run");
+                    }
+                }else{
+                    if(!hero.keys[37] && !hero.keys[38] && !hero.keys[39] && !hero.keys[40] && hero.isMoving ===  true){
+                        hero.isMoving = false;
+                    }
+                }
+                if(hero.isMoving===false){
+                    hero.spriteA.gotoAndStop("idle");
+                }
+            };
+
+            window.addEventListener("keydown",keyHandlers);
+            window.addEventListener('keyup', keyHandlers);
+
+
+if(calculateCollision(hero.spriteA, level.platforms[0].platform.bitmap)){
+    hero.velocity.y = 0;
+    hero.isGround = true;
+}else if(calculateCollision(hero.spriteA, level.platforms[1].platform.bitmap)){
+    hero.velocity.y = 0;
+    hero.isGround = true;
+}else if(calculateCollision(hero.spriteA, level.platforms[2].platform.bitmap)){
+    hero.velocity.y = 0;
+    hero.isGround = true;
+}else{
+    hero.isGround = false;
+}
+
+hero.move();
+ */

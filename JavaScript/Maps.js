@@ -8,10 +8,12 @@
 *
 * All of the above already implemented
 * */
-function Maps(stage) {
+function Maps(stage2) {
+
+    var stage = stage2;
 
     //Game Menu Information
-    var container, containerEx, timer;
+    var container, containerEx, timer, init;
     var menuFlag = false, isExit = false;
     createMenu();
     createExitMenu();
@@ -19,101 +21,63 @@ function Maps(stage) {
     window.addEventListener("keydown", KeyHandler);
 
 
-    var hero = new Character(stage, 200, -200);
+    //var hero = new Character(stage, 200, -200);
 
-    var levelOne = new LevelOne(stage);
+    var level = new LevelOne(stage);
     var gameStart = createjs.Ticker.getTime(true);
-    game(stage, levelOne);
+    game();
 
+    function handle(event) {
+        if (!event.paused) {
+            var currTime = createjs.Ticker.getTime(true);
+            if (currTime - gameStart <= level.totalTime) {
+                if (currTime - init >= level.objInterval) {
 
-    function game(stage, level) {
-        var init = createjs.Ticker.getTime(true);
-        createjs.Ticker.addEventListener("tick", handle);
-        createjs.Ticker.framerate = 60;
-
-        var keyHandlers = function(ev) {
-                hero.keys[ev.keyCode] = (ev.type === "keydown");
-                if(ev.type === "keydown"){
-                    if((ev.keyCode === 37 || ev.keyCode === 38 || ev.keyCode === 39 || ev.keyCode === 40) && hero.isMoving === false) {
-                        hero.isMoving = true;
-                        hero.spriteA.gotoAndPlay("run");
-                    }
-                }else{
-                    if(!hero.keys[37] && !hero.keys[38] && !hero.keys[39] && !hero.keys[40] && hero.isMoving ===  true){
-                        hero.isMoving = false;
-                    }
-                }
-                if(hero.isMoving===false){
-                    hero.spriteA.gotoAndStop("idle");
-                }
-            };
-
-            window.addEventListener("keydown",keyHandlers);
-            window.addEventListener('keyup', keyHandlers);
-
-        function handle(event) {
-            if(calculateCollision(hero.spriteA, level.platforms[0].platform.bitmap)){
-                hero.velocity.y = 0;
-                hero.isGround = true;
-            }else if(calculateCollision(hero.spriteA, level.platforms[1].platform.bitmap)){
-                hero.velocity.y = 0;
-                hero.isGround = true;
-            }else if(calculateCollision(hero.spriteA, level.platforms[2].platform.bitmap)){
-                hero.velocity.y = 0;
-                hero.isGround = true;
-            }else{
-                hero.isGround = false;
-            }
-
-            hero.move();
-
-
-            if (!event.paused) {
-                var currTime = createjs.Ticker.getTime(true);
-                if (currTime - gameStart <= level.totalTime) {
-                    if (currTime - init >= level.objInterval) {
-
-                        //Escolhe objetos do level
-                        if (level.nObj === 1) { // 1 objeto
-                            var objectOfArray;
-                            var x = Math.random();
-                            if (x < 0.25) { // 1/4th of chance of appearing buff/Debuff (first numbers(level.nBuffs) of Array)
-                                objectOfArray = Math.floor(Math.random() * level.nBuffs);
-                            }
-                            else {
-                                objectOfArray = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
-                            }
-
-                            var obj = level.objects[objectOfArray];
-
-                            //##########MUDAR HORIZONTAL PARA MODULAR#########
-
-
-                            //Calcula coordinates para onde objeto se vai mover
-                            var cords = obj.NewCords(400, 350, "Horizontal", stage);
-
-                            //Calcula coordinates para onde objeto vai no Reset
-                            var resetCords = level.Position(obj.object.bitmap.image.width, obj.object.bitmap.image.height, stage);
-                            //Move Object
-                            obj.Move(cords[0], cords[1], level.speed[0], resetCords[0], resetCords[1]);
+                    //Escolhe objetos do level
+                    if (level.nObj === 1) { // 1 objeto
+                        var objectOfArray;
+                        var x = Math.random();
+                        if (x < 0.25) { // 1/4th of chance of appearing buff/Debuff (first numbers(level.nBuffs) of Array)
+                            objectOfArray = Math.floor(Math.random() * level.nBuffs);
                         }
-                        else { // Case for 2 Objects each Time
-
+                        else {
+                            objectOfArray = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
                         }
 
-                        createjs.Ticker.removeEventListener("tick", handle);
-                        game(stage, level);
+                        var obj = level.objects[objectOfArray];
+
+                        //##########MUDAR HORIZONTAL PARA MODULAR#########
+
+
+                        //Calcula coordinates para onde objeto se vai mover
+                        var cords = obj.NewCords(400, 350, "Horizontal", stage);
+
+                        //Calcula coordinates para onde objeto vai no Reset
+                        var resetCords = level.Position(obj.object.bitmap.image.width, obj.object.bitmap.image.height, stage);
+                        //Move Object
+                        obj.Move(cords[0], cords[1], level.speed[0], resetCords[0], resetCords[1]);
                     }
-                }
-                else {
-                    console.log("End of level");
+                    else { // Case for 2 Objects each Time
+
+                    }
+
                     createjs.Ticker.removeEventListener("tick", handle);
+                    game();
                 }
-                timer.text = "Timer: " + Math.ceil((level.totalTime - (currTime - gameStart)) / 1000);
             }
+            else {
+                console.log("End of level");
+                createjs.Ticker.removeEventListener("tick", handle);
+            }
+            timer.text = "Timer: " + Math.ceil((level.totalTime - (currTime - gameStart)) / 1000);
         }
     }
 
+    function game() {
+        init = createjs.Ticker.getTime(true);
+        createjs.Ticker.addEventListener("tick", handle);
+        createjs.Ticker.framerate = 60;
+    }
 
     function createExitMenu() {
         var img = new Image();
@@ -273,13 +237,11 @@ function Maps(stage) {
             menuFlag = true;
             container.alpha = 1;
             //Disable Character Movement -> A flag?
-            createjs.Ticker.paused = true;
         }
         else if (ev.keyCode === 27 && menuFlag === true || ev.target.text === "Continue") {
             if (!isExit) {
                 menuFlag = false;
                 container.alpha = 0;
-                createjs.Ticker.paused = false;
 
                 /*var timeoutBegin = createjs.Ticker.getTime(false);
                 createjs.Ticker.on("complete", timeout);
@@ -302,7 +264,7 @@ function Maps(stage) {
             isExit = true;
         }
         else if (ev.target.text === "Yes") {
-            createjs.Ticker.pause = false;
+            createjs.Ticker.removeEventListener("tick", handle);
             stage.removeAllChildren();
             Student_Menu(stage);
         }
