@@ -2,10 +2,10 @@
 
 class Character {
     constructor(stage, x, y) {
-        this.velocity = {x: 1, y: 2};
+        this.velocity = {x: 0, y: 2};
         this.keys = new Array();
         this.isMoving = false;
-        this.isGround = false;
+        this.onGround = false;
         var spriteSheet = new createjs.SpriteSheet({
             images: ["../Resources/Character/Running/R_SpriteSheet.png"],
             frames: {"height": 75, "width": 48, "regX": -100, "regY": -450},
@@ -27,31 +27,49 @@ class Character {
         stage.addChildAt(this.spriteA, 0);
     }
 
-    move(){
+    move(object){
     	this.velocity.y += 1;
-        if(this.isMoving === true) {
-            if (this.keys[37]) {
-                this.spriteA.x += -5;
-            }
-            if (this.keys[39]) {
-                this.spriteA.x += 5;
-            }
-            /*if (this.keys[38]) {
-                this.spriteA.y += -10;
-            }
-            if (this.keys[40]) {
-                this.spriteA.y += 10;
-            }*/
-        }
-        if (!this.isGround) {
-            this.spriteA.y += this.velocity.y;
 
-        }if (this.isGround) {
+        if (this.onGround) {
             if (this.keys[38]) {
-                this.spriteA.y -= 10;
+                this.onGround = false;
                 this.velocity.y = -20;
             }
         }
+
+        var move = {x:0, y:this.velocity.y};
+    	var collision = null;
+
+    	collision =  calculateCollision(this.spriteA, object, 'y', move);
+
+        console.log(move.y);
+
+    	if( !collision ){
+    	    if( this.onGround ){
+    	        this.onGround = false;
+            }
+        }else{
+    	    if(move.y >= 0){
+    	        this.onGround = true;
+            }
+            this.velocity.y -= 1;
+        }
+        if(this.isMoving === true) {
+            if (this.keys[37]) {
+                move.x = -5;
+            }
+            if (this.keys[39]) {
+                move.x = 5;
+            }
+        }
+        //collision = calculateCollision(this.spriteA, object, 'x', move);
+    	/*
+    	if(collision){
+    	    //HE DEAD
+    	}
+    	 */
+        this.spriteA.y += move.y;
+    	this.spriteA.x += move.x;
     }
 }
 
