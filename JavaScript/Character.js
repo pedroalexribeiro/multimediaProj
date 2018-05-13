@@ -27,49 +27,50 @@ class Character {
         stage.addChildAt(this.spriteA, 0);
     }
 
-    move(object){
-    	this.velocity.y += 1;
+    move(object, menuFlag) {
+        if (!menuFlag) {
+            this.velocity.y += 1;
 
-        if (this.onGround) {
-            if (this.keys[38]) {
-                this.onGround = false;
-                this.velocity.y = -20;
+            if (this.onGround) {
+                if (this.keys[38]) {
+                    this.onGround = false;
+                    this.velocity.y = -20;
+                }
             }
+
+
+            var move = {x: 0, y: this.velocity.y};
+            var collision = null;
+
+            collision = calculateCollision(this.spriteA, object, 'y', move);
+
+            if (!collision) {
+                if (this.onGround) {
+                    this.onGround = false;
+                }
+            } else {
+                if (move.y >= 0) {
+                    this.onGround = true;
+                }
+                this.velocity.y -= 1;
+            }
+            if (this.isMoving === true) {
+                if (this.keys[37]) {
+                    move.x = -5;
+                }
+                if (this.keys[39]) {
+                    move.x = 5;
+                }
+            }
+            //collision = calculateCollision(this.spriteA, object, 'x', move);
+            /*
+            if(collision){
+                //HE DEAD
+            }
+             */
+            this.spriteA.y += move.y;
+            this.spriteA.x += move.x;
         }
-
-        var move = {x:0, y:this.velocity.y};
-    	var collision = null;
-
-    	collision =  calculateCollision(this.spriteA, object, 'y', move);
-
-        console.log(move.y);
-
-    	if( !collision ){
-    	    if( this.onGround ){
-    	        this.onGround = false;
-            }
-        }else{
-    	    if(move.y >= 0){
-    	        this.onGround = true;
-            }
-            this.velocity.y -= 1;
-        }
-        if(this.isMoving === true) {
-            if (this.keys[37]) {
-                move.x = -5;
-            }
-            if (this.keys[39]) {
-                move.x = 5;
-            }
-        }
-        //collision = calculateCollision(this.spriteA, object, 'x', move);
-    	/*
-    	if(collision){
-    	    //HE DEAD
-    	}
-    	 */
-        this.spriteA.y += move.y;
-    	this.spriteA.x += move.x;
     }
 }
 
