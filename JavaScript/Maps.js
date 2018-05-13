@@ -397,7 +397,7 @@ class LevelOne extends Map {
 
         //Level Objects
         var initCords = this.Position(100, 100,"", stage); // Beer -> Slows permanently the character
-        this.objects.push(new Object(stage, "../Resources/levels/Extras/small_beer_test.png", initCords[0], initCords[1]));
+        this.objects.push(new Object(stage, "../Resources/levels/Extras/Beer.png", initCords[0], initCords[1]));
         //initCords = this.Position(100, 100,"", stage); //DeadLine -> Speeds permanently the character
         //this.objects.push(new Object(stage, "../Resources/levels/Extras/deadLine.png", initCords[0], initCords[1]));
 
@@ -407,13 +407,17 @@ class LevelOne extends Map {
         this.objects.push(new Object(stage, "../Resources/levels/Level1/carBlue.png", initCords[0], initCords[1]));
         initCords = this.Position(100, 100,"", stage);
         this.objects.push(new Object(stage, "../Resources/levels/Level1/carGreen.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100,"", stage);
+        this.objects.push(new Object(stage, "../Resources/levels/Level1/carRed.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100,"", stage);
+        this.objects.push(new Object(stage, "../Resources/levels/Level1/carYellow.png", initCords[0], initCords[1]));
 
 
         //Level Game Related Information
         this.totalTime = 15000; // Tempo total do jogo
         this.objInterval = 2000; //Intervalo entre cada Objeto
         this.speed = [1000, 1200]; //Max e Min de speed dos Objetos
-        this.nObj = 1;
+        this.nObj = 2;
         this.nBuffs = 1;
     }
 
@@ -445,7 +449,7 @@ class LevelTwo extends Map {
 
         //Level Objects
         var initCords = this.Position(100, 100,"Horizontal", stage); // Beer -> Slows permanently the character
-        this.objects.push(new Object(stage, "../Resources/levels/Extras/small_beer_test.png", initCords[0], initCords[1]));
+        this.objects.push(new Object(stage, "../Resources/levels/Extras/Beer.png", initCords[0], initCords[1]));
         //initCords = this.Position(100, 100,"", stage); //DeadLine -> Speeds permanently the character
         //this.objects.push(new Object(stage, "../Resources/levels/Extras/deadLine.png", initCords[0], initCords[1]));
 
