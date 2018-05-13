@@ -9,6 +9,29 @@ function Maps(stage, levelStr) {
     createTimerAndGameOver(stage);
     window.addEventListener("keydown", KeyHandler);
 
+    var hero = new Character(stage, 200, -200);
+    //###################################################################
+    var keyHandlers = function(ev) {
+        hero.keys[ev.keyCode] = (ev.type === "keydown");
+        if(ev.type === "keydown"){
+            if((ev.keyCode === 37 || ev.keyCode === 38 || ev.keyCode === 39 || ev.keyCode === 40) && hero.isMoving === false) {
+                hero.isMoving = true;
+                hero.spriteA.gotoAndPlay("run");
+            }
+        }else{
+            if(!hero.keys[37] && !hero.keys[38] && !hero.keys[39] && !hero.keys[40] && hero.isMoving ===  true){
+                hero.isMoving = false;
+            }
+        }
+        if(hero.isMoving===false){
+            hero.spriteA.gotoAndStop("idle");
+        }
+    };
+
+    window.addEventListener("keydown",keyHandlers);
+    window.addEventListener('keyup', keyHandlers);
+    //####################################################################
+
     var level;
     switch (levelStr) {
         case "level1":
@@ -25,6 +48,10 @@ function Maps(stage, levelStr) {
     game();
 
     function handle() {
+        //##################################################
+
+        hero.move(level.platforms);
+        //##################################################
         var currTime = createjs.Ticker.getTime(true);
         if (currTime - gameStart <= level.totalTime) {
             if (currTime - init >= level.objInterval) {

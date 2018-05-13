@@ -245,7 +245,7 @@ function mainMenu() {
 
     function tickHandler(ev) {
         stage.update();
-        ch.move();
+        //ch.move();
     }
 
     createjs.Ticker.framerate = 60;
