@@ -62,12 +62,8 @@ class Character {
                     move.x = 5;
                 }
             }
-            //collision = calculateCollision(this.spriteA, object, 'x', move);
-            /*
-            if(collision){
-                //HE DEAD
-            }
-             */
+            collision = calculateCollision(this.spriteA, object, 'x', move);
+
             this.spriteA.y += move.y;
             this.spriteA.x += move.x;
         }
