@@ -5,21 +5,21 @@
 }());
 
 function mainMenu() {
-    var queue = new createjs.LoadQueue(true);
-    /*Sound Stuff*/
-    /*var audioPath ="Resources/";
+    /*Music Stuff*/
+    var audioPath = "../Resources/Audio/";
     var sounds = [
-        {id:"Music",src:"Audio1.mp3"}
+        {id: "menuMusic", src: "Audio1.mp3"},
+        {id: "gameMusic", src: "Audio2.mp3"}
     ];
     createjs.Sound.alternateExtensions = ["mp3"];
-    createjs.Sound.addEventListener("fileload",sound_handler);
-    //createjs.Sound.registerSounds(sounds,audioPath);
+    createjs.Sound.on("fileload", soundLoad);
+    createjs.Sound.registerSounds(sounds, audioPath);
 
-    function sound_handler(ev) {
-        var instance = createjs.Sound.play("Music");
-        instance.on("complete", sound_handler);
+
+    function soundLoad() {
+        var instance = createjs.Sound.play("menuMusic");
+        instance.on("complete", soundLoad);
     }
-    }*/
 
 
     /*Background Information*/
@@ -33,9 +33,9 @@ function mainMenu() {
 
 //###############################################################################
     var ch = new Character(stage, 300, -200);
-    var keyHandlers = function(ev) {
-        ch.keys[ev.keyCode] = (ev.type == "keydown");
-        if (ev.type == "keydown") {
+    var keyHandlers = function (ev) {
+        ch.keys[ev.keyCode] = (ev.type === "keydown");
+        if (ev.type === "keydown") {
             if ((ev.keyCode == 37 || ev.keyCode == 38 || ev.keyCode == 39 || ev.keyCode == 40) && ch.isMoving == false) {
                 ch.isMoving = true;
                 ch.spriteA.gotoAndPlay("run");
@@ -45,10 +45,10 @@ function mainMenu() {
                 ch.isMoving = false;
             }
         }
-        if(ch.isMoving==false){
+        if (ch.isMoving === false) {
             ch.spriteA.gotoAndStop("idle");
         }
-    }
+    };
 
     window.addEventListener("keydown", keyHandlers);
     window.addEventListener('keyup', keyHandlers);
@@ -61,6 +61,127 @@ function mainMenu() {
         mouseHandler(ev, isCanvas);
     };
 
+
+    //Container creation
+    var index;
+    var mState = true;
+    var sState = true;
+
+    var containerr;
+    ContainerMenu();
+
+    function ContainerMenu() {
+
+        //Loads container
+        var img = new Image();
+        img.src = "../Resources/Options/ChalkBoard.png";
+        img.onload = function () {
+            var container = new createjs.Container();
+            container.x = canvas.width / 2 - img.width / 2;
+            container.y = -400;
+            stage.addChild(container);
+            containerr = container;
+
+
+            var bg = new createjs.Shape();
+            bg.graphics.beginBitmapFill(img, "no-repeat");
+            bg.graphics.drawRect(0, 0, img.width, img.height);
+            container.addChild(bg);
+
+            var options_title = new createjs.Text("Options", "50px Georgia", "#ffffff");
+            options_title.alpha = 0.8;
+            options_title.x = img.width / 2 - options_title.getMeasuredWidth() / 2;
+            options_title.y = options_title.getMeasuredHeight();
+            container.addChild(options_title);
+
+
+            var optButtons = new Array();
+            var iterator2 = 0;
+            optButtons.push(new createjs.Text("Music:", "35px Georgia", "#ffffff"));
+            optButtons.push(new createjs.Text("MusicState", "35px Georgia", "#ffffff"));
+            optButtons.push(new createjs.Text("Sounds:", "35px Georgia", "#ffffff"));
+            optButtons.push(new createjs.Text("SoundState", "35px Georgia", "#ffffff"));
+            optButtons.push(new createjs.Text("Back", "35px Georgia", "#ffffff"));
+
+            for (let text of optButtons) {
+                if (text.text === "MusicState" || text.text === "SoundState") { // On and OFF
+                    if (mState) text.text = "On";
+                    else text.text = "Off";
+                    if (sState) text.text = "On";
+                    else text.text = "Off";
+
+                    customizeContainer(text, img, iterator2, true, false);
+                }
+                else if (text.text === "Music:" || text.text === "Sounds:") { // Music and Sound
+                    customizeContainer(text, img, iterator2, false, true);
+                }
+                else customizeContainer(text, img, iterator2, true, false); // Back
+
+                iterator2 += 1;
+                container.addChild(text);
+            }
+
+            function customizeContainer(object, container, iterator, hitBox, flag) {
+
+                var b = object.getBounds();
+
+                if (!flag) { //Back On and Off
+
+                    object.x = (container.width / 2) - (b.width / 2);
+                    object.y = (container.height / 3.2) + (iterator) * 30;
+                    if (object.text === "Back") {
+                        object.y = (container.height / 3.2) + (iterator) * 38;
+                    }
+                }
+                else { // Music and Sound
+                    object.x = (container.width / 2.0) - (b.width / 2) - 100;
+                    object.y = (container.height / 2.5) + (iterator) * 30;
+                }
+                if (hitBox) {
+
+                    object.on("mouseover", mouseFunction);
+                    object.on("mouseout", mouseFunction);
+                    object.alpha = 0.8;
+                    object.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+                    var hit = new createjs.Shape(); //Creates Hitbox
+                    hit.graphics.beginFill("#000").drawRect(0, 0, object.getMeasuredWidth(), object.getMeasuredHeight());
+                    object.hitArea = hit;
+
+                    if (object.text === "Back") {
+                        object.on("click", containerReset);
+                    }
+                    else {
+                        object.on("click", click_Handler_OP);
+                    }
+                }
+            }
+        }
+    }
+
+
+    function changeIsCanvas() {
+        console.log("asdasd");
+        if (isCanvas) isCanvas = false;
+        else isCanvas = true;
+    }
+
+    function containerReset() {
+        if (!isCanvas) {
+            createjs.Tween.get(containerr).to({y: (-400)}, 750, createjs.Ease.sineIn);
+            changeIsCanvas();
+        }
+    }
+
+
+    function containerMove() {
+        if (isCanvas) {
+            createjs.Tween.get(containerr).to({y: (stage.canvas.height / 5)}, 750, createjs.Ease.sineOut);
+            changeIsCanvas();
+        }
+    }
+
+
+//Main Menu buttons
     var arrayButtons = new Array();
     var iterator = 0;
     arrayButtons.push(new createjs.Text("SinglePlayer", "35px Georgia", "#ffffff"));
@@ -81,6 +202,8 @@ function mainMenu() {
         stage.addChild(text);
     }
 
+
+//Help Button
     var help = new Image();
     help.src = "../Resources/Options/Help.png";
     help.onload = function (ev) {
@@ -97,10 +220,10 @@ function mainMenu() {
         help.bitmap = bitmap;
         bitmap.on("mouseover", mouseFunction);
         bitmap.on("mouseout", mouseFunction);
-        bitmap.on("click", clickHandler_HP_OP);
+        bitmap.on("click", containerMove);
     };
 
-    //options Button
+//Options Button
     var options = new Image();
     options.src = "../Resources/Options/Options.png";
     options.onload = function (ev) {
@@ -117,7 +240,7 @@ function mainMenu() {
         options.bitmap = bitmap;
         bitmap.on("mouseover", mouseFunction);
         bitmap.on("mouseout", mouseFunction);
-        bitmap.on("click", clickHandler_HP_OP);
+        bitmap.on("click", containerMove);
     };
 
 
@@ -133,7 +256,7 @@ function mainMenu() {
     }
 
 
-    function clickHandler_HP_OP(ev) {
+    /*function clickHandler_HP_OP(ev) {
         if (isCanvas) {
             //makes button look like disabled
             ev.target.shadow = new createjs.Shadow("#000000", 5, 5, 10);
@@ -241,16 +364,25 @@ function mainMenu() {
 
             };
         }
-    }
+    }*/
+
 
     function tickHandler(ev) {
         stage.update();
         //ch.move();
     }
 
+
     createjs.Ticker.framerate = 60;
     createjs.Ticker.addEventListener("tick", tickHandler);
+
+
+
+
+
+
 }
+
 
 
 function click_Handler_OP(ev) {
@@ -264,19 +396,18 @@ function click_Handler_OP(ev) {
     }
     else if (ev.target.id === "Music_btn") {
         if (ev.target.text === "On") {
-            createjs.Sound.stop("Music");
+            createjs.Sound.stop("menuMusic");
             ev.target.text = "Off";
         }
         else if (ev.target.text === "Off") {
-            createjs.Sound.play("Music");
+            createjs.Sound.play("menuMusic");
             ev.target.text = "On";
         }
     }
 }
 
 
-function change_container_pos(ev, height) {
-    createjs.Tween.get(ev.target).to({y: (height)}, 750, createjs.Ease.linear);
+function change_container_pos(container, height) {
 }
 
 function mouseHandler(ev, isCanvas) {
@@ -292,5 +423,14 @@ function customize(object, canvas, number) {
     object.x = (canvas.width / 2) - (b.width / 2);
     object.y = (canvas.height / 2.3) + number * 50;
     object.alpha = 0.8;
+}
+
+function saveGame(SAVE,state) {
+    console.log(state.StudentProgress + " " + state.TeacherProgress);
+    localStorage.setItem(SAVE, JSON.stringify(state));
+}
+
+function loadGame(SAVE) {
+    return JSON.parse(localStorage.getItem(SAVE))
 }
 

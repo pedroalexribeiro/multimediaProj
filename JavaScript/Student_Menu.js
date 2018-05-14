@@ -4,6 +4,19 @@ function Student_Menu(stage) {
     document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
     var isCanvas = true;
 
+
+    var state = {
+        StudentProgress: 1,
+        TeacherProgress: 1
+    };
+    var save = loadGame('save');
+    if (save === null) {
+        save = state;
+        saveGame('save',save);
+    } else {
+        console.log(save.TeacherProgress + " "+save.StudentProgress);
+    }
+
     var mouseFunction = function (ev) {
         mouseHandler(ev, isCanvas);
     };
@@ -22,49 +35,65 @@ function Student_Menu(stage) {
     var height = 100;
     var x = stage.canvas.width / 6 - width / 2;
     var y = stage.canvas.height / 2 - height / 3;
-    for (let level of arrayBoxes) {
-        var img = new Image();
-        img.src = "../Resources/test.png";
-        img.onload = function () {
+    var queue;
+    queue = new createjs.LoadQueue(false);
+
+    queue.loadFile({id:"lock", src:"../Resources/Options/lock.jpg"});
+    queue.loadFile({id:"image", src:"../Resources/test.png"});
+    queue.load();
+    queue.on("complete",sth);
+    function sth() {
+        for (let level of arrayBoxes) {
             //Image
-            var m = new createjs.Matrix2D();
-            m.translate(x, y);
-            m.scale(width / img.width, height / img.height);
+            if(save.StudentProgress < count){
+                var bitmap = new createjs.Bitmap(queue.getResult("lock"));
+                console.log(bitmap);
 
-            //level Draw
-            level.graphics.beginStroke("#fff");
-            level.graphics.beginBitmapFill(img, "no-repeat", m);
-            level.graphics.drawRect(x, y, width, height);
+                var m = new createjs.Matrix2D();
+                m.translate(x, y);
+                m.scale(width / bitmap.image.width, height / bitmap.image.height);
 
+                //level Draw
+                level.graphics.beginStroke("#fff");
+                level.graphics.beginBitmapFill(bitmap.image, "no-repeat", m);
+                level.graphics.drawRect(x, y, width, height);
 
-            //Hitbox && Effects
-            var hit_HP = new createjs.Shape();
-            hit_HP.graphics.beginFill("#ff000").drawRect(x, y, width, height);
-            level.hitArea = hit_HP;
-            level.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-            level.alpha = 0.8;
+            }else {
+                var bitmap = new createjs.Bitmap(queue.getResult("image"));
 
-            //Events
-            level.on("click", Click_Handler);
-            level.on("mouseover", mouseFunction);
-            level.on("mouseout", mouseFunction);
+                var m = new createjs.Matrix2D();
+                m.translate(x, y);
+                m.scale(width / bitmap.image.width, height / bitmap.image.height);
 
+                //level Draw
+                level.graphics.beginStroke("#fff");
+                level.graphics.beginBitmapFill(bitmap.image, "no-repeat", m);
+                level.graphics.drawRect(x, y, width, height);
 
+                //Hitbox && Effects
+                var hit_HP = new createjs.Shape();
+                hit_HP.graphics.beginFill("#ff000").drawRect(x, y, width, height);
+                level.hitArea = hit_HP;
+                level.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+                level.alpha = 0.8;
+
+                //Events
+                level.on("click", Click_Handler);
+                level.on("mouseover", mouseFunction);
+                level.on("mouseout", mouseFunction);
+            }
             //Title
             var title = new createjs.Text("Level" + count, "22px Georgia", "#fff");
             title.x = x + title.getMeasuredWidth() / 3;
             title.y = y + 110;
             stage.addChild(title);
 
-
             //Update
             level.text = "level" + count;
             stage.addChild(level);
             count += 1;
             x += 130;
-        };
-
-
+        }
     }
 
 
