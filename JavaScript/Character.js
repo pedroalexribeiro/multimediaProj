@@ -50,6 +50,7 @@ class Character {
                 }
             } else {
                 if (move.y >= 0) {
+
                     this.onGround = true;
                 }
                 this.velocity.y -= 1;
