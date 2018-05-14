@@ -127,6 +127,10 @@ function mainMenu() {
             stage.removeAllChildren();
             SP_Menu(stage);
         }
+        if(isCanvas && ev.target.text === "MultiPlayer") {
+            stage.removeAllChildren();
+            MapsTeacherMode(stage);
+        }
         if (isCanvas && ev.target.text === "Quit") {
             //window.close();
         }
