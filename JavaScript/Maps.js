@@ -5,6 +5,7 @@ function Maps(stage, levelStr) {
     var container, containerEx, timer, init, goodJob, gameOver, msg, flag, flag2, timeoutId;
     var menuFlag = false, isExit = false, lost = false;
     createMenu();
+    loadSong();
     window.addEventListener("keydown", KeyHandler);
 
 
@@ -223,6 +224,10 @@ function Maps(stage, levelStr) {
     }
 
 
+    function loadSong(){
+        var instance = createjs.Sound.play("gameMusic");
+        instance.on("complete", loadSong);
+    }
     function createMenu() {
         //Loads container
         var img = new Image();
@@ -431,22 +436,23 @@ class LevelOne extends Map {
         //Level Platforms
         this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platform.png", 100, 400));
 
-        //Level Objects
+        //Level Buffs
         var initCords = this.Position(100, 100, "", stage); // Beer -> Slows permanently the character
-        this.objects.push(new Object(stage, "../Resources/levels/Extras/Beer.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Extras/Beer.png", initCords[0], initCords[1]));
         initCords = this.Position(100, 100, "", stage); //DeadLine -> Speeds permanently the character
-        this.objects.push(new Object(stage, "../Resources/levels/Extras/deadLine.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Extras/deadLine.png", initCords[0], initCords[1]));
 
+        //Level Objects
         initCords = this.Position(100, 100, "", stage);
-        this.objects.push(new Object(stage, "../Resources/levels/Level1/carOrange.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carOrange.png", initCords[0], initCords[1]));
         initCords = this.Position(100, 100, "", stage);
-        this.objects.push(new Object(stage, "../Resources/levels/Level1/carBlue.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carBlue.png", initCords[0], initCords[1]));
         initCords = this.Position(100, 100, "", stage);
-        this.objects.push(new Object(stage, "../Resources/levels/Level1/carGreen.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carGreen.png", initCords[0], initCords[1]));
         initCords = this.Position(100, 100, "", stage);
-        this.objects.push(new Object(stage, "../Resources/levels/Level1/carRed.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carRed.png", initCords[0], initCords[1]));
         initCords = this.Position(100, 100, "", stage);
-        this.objects.push(new Object(stage, "../Resources/levels/Level1/carYellow.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carYellow.png", initCords[0], initCords[1]));
 
 
         //Level Game Related Information
@@ -485,16 +491,16 @@ class LevelTwo extends Map {
 
         //Level Objects
         var initCords = this.Position(100, 100, "Horizontal", stage); // Beer -> Slows permanently the character
-        this.objects.push(new Object(stage, "../Resources/levels/Extras/Beer.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Extras/Beer.png", initCords[0], initCords[1]));
         initCords = this.Position(100, 100, "", stage); //DeadLine -> Speeds permanently the character
-        this.objects.push(new Object(stage, "../Resources/levels/Extras/deadLine.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Extras/deadLine.png", initCords[0], initCords[1]));
 
         initCords = this.Position(100, 100, "Vertical", stage);
-        this.objects.push(new Object(stage, "../Resources/levels/Level2/rainDrop.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level2/rainDrop.png", initCords[0], initCords[1]));
         initCords = this.Position(100, 100, "Horizontal", stage);
-        this.objects.push(new Object(stage, "../Resources/levels/Level2/umbrella2.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level2/umbrella2.png", initCords[0], initCords[1]));
         //initCords = this.Position(100, 100,"Horizontal", stage);
-        //this.objects.push(new Object(stage, "../Resources/levels/Level2/umbrella.png", initCords[0], initCords[1]));
+        //this.objects.push(new Objectt(stage, "../Resources/levels/Level2/umbrella.png", initCords[0], initCords[1]));
 
 
         //Level Game Related Information
@@ -541,7 +547,7 @@ class Platform {
     }
 }
 
-class Object {
+class Objectt {
     constructor(stage, src, init_x, init_y) {
         this.object = new Image();
         this.object.bitmap = new createjs.Bitmap(src);
