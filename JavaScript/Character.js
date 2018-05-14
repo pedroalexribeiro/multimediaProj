@@ -5,6 +5,7 @@ class Character {
         this.velocity = {x: 0, y: 2};
         this.keys = new Array();
         this.isMoving = false;
+        this.isUsed = false;
         this.onGround = false;
         var spriteSheet = new createjs.SpriteSheet({
             images: ["../Resources/Character/Running/R_SpriteSheet.png"],
