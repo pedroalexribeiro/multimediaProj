@@ -10,22 +10,20 @@ function Maps(stage, levelStr) {
 
 
     //###################################################################
-    var hero = new Character(stage, 200, -200);
+    var hero = new Character(stage, 200, -200, false);
 
     var keyHandlers = function (ev) {
         hero.keys[ev.keyCode] = (ev.type === "keydown");
         if (ev.type === "keydown") {
             if ((ev.keyCode === 37 || ev.keyCode === 38 || ev.keyCode === 39 || ev.keyCode === 40) && hero.isMoving === false && !menuFlag) {
                 hero.isMoving = true;
-                hero.spriteA.gotoAndPlay("run");
+                hero.hasChanged = true;
+
             }
         } else {
             if (!hero.keys[37] && !hero.keys[38] && !hero.keys[39] && !hero.keys[40] && hero.isMoving === true) {
                 hero.isMoving = false;
             }
-        }
-        if (hero.isMoving === false) {
-            hero.spriteA.gotoAndStop("idle");
         }
     };
 
@@ -51,6 +49,23 @@ function Maps(stage, levelStr) {
     function handle() {
         //##################################################
         hero.move(level.platforms, menuFlag);
+        if (hero.isMoving === false) {
+            if(hero.isWalkingRight){
+                hero.spriteA.gotoAndPlay("idle_right");
+            }else{
+                hero.spriteA.gotoAndPlay("idle_left");
+            }
+        }else{
+            if(hero.hasChanged) {
+                hero.hasChanged = false;
+                if (hero.isWalkingRight) {
+                    hero.spriteA.gotoAndPlay("run_right");
+                } else {
+                    hero.spriteA.gotoAndPlay("run_left");
+                }
+            }
+        }
+        stage.update();
         var test = hero.collide(level.objects, menuFlag);
         if(test){
             GameStatus("gameOver");
