@@ -68,6 +68,21 @@ class Character {
             this.spriteA.x += move.x;
         }
     }
+
+    collide(objects, menuFlag){
+        var bool = false;
+        if( !menuFlag){
+            for(let obj of objects){
+                if(obj.object.bitmap.visible) {   //objects[cc].platform.bitmap.visible
+                    var collide = ndgmr.checkPixelCollision(this.spriteA, obj.object.bitmap, 0, true);
+                    if(collide){
+                        bool = true;
+                    }
+                }
+            }
+        }
+        return bool;
+    }
 }
 
 /*

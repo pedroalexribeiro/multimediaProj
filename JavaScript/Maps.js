@@ -50,6 +50,10 @@ function Maps(stage, levelStr) {
     function handle() {
         //##################################################
         hero.move(level.platforms, menuFlag);
+        var test = hero.collide(level.objects, menuFlag);
+        if(test){
+            GameStatus("gameOver");
+        }
         //##################################################
 
         var currTime = createjs.Ticker.getTime(true);
