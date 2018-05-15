@@ -1,27 +1,66 @@
 "use strict";
 
 class Character {
-    constructor(stage, x, y) {
+    constructor(stage, x, y, otherChar) {
         this.velocity = {x: 0, y: 2};
         this.keys = new Array();
         this.isMoving = false;
+        this.isUsed = false;
         this.onGround = false;
-        var spriteSheet = new createjs.SpriteSheet({
-            images: ["../Resources/Character/Running/R_SpriteSheet.png"],
-            frames: {"height": 75, "width": 48, "regX": -100, "regY": -450},
-            animations: {
-                "run": {
-                    frames: [0, 1, 2, 1],
-                    next: "run",
-                    speed: 1
-                },
-                "idle": {
-                    frames: [2],
-                    next: "idle"
+        this.isWalkingRight = true;
+        this.hasChanged = false
+        if(!otherChar) {
+            var spriteSheet = new createjs.SpriteSheet({
+                images: ["../Resources/Character/Running/R_SpriteSheet.png"],
+                frames: {"height": 75, "width": 48, "regX": 0, "regY": 0},
+                animations: {
+                    "run_right": {
+                        frames: [0, 1, 2, 1],
+                        next: "run_right",
+                        speed: 0.10,
+                    },
+                    "run_left": {
+                        frames: [3, 4, 5, 3],
+                        next: "run_left",
+                        speed: 0.10,
+                    },
+                    "idle_right": {
+                        frames: [2],
+                        next: "idle_right",
+                    },
+                    "idle_left": {
+                        frames: [5],
+                        next: "idle_left",
+                    },
                 }
-            }
-        });
-        this.spriteA = new createjs.Sprite(spriteSheet, "idle");
+            });
+        }else{
+            var spriteSheet = new createjs.SpriteSheet({
+                images: ["../Resources/Character/Running/R_SpriteSheet2.png"],
+                frames: {"height": 80, "width": 48, "regX": 0, "regY": 0},
+                animations: {
+                    "run_right": {
+                        frames: [0, 1, 2, 1],
+                        next: "run_right",
+                        speed: 0.10,
+                    },
+                    "run_left": {
+                        frames: [3, 4, 5, 3],
+                        next: "run_left",
+                        speed: 0.10,
+                    },
+                    "idle_right": {
+                        frames: [2],
+                        next: "idle_right",
+                    },
+                    "idle_left": {
+                        frames: [5],
+                        next: "idle_left",
+                    },
+                }
+            });
+        }
+        this.spriteA = new createjs.Sprite(spriteSheet, "idle_right");
         this.spriteA.x = x;
         this.spriteA.y = y;
         stage.addChildAt(this.spriteA, 0);
@@ -56,9 +95,17 @@ class Character {
             }
             if (this.isMoving === true) {
                 if (this.keys[37]) {
+                    if(this.isWalkingRight) {
+                        this.isWalkingRight = false;
+                        this.hasChanged = true;
+                    }
                     move.x = -5;
                 }
                 if (this.keys[39]) {
+                    if(!this.isWalkingRight) {
+                        this.isWalkingRight = true;
+                        this.hasChanged = true;
+                    }
                     move.x = 5;
                 }
             }
