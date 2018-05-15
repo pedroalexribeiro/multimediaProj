@@ -8,17 +8,20 @@ function mainMenu() {
     /*Music Stuff*/
     var audioPath = "../Resources/Audio/";
     var sounds = [
-        {id: "menuMusic", src: "Audio1.mp3"},
-        {id: "gameMusic", src: "Audio2.mp3"}
+        {id: "gameMusic", src: "gameMusic.mp3"},
+        {id: "another", src: "menuMusic.mp3"}
     ];
+
     createjs.Sound.alternateExtensions = ["mp3"];
     createjs.Sound.on("fileload", soundLoad);
-    createjs.Sound.registerSounds(sounds, audioPath);
+    createjs.Sound.registerSound("../Resources/Audio/menuMusic.mp3", "menuMusic", 1);
+    createjs.Sound.registerSound("../Resources/Audio/gameMusic.mp3", "gameMusic", 2);
 
 
     function soundLoad() {
         var instance = createjs.Sound.play("menuMusic");
         instance.on("complete", soundLoad);
+
     }
 
 
@@ -63,15 +66,17 @@ function mainMenu() {
 
 
     //Container creation
-    var index;
+    var audioState = function (ev) {
+        clickHandlerAudio(ev, mState, sState);
+    };
     var mState = true;
     var sState = true;
 
-    var containerr;
-    ContainerMenu();
+    var containerHelp, containerOptions;
+    ContainerMenu("Help");
+    ContainerMenu("Options");
 
-    function ContainerMenu() {
-
+    function ContainerMenu(Flag) {
         //Loads container
         var img = new Image();
         img.src = "../Resources/Options/ChalkBoard.png";
@@ -80,7 +85,6 @@ function mainMenu() {
             container.x = canvas.width / 2 - img.width / 2;
             container.y = -400;
             stage.addChild(container);
-            containerr = container;
 
 
             var bg = new createjs.Shape();
@@ -88,95 +92,140 @@ function mainMenu() {
             bg.graphics.drawRect(0, 0, img.width, img.height);
             container.addChild(bg);
 
-            var options_title = new createjs.Text("Options", "50px Georgia", "#ffffff");
-            options_title.alpha = 0.8;
-            options_title.x = img.width / 2 - options_title.getMeasuredWidth() / 2;
-            options_title.y = options_title.getMeasuredHeight();
-            container.addChild(options_title);
 
+            if (Flag === "Options") {
+                containerHelp = container;
+                var title = new createjs.Text("Help", "50px Georgia", "#ffffff");
+                title.alpha = 0.8;
+                title.x = img.width / 2 - title.getMeasuredWidth() / 2;
+                title.y = title.getMeasuredHeight();
+                container.addChild(title);
 
-            var optButtons = new Array();
-            var iterator2 = 0;
-            optButtons.push(new createjs.Text("Music:", "35px Georgia", "#ffffff"));
-            optButtons.push(new createjs.Text("MusicState", "35px Georgia", "#ffffff"));
-            optButtons.push(new createjs.Text("Sounds:", "35px Georgia", "#ffffff"));
-            optButtons.push(new createjs.Text("SoundState", "35px Georgia", "#ffffff"));
-            optButtons.push(new createjs.Text("Back", "35px Georgia", "#ffffff"));
+                var back2 = new createjs.Text("Back", "35px Georgia", "#ffffff");
+                back2.id = "Help";
+                back2.x = container.width / 2 - back2.width / 2;
+                back2.y = container.height * 0.8;
+                back2.alpha = 0.8;
+                back2.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+                var hit = new createjs.Shape(); //Creates Hitbox
+                hit.graphics.beginFill("#000").drawRect(0, 0, back2.getMeasuredWidth(), back2.getMeasuredHeight());
+                back2.hitArea = hit;
+                back2.on("mouseover", mouseFunction);
+                back2.on("mouseout", mouseFunction);
+                back2.on("click", containerReset);
 
-            for (let text of optButtons) {
-                if (text.text === "MusicState" || text.text === "SoundState") { // On and OFF
-                    if (mState) text.text = "On";
-                    else text.text = "Off";
-                    if (sState) text.text = "On";
-                    else text.text = "Off";
-
-                    customizeContainer(text, img, iterator2, true, false);
-                }
-                else if (text.text === "Music:" || text.text === "Sounds:") { // Music and Sound
-                    customizeContainer(text, img, iterator2, false, true);
-                }
-                else customizeContainer(text, img, iterator2, true, false); // Back
-
-                iterator2 += 1;
-                container.addChild(text);
             }
+            else if (Flag === "Help") {
+                containerOptions = container;
 
-            function customizeContainer(object, container, iterator, hitBox, flag) {
+                var options_title = new createjs.Text("Options", "50px Georgia", "#ffffff");
+                options_title.alpha = 0.8;
+                options_title.x = img.width / 2 - options_title.getMeasuredWidth() / 2;
+                options_title.y = options_title.getMeasuredHeight();
+                container.addChild(options_title);
 
-                var b = object.getBounds();
 
-                if (!flag) { //Back On and Off
+                var optButtons = new Array();
+                var iterator2 = 0;
+                optButtons.push(new createjs.Text("Music:", "35px Georgia", "#ffffff"));
+                optButtons.push(new createjs.Text("MusicState", "35px Georgia", "#ffffff"));
+                optButtons.push(new createjs.Text("Sounds:", "35px Georgia", "#ffffff"));
+                optButtons.push(new createjs.Text("SoundState", "35px Georgia", "#ffffff"));
+                optButtons.push(new createjs.Text("Back", "35px Georgia", "#ffffff"));
 
-                    object.x = (container.width / 2) - (b.width / 2);
-                    object.y = (container.height / 3.2) + (iterator) * 30;
-                    if (object.text === "Back") {
-                        object.y = (container.height / 3.2) + (iterator) * 38;
+                for (let text of optButtons) {
+                    if (text.text === "MusicState" || text.text === "SoundState") { // On and OFF
+                        if (mState && text.text === "MusicState") {
+                            text.text = "On";
+                            text.id = "MusicState";
+                        }
+                        else if (!mState && text.text === "MusicState") {
+                            text.text = "Off";
+                            text.id = "MusicState";
+
+                        }
+                        if (sState && text.text === "SoundState") {
+                            text.text = "On";
+                            text.id = "SoundState";
+                        }
+                        else if (!sState && text.text === "SoundState") {
+                            text.text = "Off";
+                            text.id = "SoundState";
+                        }
+
+                        customizeContainer(text, img, iterator2, true, false);
                     }
-                }
-                else { // Music and Sound
-                    object.x = (container.width / 2.0) - (b.width / 2) - 100;
-                    object.y = (container.height / 2.5) + (iterator) * 30;
-                }
-                if (hitBox) {
-
-                    object.on("mouseover", mouseFunction);
-                    object.on("mouseout", mouseFunction);
-                    object.alpha = 0.8;
-                    object.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-                    var hit = new createjs.Shape(); //Creates Hitbox
-                    hit.graphics.beginFill("#000").drawRect(0, 0, object.getMeasuredWidth(), object.getMeasuredHeight());
-                    object.hitArea = hit;
-
-                    if (object.text === "Back") {
-                        object.on("click", containerReset);
+                    else if (text.text === "Music:" || text.text === "Sounds:") { // Music and Sound
+                        customizeContainer(text, img, iterator2, false, true);
                     }
-                    else {
-                        object.on("click", click_Handler_OP);
-                    }
+                    else customizeContainer(text, img, iterator2, true, false); // Back
+
+                    iterator2 += 1;
+                    containerOptions.addChild(text);
                 }
             }
         }
     }
 
-
     function changeIsCanvas() {
-        console.log("asdasd");
         if (isCanvas) isCanvas = false;
         else isCanvas = true;
     }
 
-    function containerReset() {
-        if (!isCanvas) {
-            createjs.Tween.get(containerr).to({y: (-400)}, 750, createjs.Ease.sineIn);
+    function containerReset(ev) {
+        if (!isCanvas && ev.target.id === "Help") {
+            createjs.Tween.get(containerHelp).to({y: (-400)}, 750, createjs.Ease.sineIn);
+            changeIsCanvas();
+        }
+        else if (!isCanvas && ev.target.id === "Options") {
+            createjs.Tween.get(containerOptions).to({y: (-400)}, 750, createjs.Ease.sineIn);
             changeIsCanvas();
         }
     }
 
-
-    function containerMove() {
-        if (isCanvas) {
-            createjs.Tween.get(containerr).to({y: (stage.canvas.height / 5)}, 750, createjs.Ease.sineOut);
+    function containerMove(ev) {
+        if (isCanvas && ev.target.id === "Help") {
+            createjs.Tween.get(containerHelp).to({y: (stage.canvas.height / 5)}, 750, createjs.Ease.sineIn);
             changeIsCanvas();
+        }
+        else if (isCanvas && ev.target.id === "Options") {
+            createjs.Tween.get(containerOptions).to({y: (stage.canvas.height / 5)}, 750, createjs.Ease.sineIn);
+            changeIsCanvas();
+        }
+    }
+
+    function customizeContainer(object, container, iterator, hitBox, flag) {
+
+        var b = object.getBounds();
+
+        if (!flag) { //Back On and Off
+
+            object.x = (container.width / 2) - (b.width / 2);
+            object.y = (container.height / 3.2) + (iterator) * 30;
+            if (object.text === "Back") {
+                object.y = (container.height / 3.2) + (iterator) * 38;
+            }
+        }
+        else { // Music and Sound
+            object.x = (container.width / 2.0) - (b.width / 2) - 100;
+            object.y = (container.height / 2.5) + (iterator) * 30;
+        }
+        if (hitBox) {
+            object.on("mouseover", mouseFunction);
+            object.on("mouseout", mouseFunction);
+            object.alpha = 0.8;
+            object.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+            var hit = new createjs.Shape(); //Creates Hitbox
+            hit.graphics.beginFill("#000").drawRect(0, 0, object.getMeasuredWidth(), object.getMeasuredHeight());
+            object.hitArea = hit;
+
+            if (object.text === "Back") {
+                object.id = "Options";
+                object.on("click", containerReset);
+            }
+            else if (object.text === "On" || object.text === "Off") {
+                object.on("click", audioState);
+            }
         }
     }
 
@@ -203,11 +252,15 @@ function mainMenu() {
     }
 
 
-//Help Button
-    var help = new Image();
-    help.src = "../Resources/Options/Help.png";
-    help.onload = function (ev) {
-        var bitmap = new createjs.Bitmap(ev.target);
+    createHelp();
+    createOptions();
+
+    function createHelp() {
+
+        //Help Button
+        var help = new Image();
+        help.src = "../Resources/Options/Help.png";
+        var bitmap = new createjs.Bitmap(help.src);
         bitmap.x = 720;
         bitmap.y = 500;
         bitmap.alpha = 0.8;
@@ -218,16 +271,18 @@ function mainMenu() {
         hit_HP.graphics.beginFill("#000").drawRect(0, 0, help.width, help.height);
         bitmap.hitArea = hit_HP;
         help.bitmap = bitmap;
+
+        bitmap.id = "Help";
         bitmap.on("mouseover", mouseFunction);
         bitmap.on("mouseout", mouseFunction);
         bitmap.on("click", containerMove);
-    };
+    }
 
-//Options Button
-    var options = new Image();
-    options.src = "../Resources/Options/Options.png";
-    options.onload = function (ev) {
-        var bitmap = new createjs.Bitmap(ev.target);
+    function createOptions() {
+        //Options Button
+        var options = new Image();
+        options.src = "../Resources/Options/Options.png";
+        var bitmap = new createjs.Bitmap(options.src);
         bitmap.x = 10;
         bitmap.y = 530;
         bitmap.alpha = 0.8;
@@ -235,14 +290,15 @@ function mainMenu() {
         stage.addChild(bitmap);
 
         var hit_OP = new createjs.Shape();
-        hit_OP.graphics.beginFill("#000").drawRect(0, 0, help.width, help.height);
+        hit_OP.graphics.beginFill("#000").drawRect(0, 0, options.width, options.height);
         bitmap.hitArea = hit_OP;
         options.bitmap = bitmap;
+
+        bitmap.id = "Options";
         bitmap.on("mouseover", mouseFunction);
         bitmap.on("mouseout", mouseFunction);
         bitmap.on("click", containerMove);
-    };
-
+    }
 
     function clickHandler_SP_MP_AC(ev) {
         console.log(ev.target.text);
@@ -255,159 +311,37 @@ function mainMenu() {
         }
     }
 
-
-    /*function clickHandler_HP_OP(ev) {
-        if (isCanvas) {
-            //makes button look like disabled
-            ev.target.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-            ev.target.alpha = 0.7;
-            //Disables background events
-            isCanvas = false;
-
-            //Loads container
-            var img = new Image();
-            img.src = "../Resources/Options/ChalkBoard.png";
-            img.onload = function () {
-                var container = new createjs.Container();
-                container.x = canvas.width / 2 - img.width / 2;
-                container.y = -300;
-                stage.addChild(container);
-
-
-                var bg = new createjs.Shape();
-                bg.graphics.beginBitmapFill(img, "no-repeat");
-                bg.graphics.drawRect(0, 0, img.width, img.height);
-                container.addChild(bg);
-
-                var back = new createjs.Text("Back", "35px Georgia", "#ffffff");
-                back.alpha = 0.8;
-                back.x = img.width / 2 - back.getMeasuredWidth() / 2;
-                back.y = img.height * 0.7;
-                back.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-                var hit_B = new createjs.Shape();
-                hit_B.graphics.beginFill("#000").drawRect(0, 0, back.getMeasuredWidth(), back.getMeasuredHeight());
-                back.hitArea = hit_B;
-                back.on("mouseover", mouseHandler);
-                back.on("mouseout", mouseHandler);
-
-                function change() {
-                    change_container_pos(createjs.Tween.get(container), -350);
-                    isCanvas = true; // Make it just in the end
-                }
-
-                back.on("click", change);
-                container.addChild(back);
-
-
-                switch (ev.target.hitArea) {
-                    case help.bitmap.hitArea:
-                        var help_title = new createjs.Text("Help", "50px Georgia", "#ffffff");
-                        help_title.alpha = 0.8;
-                        help_title.x = img.width / 2 - help_title.getMeasuredWidth() / 2;
-                        help_title.y = help_title.getMeasuredHeight();
-                        container.addChild(help_title);
-                        break;
-                    case options.bitmap.hitArea:
-                        var options_title = new createjs.Text("Options", "50px Georgia", "#ffffff");
-                        options_title.alpha = 0.8;
-                        options_title.x = img.width / 2 - options_title.getMeasuredWidth() / 2;
-                        options_title.y = options_title.getMeasuredHeight();
-                        container.addChild(options_title);
-
-                        var music = new createjs.Text("Music:", "35px Georgia", "#ffffff");
-                        music.alpha = 0.8;
-                        music.x = img.width / 2 - music.getMeasuredWidth() - back.getMeasuredWidth() / 2;
-                        music.y = img.height * 0.4;
-                        container.addChild(music);
-
-                        var sounds = new createjs.Text("Sounds:", "35px Georgia", "#ffffff");
-                        sounds.alpha = 0.8;
-                        sounds.x = img.width / 2 - sounds.getMeasuredWidth() - back.getMeasuredWidth() / 2;
-                        sounds.y = img.height * 0.55;
-                        container.addChild(sounds);
-
-                        var Sound_btn = new createjs.Text("On", "35px Georgia", "#ffffff");
-                        Sound_btn.id = "Sound_btn";
-                        Sound_btn.alpha = 0.8;
-                        Sound_btn.x = img.width / 2 - Sound_btn.getMeasuredWidth() / 2;
-                        Sound_btn.y = img.height * 0.55;
-                        Sound_btn.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-                        var hit_ON = new createjs.Shape();
-                        hit_ON.graphics.beginFill("#000").drawRect(0, 0, Sound_btn.getMeasuredWidth(), Sound_btn.getMeasuredHeight());
-                        Sound_btn.hitArea = hit_ON;
-                        Sound_btn.on("mouseover", mouseHandler);
-                        Sound_btn.on("mouseout", mouseHandler);
-                        Sound_btn.on("click", click_Handler_OP);
-                        container.addChild(Sound_btn);
-
-                        var Music_btn = new createjs.Text("On", "35px Georgia", "#ffffff");
-                        Music_btn.id = "Music_btn";
-                        Music_btn.alpha = 0.8;
-                        Music_btn.x = img.width / 2 - Music_btn.getMeasuredWidth() / 2;
-                        Music_btn.y = img.height * 0.4;
-                        Music_btn.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-                        var hit_ON_M = new createjs.Shape();
-                        hit_ON_M.graphics.beginFill("#000").drawRect(0, 0, Music_btn.getMeasuredWidth(), Music_btn.getMeasuredHeight());
-                        Music_btn.hitArea = hit_ON_M;
-                        Music_btn.on("mouseover", mouseHandler);
-                        Music_btn.on("mouseout", mouseHandler);
-                        Music_btn.on("click", click_Handler_OP);
-                        container.addChild(Music_btn);
-                        break;
-                }
-
-                function changes(ev) {
-                    change_container_pos(ev, canvas.height / 5);
-                }
-
-                createjs.Tween.get(container).call(changes);
-
-            };
-        }
-    }*/
-
-
-    function tickHandler(ev) {
-        stage.update();
-        //ch.move();
-    }
-
-
     createjs.Ticker.framerate = 60;
-    createjs.Ticker.addEventListener("tick", tickHandler);
-
-
-
-
+    createjs.Ticker.addEventListener("tick", stage);
 
 
 }
 
 
-
-function click_Handler_OP(ev) {
-    if (ev.target.id === "Sound_btn") {
+function clickHandlerAudio(ev, mState, sState) {
+    console.log(ev.target.id);
+    if (ev.target.id === "SoundState") {
         if (ev.target.text === "On") {
             ev.target.text = "Off";
+            sState = false;
         }
         else if (ev.target.text === "Off") {
             ev.target.text = "On";
+            sState = true;
         }
     }
-    else if (ev.target.id === "Music_btn") {
+    else if (ev.target.id === "MusicState") {
         if (ev.target.text === "On") {
             createjs.Sound.stop("menuMusic");
+            mState = false;
             ev.target.text = "Off";
         }
         else if (ev.target.text === "Off") {
             createjs.Sound.play("menuMusic");
+            mState = true;
             ev.target.text = "On";
         }
     }
-}
-
-
-function change_container_pos(container, height) {
 }
 
 function mouseHandler(ev, isCanvas) {
@@ -425,7 +359,7 @@ function customize(object, canvas, number) {
     object.alpha = 0.8;
 }
 
-function saveGame(SAVE,state) {
+function saveGame(SAVE, state) {
     console.log(state.StudentProgress + " " + state.TeacherProgress);
     localStorage.setItem(SAVE, JSON.stringify(state));
 }

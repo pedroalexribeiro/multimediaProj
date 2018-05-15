@@ -76,7 +76,7 @@ class Character {
                 if(obj.object.bitmap.visible) {   //objects[cc].platform.bitmap.visible
                     var collide = ndgmr.checkPixelCollision(this.spriteA, obj.object.bitmap, 0, true);
                     if(collide){
-                        bool = true;
+                        return obj;
                     }
                 }
             }

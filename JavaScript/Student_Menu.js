@@ -6,7 +6,7 @@ function Student_Menu(stage) {
 
 
     var state = {
-        StudentProgress: 1,
+        StudentProgress: 3,
         TeacherProgress: 1
     };
     var save = loadGame('save');
@@ -14,7 +14,9 @@ function Student_Menu(stage) {
         save = state;
         saveGame('save',save);
     } else {
-        console.log(save.TeacherProgress + " "+save.StudentProgress);
+        save.StudentProgress +=1;
+        console.log(save.TeacherProgress + " " + save.StudentProgress);
+        saveGame('save',save);
     }
 
     var mouseFunction = function (ev) {
@@ -45,7 +47,7 @@ function Student_Menu(stage) {
     function sth() {
         for (let level of arrayBoxes) {
             //Image
-            if(save.StudentProgress < count){
+            if(count > save.StudentProgress){
                 var bitmap = new createjs.Bitmap(queue.getResult("lock"));
                 console.log(bitmap);
 
@@ -63,11 +65,12 @@ function Student_Menu(stage) {
 
                 var m = new createjs.Matrix2D();
                 m.translate(x, y);
+                console.log( bitmap.image.width);
                 m.scale(width / bitmap.image.width, height / bitmap.image.height);
 
                 //level Draw
                 level.graphics.beginStroke("#fff");
-                level.graphics.beginBitmapFill(bitmap.image, "no-repeat", m);
+                level.graphics.beginBitmapFill(bitmap.image.src, "no-repeat", m);
                 level.graphics.drawRect(x, y, width, height);
 
                 //Hitbox && Effects
@@ -98,8 +101,6 @@ function Student_Menu(stage) {
 
 
     function Click_Handler(ev) {
-        console.log(ev.target.text);
-
         if (ev.target.text === "Back") {
             stage.removeAllChildren();
             SP_Menu(stage);

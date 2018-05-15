@@ -52,7 +52,9 @@ function Maps(stage, levelStr) {
         //##################################################
         hero.move(level.platforms, menuFlag);
         var test = hero.collide(level.objects, menuFlag);
-        if(test){
+        console.log(test);
+        if(test != false){
+            if(test.object.bitmap)
             GameStatus("gameOver");
         }
         //##################################################
@@ -85,7 +87,7 @@ function Maps(stage, levelStr) {
                     }
 
                     //Calcula coordinates para onde objeto se vai mover
-                    var cords = obj.NewCords(400, 350, flag, stage);
+                    var cords = obj.NewCords(hero.spriteA.x, hero.spriteA.y, flag, stage);
 
 
                     //Calcula coordinates para onde objeto vai no Reset
@@ -134,8 +136,9 @@ function Maps(stage, levelStr) {
                     }
 
                     //Calcula coordinates para onde objeto se vai mover
-                    var cords = obj.NewCords(400, 350, flag, stage);
-                    var cords2 = obj2.NewCords(400, 350, flag2, stage);
+                    console.log(hero.spriteA);
+                    var cords = obj.NewCords(hero.spriteA.x, hero.spriteA.y, flag, stage);
+                    var cords2 = obj2.NewCords(hero.spriteA.x, hero.spriteA.y, flag2, stage);
 
                     //Calcula coordinates para onde objeto vai no Reset
                     var resetCords = level.Position(obj.object.bitmap.image.width, obj.object.bitmap.image.height, flag, stage);
@@ -198,10 +201,6 @@ function Maps(stage, levelStr) {
             isExit = false;
         }
 
-
-        else if (ev.keyCode === 71 && !lost) {
-            GameStatus("gameOver");
-        }
         else if (ev.keyCode === 27 && lost) {
             lost = false;
             stage.removeAllChildren();
@@ -232,6 +231,7 @@ function Maps(stage, levelStr) {
         var instance = createjs.Sound.play("gameMusic");
         instance.on("complete", loadSong);
     }
+
     function createMenu() {
         //Loads container
         var img = new Image();
@@ -309,7 +309,7 @@ function Maps(stage, levelStr) {
             Sound_btn.hitArea = hit_ON;
             Sound_btn.on("mouseover", mouseHandler);
             Sound_btn.on("mouseout", mouseHandler);
-            Sound_btn.on("click", click_Handler_OP);
+            Sound_btn.on("click", clickHandlerAudio);
             container.addChild(Sound_btn);
 
             var Music_btn = new createjs.Text("On", "35px Georgia", "#ffffff");
@@ -323,7 +323,7 @@ function Maps(stage, levelStr) {
             Music_btn.hitArea = hit_ON_M;
             Music_btn.on("mouseover", mouseHandler);
             Music_btn.on("mouseout", mouseHandler);
-            Music_btn.on("click", click_Handler_OP);
+            Music_btn.on("click", clickHandlerAudio);
             container.addChild(Music_btn);
         };
 
@@ -483,7 +483,6 @@ class LevelOne extends Map {
     }
 }
 
-
 class LevelTwo extends Map {
     constructor(stage) {
         super(stage);
@@ -491,8 +490,13 @@ class LevelTwo extends Map {
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
 
         //Level Platforms
-        this.platforms.push(new Platform(stage, "../Resources/levels/Level2/Stairs.png", 250, 400));
-
+        let x = 100;
+        let y = 400;
+        for(let i=0; i<3;i++) {
+            this.platforms.push(new Platform(stage, "../Resources/levels/Level2/Stair.png", x, y));
+            y -= 40;
+            x+= 160;
+        }
         //Level Objects
         var initCords = this.Position(100, 100, "Horizontal", stage); // Beer -> Slows permanently the character
         this.objects.push(new Objectt(stage, "../Resources/levels/Extras/Beer.png", initCords[0], initCords[1]));
@@ -559,7 +563,7 @@ class Objectt {
         this.object.bitmap.y = init_y;
         this.object.bitmap.alpha = 0;
         this.object.bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-
+        this.flag=src;
 
         stage.addChild(this.object.bitmap);
     }
