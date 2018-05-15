@@ -69,7 +69,6 @@ function Maps(stage, levelStr) {
         var test = hero.collide(level.objects, menuFlag);
         console.log(test);
         if(test != false){
-            if(test.object.bitmap)
             GameStatus("gameOver");
         }
         //##################################################
