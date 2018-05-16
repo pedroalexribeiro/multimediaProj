@@ -7,9 +7,10 @@ class Character {
         this.isMoving = false;
         this.isUsed = false;
         this.onGround = false;
+        this.originalX = 0;
         var spriteSheet = new createjs.SpriteSheet({
             images: ["../Resources/Character/Running/R_SpriteSheet.png"],
-            frames: {"height": 75, "width": 48, "regX": -100, "regY": -450},
+            frames: {"height": 75, "width": 48, "regX": 0, "regY": 0},
             animations: {
                 "run": {
                     frames: [0, 1, 2, 1],
@@ -68,6 +69,14 @@ class Character {
             this.spriteA.y += move.y;
             this.spriteA.x += move.x;
         }
+    }
+
+    moveLeft() {
+        this.spriteA.x += -5;
+    }
+
+    moveRight() {
+        this.spriteA.x += 5;
     }
 
     collide(objects, menuFlag){

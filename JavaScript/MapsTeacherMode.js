@@ -11,27 +11,30 @@
 function MapsTeacherMode(stage) {
 
     //Game Menu Information
-    var container, containerEx, timer,init;
+    var container, containerEx, timer,init, gameOver;
     var menuFlag = false, isExit = false;
     createMenu();
     createExitMenu();
-    createTimer(stage);
+    createTimerAndGameOver(stage);
     window.addEventListener("keydown", KeyHandler);
+    var despawn = function(ev) {
+        killNPC(level);
+    }
+    window.addEventListener("click", despawn);
 
     var level = new LevelOneTeacherMode(stage);
     var gameStart = createjs.Ticker.getTime(true);
 
-    for(let i=0; i<level.npcs.length; i++) {
-        var despawn = function(ev) {
-            killNPC(level, i);
-        }
-        level.npcs[i].spriteA.on("click", despawn);
-    }
     game();
 
-    function killNPC(level, index) {
-        console.log("killed");
-        level.npcs[index].spriteA.visible = false;
+    function killNPC(level) {
+        for(let i=0; i<level.npcs.length; i++) {
+            var pt = level.npcs[i].spriteA.globalToLocal(stage.mouseX, stage.mouseY);
+            if(level.npcs[i].spriteA.hitTest(pt.x, pt.y)) {
+                level.npcs[i].spriteA.visible = false;
+                level.npcs[i].isUsed = false;
+            }
+        }
     }
 
     function game() {
@@ -42,16 +45,35 @@ function MapsTeacherMode(stage) {
 
     function handle(event) {
         if (!event.paused) {
+            for(let i=0; i<level.npcs.length; i++) {
+                if(level.npcs[i].isUsed == true) {
+                    if(level.npcs[i].spriteA.x > 848 || level.npcs[i].spriteA.x < -48) {
+                        level.npcs[i].isUsed = false;
+                        level.npcs[i].spriteA.visible = false;
+                        level.lives -= 1;
+                    } else {
+                        if(level.npcs[i].spriteA.originalX < 400) {
+                            level.npcs[i].moveRight();
+                        } else {
+                            level.npcs[i].moveLeft();
+                        }
+                        level.npcs[i].spriteA.gotoAndPlay("run");
+                        stage.update();
+                    }
+                }
+            }
             var currTime = createjs.Ticker.getTime(true);
             if (currTime - gameStart <= level.totalTime) {
+                if(level.lives == 0) {
+                    gameStatus("gameOver");
+                }
                 if (currTime - init >= level.npcInterval) {
                     for(let i=0; i<level.npcs.length; i++) {
                         if(level.npcs[i].isUsed == false) {
-                            level.npcs[i].spriteA.x = Math.floor(Math.random() * 600);
+                            level.npcs[i].spriteA.originalX = level.position(level.npcs[i].spriteA.getTransformedBounds().width, stage);
+                            level.npcs[i].spriteA.x = level.npcs[i].spriteA.originalX;
                             level.npcs[i].spriteA.visible = true;
                             level.npcs[i].isUsed = true;
-
-                            //Mete o bicho a correr
                             break;
                         }
                     }
@@ -215,10 +237,39 @@ function MapsTeacherMode(stage) {
         }
     }
 
-    function createTimer() {
+    function createTimerAndGameOver() {
+        //Timer
         timer = new createjs.Text("", "50px monospace", "#000");
         timer.x = stage.canvas.width / 2 - 130;
         stage.addChild(timer);
+
+        //End of Level
+        goodJob = new Image();
+        goodJob.src = "../Resources/levels/Extras/goodJob.png";
+        var bitmap = new createjs.Bitmap(goodJob.src);
+        bitmap.x = stage.canvas.width / 2 - 250;
+        bitmap.y = stage.canvas.height / 2 - 250;
+        bitmap.alpha = 0;
+        bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+        goodJob.bitmap = bitmap;
+
+        //GameOver
+        gameOver = new Image();
+        gameOver.src = "../Resources/levels/Extras/gameOver.png";
+        var bitmap = new createjs.Bitmap(gameOver.src);
+        bitmap.x = stage.canvas.width / 2 - 250;
+        bitmap.y = stage.canvas.height / 2 - 250;
+        bitmap.alpha = 0;
+        bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+        gameOver.bitmap = bitmap;
+
+
+        //Click esc To go to Menu
+        msg = new createjs.Text("Click ESC to leave", "30px monospace", "#000");
+        msg.x = stage.canvas.width / 2 - 150;
+        msg.y = 500;
+        msg.alpha = 0;
+
     }
 
     function KeyHandler(ev) {
@@ -249,6 +300,23 @@ function MapsTeacherMode(stage) {
             isExit = false;
         }
     }
+
+    function gameStatus(Flag) {
+        console.log("End of level");
+        lost = true;
+
+        if (Flag === "gameOver") {
+            gameOver.bitmap.alpha = 1;
+            stage.addChild(gameOver.bitmap);
+        } else if (Flag === "goodJob") {
+            goodJob.bitmap.alpha = 1;
+            stage.addChild(goodJob.bitmap);
+        }
+        msg.alpha = 1;
+        stage.addChild(msg);
+        createjs.Ticker.removeEventListener("tick", handle);
+        stage.update();
+    }
 }
 
 class MapTeacherMode {
@@ -278,18 +346,18 @@ class LevelOneTeacherMode extends MapTeacherMode {
         //Level NPCs
         var neededNPCs = this.totalTime / this.npcInterval;
         for(let i=0; i<neededNPCs; i++) {
-            this.npcs.push(new Character(stage, -100, -125));
+            this.npcs.push(new Character(stage, 200, 325));
             this.npcs[i].spriteA.visible = false;
         }
     }
 
-    Position(widthObj, heightObj, stage) { //For level One
-
+    position(widthObj, stage) { //For level One
         var side = Math.random();
-        if (side > 0.5) { 
+        if (side > 0.5) { // Right
+            var xNew  = stage.canvas.width + widthObj;
+        } else { //Left
+            var xNew = 0 - widthObj;
         }
-        else {
-        }
-
+        return xNew;
     }
 }
