@@ -18,7 +18,7 @@ function mainMenu() {
     createjs.Sound.registerSound("../Resources/Audio/gameMusic.mp3", "gameMusic", 2);
 
     function soundLoad() {
-        var instance = createjs.Sound.play("menuMusic");
+        var instance = createjs.Sound.play("gameMusic");
         instance.on("complete", soundLoad);
     }
 
@@ -83,7 +83,7 @@ function mainMenu() {
         }
         if(flags.isCanvas && ev.target.text === "MultiPlayer") {
             stage.removeAllChildren();
-            MapsTeacherMode(stage);
+            MapsTeacherMode(stage,"level1",save);
         }
         if (flags.isCanvas && ev.target.text === "Quit") {
             //window.close();

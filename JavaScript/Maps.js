@@ -71,7 +71,7 @@ function Maps(stage, levelStr,save) {
         stage.update();
         var test = level.hero.collide(level.objects, menuFlag);
         if (test === 1){ // gameOver
-            GameStatus("gameOver",save);
+            gameStatus("gameOver",save);
         }
         else if(test === 2){ // beer
             console.log("beer");
@@ -176,7 +176,7 @@ function Maps(stage, levelStr,save) {
             }
         }
         else {
-            GameStatus("goodJob",save);
+            gameStatus("goodJob",save);
         }
         timer.text = "Timer: " + Math.ceil((level.totalTime - (currTime - gameStart)) / 1000);
     }
@@ -229,7 +229,7 @@ function Maps(stage, levelStr,save) {
         }
     }
 
-    function GameStatus(Flag,save) {
+    function gameStatus(Flag,save) {
         console.log("End of level");
         lost = true;
 
