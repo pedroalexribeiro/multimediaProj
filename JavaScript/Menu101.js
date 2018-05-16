@@ -20,16 +20,52 @@ function mainMenu() {
     function soundLoad() {
         var instance = createjs.Sound.play("menuMusic");
         instance.on("complete", soundLoad);
-
     }
 
     /*Background Information*/
     document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
 
-    /*Stage Loader*/
+    //Stage Loader
     var canvas = document.getElementById("Menu");
     var stage = new createjs.Stage(canvas);
     stage.enableMouseOver(10);
+
+    //SaveGame Loader
+    var state = {
+        StudentProgress: 1,
+        TeacherProgress: 1
+    };
+    var save = loadGame('save');
+    console.log(save);
+    if (save === null) {
+        save = state;
+        saveGame('save',save);
+    }
+
+//###############################################################################
+    var ch = new Character(stage, 300, -200);
+    var keyHandlers = function (ev) {
+        ch.keys[ev.keyCode] = (ev.type === "keydown");
+        if (ev.type === "keydown") {
+            if ((ev.keyCode == 37 || ev.keyCode == 38 || ev.keyCode == 39 || ev.keyCode == 40) && ch.isMoving == false) {
+                ch.isMoving = true;
+                ch.spriteA.gotoAndPlay("run");
+            }
+        } else {
+            if (!ch.keys[37] && !ch.keys[38] && !ch.keys[39] && !ch.keys[40] && ch.isMoving == true) {
+                ch.isMoving = false;
+            }
+        }
+        if (ch.isMoving === false) {
+            ch.spriteA.gotoAndStop("idle");
+        }
+    };
+
+    window.addEventListener("keydown", keyHandlers);
+    window.addEventListener('keyup', keyHandlers);
+
+
+//################################################################################
 
 
     var mouseFunctionMain = function (ev) {
@@ -69,7 +105,7 @@ function mainMenu() {
         console.log(ev.target.text);
         if (flags.isCanvas && ev.target.text === "SinglePlayer") {
             stage.removeAllChildren();
-            SP_Menu(stage);
+            SP_Menu(stage,save);
         }
         if(flags.isCanvas && ev.target.text === "MultiPlayer") {
             stage.removeAllChildren();

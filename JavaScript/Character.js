@@ -116,19 +116,25 @@ class Character {
         }
     }
 
-    collide(objects, menuFlag){
-        var bool = false;
-        if( !menuFlag){
-            for(let obj of objects){
-                if(obj.object.bitmap.visible) {   //objects[cc].platform.bitmap.visible
+    collide(objects, menuFlag) {
+        var bool = 0;
+        if (!menuFlag) {
+            for (let obj of objects) {
+                if (obj.object.bitmap.visible) {   //objects[cc].platform.bitmap.visible
                     var collide = ndgmr.checkPixelCollision(this.spriteA, obj.object.bitmap, 0, true);
-                    if(collide){
-                        bool = true;
+                    if (collide) {
+                        if (obj.flag === "../Resources/levels/Extras/Beer.png") {
+
+                        }
+                        else if (obj.flag === "../Resources/levels/Extras/deadLine.png") {
+
+                        }
+                        else return 1;
                     }
                 }
             }
+            return bool;
         }
-        return bool;
     }
 }
 
