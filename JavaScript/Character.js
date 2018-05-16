@@ -8,8 +8,8 @@ class Character {
         this.isUsed = false;
         this.onGround = false;
         this.isWalkingRight = true;
-        this.hasChanged = false
-        if(!otherChar) {
+        this.hasChanged = false;
+        if (!otherChar) {
             var spriteSheet = new createjs.SpriteSheet({
                 images: ["../Resources/Character/Running/R_SpriteSheet.png"],
                 frames: {"height": 75, "width": 48, "regX": 0, "regY": 0},
@@ -34,7 +34,7 @@ class Character {
                     },
                 }
             });
-        }else{
+        } else {
             var spriteSheet = new createjs.SpriteSheet({
                 images: ["../Resources/Character/Running/R_SpriteSheet2.png"],
                 frames: {"height": 80, "width": 48, "regX": 0, "regY": 0},
@@ -67,11 +67,13 @@ class Character {
     }
 
     move(object, menuFlag) {
+        let right = 37, left = 38, up = 39, down = 40;
+
         if (!menuFlag) {
             this.velocity.y += 1;
 
             if (this.onGround) {
-                if (this.keys[38]) {
+                if (this.keys[left]) {
                     this.onGround = false;
                     this.velocity.y = -20;
                 }
@@ -94,15 +96,15 @@ class Character {
                 this.velocity.y -= 1;
             }
             if (this.isMoving === true) {
-                if (this.keys[37]) {
-                    if(this.isWalkingRight) {
+                if (this.keys[right]) {
+                    if (this.isWalkingRight) {
                         this.isWalkingRight = false;
                         this.hasChanged = true;
                     }
                     move.x = -5;
                 }
-                if (this.keys[39]) {
-                    if(!this.isWalkingRight) {
+                if (this.keys[up]) {
+                    if (!this.isWalkingRight) {
                         this.isWalkingRight = true;
                         this.hasChanged = true;
                     }
@@ -116,19 +118,25 @@ class Character {
         }
     }
 
-    collide(objects, menuFlag){
-        var bool = false;
-        if( !menuFlag){
-            for(let obj of objects){
-                if(obj.object.bitmap.visible) {   //objects[cc].platform.bitmap.visible
+    collide(objects, menuFlag) {
+        var bool = 0;
+        if (!menuFlag) {
+            for (let obj of objects) {
+                if (obj.object.bitmap.visible) {   //objects[cc].platform.bitmap.visible
                     var collide = ndgmr.checkPixelCollision(this.spriteA, obj.object.bitmap, 0, true);
-                    if(collide){
-                        bool = true;
+                    if (collide) {
+                        if (obj.flag === "../Resources/levels/Extras/Beer.png") {
+
+                        }
+                        else if (obj.flag === "../Resources/levels/Extras/deadLine.png") {
+
+                        }
+                        else return 1;
                     }
                 }
             }
+            return bool;
         }
-        return bool;
     }
 }
 
@@ -136,12 +144,12 @@ class Character {
 var keyHandlers = function(ev) {
                 hero.keys[ev.keyCode] = (ev.type === "keydown");
                 if(ev.type === "keydown"){
-                    if((ev.keyCode === 37 || ev.keyCode === 38 || ev.keyCode === 39 || ev.keyCode === 40) && hero.isMoving === false) {
+                    if((ev.keyCode === right || ev.keyCode === left || ev.keyCode === up || ev.keyCode === down) && hero.isMoving === false) {
                         hero.isMoving = true;
                         hero.spriteA.gotoAndPlay("run");
                     }
                 }else{
-                    if(!hero.keys[37] && !hero.keys[38] && !hero.keys[39] && !hero.keys[40] && hero.isMoving ===  true){
+                    if(!hero.keys[right] && !hero.keys[left] && !hero.keys[up] && !hero.keys[down] && hero.isMoving ===  true){
                         hero.isMoving = false;
                     }
                 }

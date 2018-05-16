@@ -1,6 +1,6 @@
 "use strict";
 
-function SP_Menu(stage) {
+function SP_Menu(stage,save) {
     document.getElementById("Menu").style.backgroundImage="url(../Resources/test.png)";
 
     var isCanvas = true;
@@ -32,11 +32,11 @@ function SP_Menu(stage) {
     function clickHandler_ST_TC(ev){
         if(isCanvas && ev.target.text === "Student") {
             stage.removeAllChildren();
-            Student_Menu(stage);
+            Student_Menu(stage,save);
         }
         else if( isCanvas && ev.target.text === "Teacher") {
             stage.removeAllChildren();
-            Teacher_Menu(stage);
+            Teacher_Menu(stage,save);
         }
         else if(ev.target.text === "Back") {
             stage.removeAllChildren();

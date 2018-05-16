@@ -1,6 +1,6 @@
 "user strict";
 
-function Maps(stage, levelStr) {
+function Maps(stage, levelStr,save) {
     //Game Menu Information
     var container, containerEx, timer, init, goodJob, gameOver, msg, flag, flag2, timeoutId;
     var menuFlag = false, isExit = false, lost = false;
@@ -8,28 +8,6 @@ function Maps(stage, levelStr) {
     loadSong();
     window.addEventListener("keydown", KeyHandler);
 
-
-    //###################################################################
-    var hero = new Character(stage, 200, -200, false);
-
-    var keyHandlers = function (ev) {
-        hero.keys[ev.keyCode] = (ev.type === "keydown");
-        if (ev.type === "keydown") {
-            if ((ev.keyCode === 37 || ev.keyCode === 38 || ev.keyCode === 39 || ev.keyCode === 40) && hero.isMoving === false && !menuFlag) {
-                hero.isMoving = true;
-                hero.hasChanged = true;
-
-            }
-        } else {
-            if (!hero.keys[37] && !hero.keys[38] && !hero.keys[39] && !hero.keys[40] && hero.isMoving === true) {
-                hero.isMoving = false;
-            }
-        }
-    };
-
-    window.addEventListener("keydown", keyHandlers);
-    window.addEventListener('keyup', keyHandlers);
-    //####################################################################
 
     var level;
     switch (levelStr) {
@@ -43,33 +21,63 @@ function Maps(stage, levelStr) {
             //level = new LevelThree(stage);
             break;
     }
+
+
+    //###################################################################
+
+    var keyHandlers = function (ev) {
+        let right = 37, left = 39, up = 39, down = 40;
+
+        level.hero.keys[ev.keyCode] = (ev.type === "keydown");
+        if (ev.type === "keydown") {
+            if ((ev.keyCode === right || ev.keyCode === left) && level.hero.isMoving === false && !menuFlag) {
+                level.hero.isMoving = true;
+                level.hero.hasChanged = true;
+
+            }
+        } else {
+            if (!level.hero.keys[right] && !level.hero.keys[left] && !level.hero.keys[up] && !level.hero.keys[down] && level.hero.isMoving === true) {
+                level.hero.isMoving = false;
+            }
+        }
+    };
+
+    window.addEventListener("keydown", keyHandlers);
+    window.addEventListener('keyup', keyHandlers);
+    //####################################################################
+
+
     var gameStart = createjs.Ticker.getTime(true);
     game();
 
     function handle() {
         //##################################################
-        hero.move(level.platforms, menuFlag);
-        if (hero.isMoving === false) {
-            if(hero.isWalkingRight){
-                hero.spriteA.gotoAndPlay("idle_right");
-            }else{
-                hero.spriteA.gotoAndPlay("idle_left");
+        level.hero.move(level.platforms, menuFlag);
+        if (level.hero.isMoving === false) {
+            if (level.hero.isWalkingRight) {
+                level.hero.spriteA.gotoAndPlay("idle_right");
+            } else {
+                level.hero.spriteA.gotoAndPlay("idle_left");
             }
-        }else{
-            if(hero.hasChanged) {
-                hero.hasChanged = false;
-                if (hero.isWalkingRight) {
-                    hero.spriteA.gotoAndPlay("run_right");
+        } else {
+            if (level.hero.hasChanged) {
+                level.hero.hasChanged = false;
+                if (level.hero.isWalkingRight) {
+                    level.hero.spriteA.gotoAndPlay("run_right");
                 } else {
-                    hero.spriteA.gotoAndPlay("run_left");
+                    level.hero.spriteA.gotoAndPlay("run_left");
                 }
             }
         }
         stage.update();
-        var test = hero.collide(level.objects, menuFlag);
-        console.log(test);
-        if(test != false){
-            GameStatus("gameOver");
+        var test = level.hero.collide(level.objects, menuFlag);
+        if (test === 1){ // gameOver
+            GameStatus("gameOver",save);
+        }
+        else if(test === 2){ // beer
+            console.log("beer");
+        }else if(test === 3){ // deadLine
+            console.log("deadLIne");
         }
         //##################################################
 
@@ -101,7 +109,7 @@ function Maps(stage, levelStr) {
                     }
 
                     //Calcula coordinates para onde objeto se vai mover
-                    var cords = obj.NewCords(hero.spriteA.x, hero.spriteA.y, flag, stage);
+                    var cords = obj.NewCords(level.hero.spriteA.x, level.hero.spriteA.y, flag, stage);
 
 
                     //Calcula coordinates para onde objeto vai no Reset
@@ -150,9 +158,8 @@ function Maps(stage, levelStr) {
                     }
 
                     //Calcula coordinates para onde objeto se vai mover
-                    console.log(hero.spriteA);
-                    var cords = obj.NewCords(hero.spriteA.x, hero.spriteA.y, flag, stage);
-                    var cords2 = obj2.NewCords(hero.spriteA.x, hero.spriteA.y, flag2, stage);
+                    var cords = obj.NewCords(level.hero.spriteA.x, level.hero.spriteA.y, flag, stage);
+                    var cords2 = obj2.NewCords(level.hero.spriteA.x, level.hero.spriteA.y, flag2, stage);
 
                     //Calcula coordinates para onde objeto vai no Reset
                     var resetCords = level.Position(obj.object.bitmap.image.width, obj.object.bitmap.image.height, flag, stage);
@@ -170,7 +177,7 @@ function Maps(stage, levelStr) {
             }
         }
         else {
-            GameStatus("goodJob");
+            GameStatus("goodJob",save);
         }
         timer.text = "Timer: " + Math.ceil((level.totalTime - (currTime - gameStart)) / 1000);
     }
@@ -207,7 +214,7 @@ function Maps(stage, levelStr) {
             createjs.Ticker.removeEventListener("tick", handle);
             window.removeEventListener("keydown", KeyHandler);
             stage.removeAllChildren();
-            Student_Menu(stage);
+            Student_Menu(stage, save);
         }
         else if (ev.target.text === "No") {
             containerEx.alpha = 0;
@@ -219,11 +226,11 @@ function Maps(stage, levelStr) {
             lost = false;
             stage.removeAllChildren();
             window.removeEventListener("keydown", KeyHandler);
-            Student_Menu(stage);
+            Student_Menu(stage, save);
         }
     }
 
-    function GameStatus(Flag) {
+    function GameStatus(Flag,save) {
         console.log("End of level");
         lost = true;
 
@@ -231,6 +238,10 @@ function Maps(stage, levelStr) {
             gameOver.bitmap.alpha = 1;
             stage.addChild(gameOver.bitmap);
         } else if (Flag === "goodJob") {
+            if (level.lvl >= save.StudentProgress) {
+                save.StudentProgress += 1;
+                saveGame('save',save);
+            }
             goodJob.bitmap.alpha = 1;
             stage.addChild(goodJob.bitmap);
         }
@@ -241,7 +252,7 @@ function Maps(stage, levelStr) {
     }
 
 
-    function loadSong(){
+    function loadSong() {
         var instance = createjs.Sound.play("gameMusic");
         instance.on("complete", loadSong);
     }
@@ -442,6 +453,7 @@ class Map {
     constructor(stage) {
         this.platforms = new Array();
         this.objects = new Array();
+        this.hero = new Character(stage, 200, -200, false);
     }
 }
 
@@ -474,6 +486,7 @@ class LevelOne extends Map {
 
 
         //Level Game Related Information
+        this.lvl = 1;
         this.totalTime = 15000; // Tempo total do jogo
         this.objInterval = 2000; //Intervalo entre cada Objeto
         this.speed = [1300, 1700]; //Max e Min de speed dos Objetos
@@ -504,12 +517,12 @@ class LevelTwo extends Map {
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
 
         //Level Platforms
-        let x = 100;
+        let x = 160;
         let y = 400;
-        for(let i=0; i<3;i++) {
+        for (let i = 0; i < 3; i++) {
             this.platforms.push(new Platform(stage, "../Resources/levels/Level2/Stair.png", x, y));
             y -= 40;
-            x+= 160;
+            x += 160;
         }
         //Level Objects
         var initCords = this.Position(100, 100, "Horizontal", stage); // Beer -> Slows permanently the character
@@ -526,8 +539,9 @@ class LevelTwo extends Map {
 
 
         //Level Game Related Information
+        this.lvl = 2;
         this.totalTime = 15000; // Tempo total do jogo
-        this.objInterval = 2000; //Intervalo entre cada Objeto
+        this.objInterval = 1600; //Intervalo entre cada Objeto
         this.speed = [1250, 1550]; //Max e Min de speed dos Objetos
         this.nObj = 2;
         this.nBuffs = 2;
@@ -558,6 +572,58 @@ class LevelTwo extends Map {
 
 }
 
+class LevelThree extends Map {
+    constructor(stage) {
+        super(stage);
+        //Level Background
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/test.png)";
+
+        //Level Platforms
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platform.png", 100, 400));
+
+        //Level Buffs
+        var initCords = this.Position(100, 100, "", stage); // Beer -> Slows permanently the character
+        this.objects.push(new Objectt(stage, "../Resources/levels/Extras/Beer.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "", stage); //DeadLine -> Speeds permanently the character
+        this.objects.push(new Objectt(stage, "../Resources/levels/Extras/deadLine.png", initCords[0], initCords[1]));
+
+        //Level Objects
+        initCords = this.Position(100, 100, "", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carOrange.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carBlue.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carGreen.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carRed.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carYellow.png", initCords[0], initCords[1]));
+
+
+        //Level Game Related Information
+        this.lvl = 1;
+        this.totalTime = 15000; // Tempo total do jogo
+        this.objInterval = 2000; //Intervalo entre cada Objeto
+        this.speed = [1300, 1700]; //Max e Min de speed dos Objetos
+        this.nObj = 2;
+        this.nBuffs = 2;
+    }
+
+    Position(widthObj, heightObj, flag, stage) { //For level One
+
+        var side = Math.random();
+        if (side > 0.5) { // Right
+            var xNew = stage.canvas.width + widthObj;
+        }
+        else { //Left
+            var xNew = 0 - widthObj;
+        }
+
+        var yNew = Math.floor((Math.random() * ((this.platforms[0].platform.bitmap.y - heightObj) - (this.platforms[0].platform.bitmap.y / 2 + heightObj))) + (this.platforms[0].platform.bitmap.y / 2 + heightObj));
+        //Random entre 260 e 340 +/-
+        return [xNew, yNew];
+    }
+}
 class Platform {
     constructor(stage, src, init_x, init_y) {
         this.platform = new Image();
@@ -575,20 +641,20 @@ class Objectt {
         this.object.bitmap = new createjs.Bitmap(src);
         this.object.bitmap.x = init_x;
         this.object.bitmap.y = init_y;
-        this.object.bitmap.alpha = 0;
+        this.object.bitmap.visible = false;
         this.object.bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-        this.flag=src;
+        this.flag = src;
 
         stage.addChild(this.object.bitmap);
     }
 
     Move(x, y, speed, xReset, yReset) {
         console.log("Move-> x: " + x + " y:" + y);
-        this.object.bitmap.alpha = 1;
+        this.object.bitmap.visible = true;
         createjs.Tween.get(this.object.bitmap).to({y: y, x: x}, speed, createjs.Ease.linear).call(Reset);
 
         function Reset(ev) {
-            ev.target.alpha = 0;
+            ev.target.visible = false;
             ev.target.x = xReset;
             ev.target.y = yReset;
         }

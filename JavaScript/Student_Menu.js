@@ -1,23 +1,9 @@
 "   use strict";
 
-function Student_Menu(stage) {
+function Student_Menu(stage,save) {
     document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
     var isCanvas = true;
 
-
-    var state = {
-        StudentProgress: 3,
-        TeacherProgress: 1
-    };
-    var save = loadGame('save');
-    if (save === null) {
-        save = state;
-        saveGame('save',save);
-    } else {
-        save.StudentProgress +=1;
-        console.log(save.TeacherProgress + " " + save.StudentProgress);
-        saveGame('save',save);
-    }
 
     var mouseFunction = function (ev) {
         mouseHandler(ev, isCanvas);
@@ -49,8 +35,6 @@ function Student_Menu(stage) {
             //Image
             if(count > save.StudentProgress){
                 var bitmap = new createjs.Bitmap(queue.getResult("lock"));
-                console.log(bitmap);
-
                 var m = new createjs.Matrix2D();
                 m.translate(x, y);
                 m.scale(width / bitmap.image.width, height / bitmap.image.height);
@@ -65,7 +49,6 @@ function Student_Menu(stage) {
 
                 var m = new createjs.Matrix2D();
                 m.translate(x, y);
-                console.log( bitmap.image.width);
                 m.scale(width / bitmap.image.width, height / bitmap.image.height);
 
                 //level Draw
@@ -100,17 +83,17 @@ function Student_Menu(stage) {
     }
 
 
-    function Click_Handler(ev) {
+    function Click_Handler(ev)  {
         if (ev.target.text === "Back") {
             stage.removeAllChildren();
-            SP_Menu(stage);
+            SP_Menu(stage,save);
         }
         else if (ev.target.text === "level1") {
             stage.removeAllChildren();
-            Maps(stage,"level1");
+            Maps(stage,"level1",save);
         } else if (ev.target.text === "level2") {
             stage.removeAllChildren();
-            Maps(stage,"level2");
+            Maps(stage,"level2",save);
         } else if (ev.target.text === "level3") {
         }
     }

@@ -21,18 +21,30 @@ function mainMenu() {
     function soundLoad() {
         var instance = createjs.Sound.play("menuMusic");
         instance.on("complete", soundLoad);
-
     }
 
 
-    /*Background Information*/
+    //Background Information/
     document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
 
-    /*Stage Loader*/
+    //Stage Loader
     var canvas = document.getElementById("Menu");
     var stage = new createjs.Stage(canvas);
     stage.enableMouseOver(10);
     var isCanvas = true;
+
+
+    //SaveGame Loader
+    var state = {
+        StudentProgress: 1,
+        TeacherProgress: 1
+    };
+    var save = loadGame('save');
+    console.log(save);
+    if (save === null) {
+        save = state;
+        saveGame('save',save);
+    }
 
 //###############################################################################
     var ch = new Character(stage, 300, -200);
@@ -304,7 +316,7 @@ function mainMenu() {
         console.log(ev.target.text);
         if (isCanvas && ev.target.text === "SinglePlayer") {
             stage.removeAllChildren();
-            SP_Menu(stage);
+            SP_Menu(stage,save);
         }
         if(isCanvas && ev.target.text === "MultiPlayer") {
             stage.removeAllChildren();
