@@ -42,35 +42,6 @@ function mainMenu() {
         saveGame('save',save);
     }
 
-<<<<<<< Updated upstream
-=======
-//###############################################################################
-    var ch = new Character(stage, 300, -200);
-    var keyHandlers = function (ev) {
-        ch.keys[ev.keyCode] = (ev.type === "keydown");
-        if (ev.type === "keydown") {
-            if ((ev.keyCode === 37 || ev.keyCode === 38 || ev.keyCode == 39 || ev.keyCode == 40) && ch.isMoving == false) {
-                ch.isMoving = true;
-                ch.spriteA.gotoAndPlay("run");
-            }
-        } else {
-            if (!ch.keys[37] && !ch.keys[38] && !ch.keys[39] && !ch.keys[40] && ch.isMoving == true) {
-                ch.isMoving = false;
-            }
-        }
-        if (ch.isMoving === false) {
-            ch.spriteA.gotoAndStop("idle");
-        }
-    };
-
-    window.addEventListener("keydown", keyHandlers);
-    window.addEventListener('keyup', keyHandlers);
-
-
-//################################################################################
-
-
->>>>>>> Stashed changes
     var mouseFunctionMain = function (ev) {
         mouseHandler(ev, flags);
     };
