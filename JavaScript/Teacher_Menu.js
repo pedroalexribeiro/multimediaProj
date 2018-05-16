@@ -1,6 +1,6 @@
 "use strict";
 
-function Teacher_Menu(stage) {
+function Teacher_Menu(stage,save) {
     document.getElementById("Menu").style.backgroundImage="url(../Resources/test.png)";
 
     var isCanvas = true;
@@ -73,7 +73,7 @@ function Teacher_Menu(stage) {
 
         if(ev.target.text === "Back") {
             stage.removeAllChildren();
-            SP_Menu(stage);
+            SP_Menu(stage,save);
         }
     }
 
