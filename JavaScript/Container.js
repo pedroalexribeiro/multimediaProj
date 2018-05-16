@@ -2,7 +2,7 @@
 
 function createHelp(stage, flags) {
     var mouseFunction = function(ev){
-        mouseHandler(ev, flags);
+        mouseHandlerContainer(ev, flags);
     };
     //Help Button
     var help = new Image();
@@ -29,7 +29,7 @@ function createHelp(stage, flags) {
 
 function createOptions(stage, flags) {
     var mouseFunction = function(ev){
-        mouseHandler(ev, flags);
+        mouseHandlerContainer(ev, flags);
     };
     //Options Button
     var options = new Image();
@@ -57,7 +57,7 @@ function createOptions(stage, flags) {
 
 function ContainerMenu(stage, opt, flags) {
     var mouseFunction = function(ev){
-        mouseHandler(ev, flags);
+        mouseHandlerContainer(ev, flags);
     };
     var containerFunction = function (ev) {
         containerReset(ev, flags)
@@ -183,7 +183,7 @@ function containerMove(stage, flags, ev) {
 
 function customizeContainer(object, container, iterator, hitBox, flag, flags) {
     var mouseFunction = function(ev){
-        mouseHandler(ev, flags);
+        mouseHandlerContainer(ev, flags);
     }
     var containerFunction = function (ev) {
         containerReset(ev, flags)
@@ -225,8 +225,7 @@ function customizeContainer(object, container, iterator, hitBox, flag, flags) {
     }
 }
 
-function mouseHandler(ev, flags) {
-    console.log("asd");
+function mouseHandlerContainer(ev, flags) {
     if (flags.isCanvas || ev.target.text === "Back" || ev.target.text === "On" || ev.target.text === "Off" || ev.target.text === "Exit" || ev.target.text === "Continue" || ev.target.text === "Yes" || ev.target.text === "No") {
         ev.target.alpha = (ev.type === "mouseover") ? 1 : 0.8;
         ev.target.shadow = (ev.type === "mouseover") ? new createjs.Shadow("#000000", 15, 15, 10) : new createjs.Shadow("#000000", 5, 5, 10);

@@ -132,10 +132,12 @@ class Character {
                     var collide = ndgmr.checkPixelCollision(this.spriteA, obj.object.bitmap, 0, true);
                     if (collide) {
                         if (obj.flag === "../Resources/levels/Extras/Beer.png") {
-
+                            this.velocity.x -= 0.2;
+                            this.velocity.y -= 0.05;
                         }
                         else if (obj.flag === "../Resources/levels/Extras/deadLine.png") {
-
+                            this.velocity.x += 0.2;
+                            this.velocity.y += 0.05;
                         }
                         else return 1;
                     }

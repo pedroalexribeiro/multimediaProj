@@ -1,11 +1,11 @@
 "user strict";
 
-function Maps(stage, levelStr,save) {
+function Maps(stage, levelStr, save) {
     //Game Menu Information
     var container, containerEx, timer, init, goodJob, gameOver, msg, flag, flag2, timeoutId;
     var menuFlag = false, isExit = false, lost = false;
     createMenu();
-    loadSong();
+    playGameSong();
     window.addEventListener("keydown", KeyHandler);
 
 
@@ -70,12 +70,12 @@ function Maps(stage, levelStr,save) {
         }
         stage.update();
         var test = level.hero.collide(level.objects, menuFlag);
-        if (test === 1){ // gameOver
-            gameStatus("gameOver",save);
+        if (test === 1) { // gameOver
+            gameStatus("gameOver", save);
         }
-        else if(test === 2){ // beer
+        else if (test === 2) { // beer
             console.log("beer");
-        }else if(test === 3){ // deadLine
+        } else if (test === 3) { // deadLine
             console.log("deadLIne");
         }
         //##################################################
@@ -176,7 +176,7 @@ function Maps(stage, levelStr,save) {
             }
         }
         else {
-            gameStatus("goodJob",save);
+            gameStatus("goodJob", save);
         }
         timer.text = "Timer: " + Math.ceil((level.totalTime - (currTime - gameStart)) / 1000);
     }
@@ -209,6 +209,7 @@ function Maps(stage, levelStr,save) {
             isExit = true;
         }
         else if (ev.target.text === "Yes") {
+            playMenuSong();
             createjs.Ticker.paused = false;
             createjs.Ticker.removeEventListener("tick", handle);
             window.removeEventListener("keydown", KeyHandler);
@@ -223,13 +224,14 @@ function Maps(stage, levelStr,save) {
 
         else if (ev.keyCode === 27 && lost) {
             lost = false;
+            playMenuSong();
             stage.removeAllChildren();
             window.removeEventListener("keydown", KeyHandler);
             Student_Menu(stage, save);
         }
     }
 
-    function gameStatus(Flag,save) {
+    function gameStatus(Flag, save) {
         console.log("End of level");
         lost = true;
 
@@ -239,7 +241,7 @@ function Maps(stage, levelStr,save) {
         } else if (Flag === "goodJob") {
             if (level.lvl >= save.StudentProgress) {
                 save.StudentProgress += 1;
-                saveGame('save',save);
+                saveGame('save', save);
             }
             goodJob.bitmap.alpha = 1;
             stage.addChild(goodJob.bitmap);
@@ -251,9 +253,16 @@ function Maps(stage, levelStr,save) {
     }
 
 
-    function loadSong() {
+    function playMenuSong() {
+        createjs.Sound.stop("gameMusic");
+        var instance = createjs.Sound.play("menuMusic");
+        instance.on("complete", playMenuSong);
+    }
+
+    function playGameSong() {
+        createjs.Sound.stop("menuMusic");
         var instance = createjs.Sound.play("gameMusic");
-        instance.on("complete", loadSong);
+        instance.on("complete", playGameSong);
     }
 
     function createMenu() {
@@ -489,7 +498,7 @@ class LevelOne extends Map {
         this.totalTime = 15000; // Tempo total do jogo
         this.objInterval = 2000; //Intervalo entre cada Objeto
         this.speed = [1300, 1700]; //Max e Min de speed dos Objetos
-        this.nObj = 2;
+        this.nObj = 1;
         this.nBuffs = 2;
     }
 
@@ -532,7 +541,7 @@ class LevelTwo extends Map {
         initCords = this.Position(100, 100, "Vertical", stage);
         this.objects.push(new Objectt(stage, "../Resources/levels/Level2/rainDrop.png", initCords[0], initCords[1]));
         initCords = this.Position(100, 100, "Horizontal", stage);
-        this.objects.push(new Objectt(stage, "../Resources/levels/Level2/umbrella2.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level2/umbrella.png", initCords[0], initCords[1]));
         //initCords = this.Position(100, 100,"Horizontal", stage);
         //this.objects.push(new Objectt(stage, "../Resources/levels/Level2/umbrella.png", initCords[0], initCords[1]));
 
@@ -578,8 +587,12 @@ class LevelThree extends Map {
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/test.png)";
 
         //Level Platforms
-        this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platform.png", 100, 400));
-
+        let x = 160;
+        let y = 400;
+        for (let i = 0; i < 3; i++) {
+            this.platforms.push(new Platform(stage, "../Resources/levels/Level3/platform.png", x, y));
+            x += 160;
+        }
         //Level Buffs
         var initCords = this.Position(100, 100, "", stage); // Beer -> Slows permanently the character
         this.objects.push(new Objectt(stage, "../Resources/levels/Extras/Beer.png", initCords[0], initCords[1]));
@@ -587,20 +600,14 @@ class LevelThree extends Map {
         this.objects.push(new Objectt(stage, "../Resources/levels/Extras/deadLine.png", initCords[0], initCords[1]));
 
         //Level Objects
-        initCords = this.Position(100, 100, "", stage);
-        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carOrange.png", initCords[0], initCords[1]));
-        initCords = this.Position(100, 100, "", stage);
-        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carBlue.png", initCords[0], initCords[1]));
-        initCords = this.Position(100, 100, "", stage);
-        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carGreen.png", initCords[0], initCords[1]));
-        initCords = this.Position(100, 100, "", stage);
-        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carRed.png", initCords[0], initCords[1]));
-        initCords = this.Position(100, 100, "", stage);
-        this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carYellow.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "Vertical", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level2/rainDrop.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "Horizontal", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level2/umbrella.png", initCords[0], initCords[1]));
 
 
         //Level Game Related Information
-        this.lvl = 1;
+        this.lvl = 3;
         this.totalTime = 15000; // Tempo total do jogo
         this.objInterval = 2000; //Intervalo entre cada Objeto
         this.speed = [1300, 1700]; //Max e Min de speed dos Objetos
@@ -608,21 +615,29 @@ class LevelThree extends Map {
         this.nBuffs = 2;
     }
 
-    Position(widthObj, heightObj, flag, stage) { //For level One
+    Position(widthObj, heightObj, flag, stage) {
 
-        var side = Math.random();
-        if (side > 0.5) { // Right
-            var xNew = stage.canvas.width + widthObj;
-        }
-        else { //Left
-            var xNew = 0 - widthObj;
-        }
+        var yNew, xNew;
+        if (flag === "Horizontal") {
+            var side = Math.random();
+            if (side > 0.5) { // Right
+                xNew = stage.canvas.width + widthObj;
+            }
+            else { //Left
+                xNew = 0 - widthObj;
+            }
 
-        var yNew = Math.floor((Math.random() * ((this.platforms[0].platform.bitmap.y - heightObj) - (this.platforms[0].platform.bitmap.y / 2 + heightObj))) + (this.platforms[0].platform.bitmap.y / 2 + heightObj));
-        //Random entre 260 e 340 +/-
+            yNew = Math.floor((Math.random() * ((this.platforms[0].platform.bitmap.y - heightObj) - (this.platforms[0].platform.bitmap.y / 5 + heightObj))) + (this.platforms[0].platform.bitmap.y / 5 + heightObj));
+            //Random entre 260 e 340 +/-
+
+        } else if (flagg === "Vertical"){ //Mudar 261 (Numero Magico)
+            xNew = Math.random() * ((this.platforms[0].platform.bitmap.x + 261) - this.platforms[0].platform.bitmap.x) + (this.platforms[0].platform.bitmap.x);
+            yNew = 0 - heightObj;
+        }
         return [xNew, yNew];
     }
 }
+
 class Platform {
     constructor(stage, src, init_x, init_y) {
         this.platform = new Image();

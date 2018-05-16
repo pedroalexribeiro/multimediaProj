@@ -14,10 +14,12 @@ function MapsTeacherMode(stage, levelStr, save) {
     var container, containerEx, timer, init, goodJob, gameOver,timeoutId;
     var menuFlag = false, isExit = false, lost = false;
     createMenu();
+    playGameSong();
+
     window.addEventListener("keydown", KeyHandler);
     var despawn = function () {
         killNPC(level);
-    }
+    };
     window.addEventListener("click", despawn);
 
     var level;
@@ -282,6 +284,19 @@ function MapsTeacherMode(stage, levelStr, save) {
 
     }
 
+    function playMenuSong() {
+        createjs.Sound.stop("gameMusic");
+        var instance = createjs.Sound.play("menuMusic");
+        instance.on("complete", playMenuSong);
+    }
+
+    function playGameSong() {
+        createjs.Sound.stop("menuMusic");
+        var instance = createjs.Sound.play("gameMusic");
+        instance.on("complete", playGameSong);
+    }
+
+
     function timeOut() {
         menuFlag = false;
         createjs.Ticker.paused = false;
@@ -309,6 +324,7 @@ function MapsTeacherMode(stage, levelStr, save) {
             isExit = true;
         }
         else if (ev.target.text === "Yes") {
+            playMenuSong();
             createjs.Ticker.paused = false;
             createjs.Ticker.removeEventListener("tick", handle);
             window.removeEventListener("keydown", KeyHandler);
@@ -322,6 +338,7 @@ function MapsTeacherMode(stage, levelStr, save) {
         }
 
         else if (ev.keyCode === 27 && lost) {
+            playMenuSong();
             lost = false;
             stage.removeAllChildren();
             window.removeEventListener("keydown", KeyHandler);

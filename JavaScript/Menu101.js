@@ -6,11 +6,6 @@
 
 function mainMenu() {
     /*Music Stuff*/
-    var audioPath = "../Resources/Audio/";
-    var sounds = [
-        {id: "gameMusic", src: "gameMusic.mp3"},
-        {id: "another", src: "menuMusic.mp3"}
-    ];
 
     createjs.Sound.alternateExtensions = ["mp3"];
     createjs.Sound.on("fileload", soundLoad);
@@ -18,7 +13,7 @@ function mainMenu() {
     createjs.Sound.registerSound("../Resources/Audio/gameMusic.mp3", "gameMusic", 2);
 
     function soundLoad() {
-        var instance = createjs.Sound.play("gameMusic");
+        var instance = createjs.Sound.play("menuMusic");
         instance.on("complete", soundLoad);
     }
 
@@ -100,6 +95,13 @@ function customize(object, canvas, number) {
     object.x = (canvas.width / 2) - (b.width / 2);
     object.y = (canvas.height / 2.3) + number * 50;
     object.alpha = 0.8;
+
+}
+function mouseHandler(ev, flags) {
+    if (flags.isCanvas || ev.target.text === "Back" || ev.target.text === "On" || ev.target.text === "Off" || ev.target.text === "Exit" || ev.target.text === "Continue" || ev.target.text === "Yes" || ev.target.text === "No") {
+        ev.target.alpha = (ev.type === "mouseover") ? 1 : 0.8;
+        ev.target.shadow = (ev.type === "mouseover") ? new createjs.Shadow("#000000", 15, 15, 10) : new createjs.Shadow("#000000", 5, 5, 10);
+    }
 }
 
 function saveGame(SAVE, state) {
