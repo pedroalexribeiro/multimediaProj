@@ -26,9 +26,6 @@ function SP_Menu(stage) {
         stage.addChild(text);
     }
 
-
-
-
     function clickHandler_ST_TC(ev){
         if(isCanvas && ev.target.text === "Student") {
             stage.removeAllChildren();
@@ -46,8 +43,7 @@ function SP_Menu(stage) {
     }
 
 
-
-    //Help Button
+    /*//Help Button
     var help = new Image();
     help.src = "../Resources/Options//Help.png";
     help.onload = function (ev) {
@@ -85,7 +81,7 @@ function SP_Menu(stage) {
         bitmap.on("mouseover", mouseFunction);
         bitmap.on("mouseout", mouseFunction);
         bitmap.on("click", clickHandler);
-    };
+    };*/
 
     function clickHandler(ev) {
         if(isCanvas){

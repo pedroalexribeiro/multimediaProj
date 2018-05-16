@@ -2,13 +2,13 @@
 
 class Character {
     constructor(stage, x, y, otherChar) {
-        this.velocity = {x: 0, y: 2};
+        this.velocity = {x: 5, y: 2};
         this.keys = new Array();
         this.isMoving = false;
         this.isUsed = false;
         this.onGround = false;
         this.isWalkingRight = true;
-        this.hasChanged = false
+        this.hasChanged = false;
         if(!otherChar) {
             var spriteSheet = new createjs.SpriteSheet({
                 images: ["../Resources/Character/Running/R_SpriteSheet.png"],
@@ -37,7 +37,7 @@ class Character {
         }else{
             var spriteSheet = new createjs.SpriteSheet({
                 images: ["../Resources/Character/Running/R_SpriteSheet2.png"],
-                frames: {"height": 80, "width": 48, "regX": 0, "regY": 0},
+                frames: {"height": 84, "width": 48, "regX": 0, "regY": 0},
                 animations: {
                     "run_right": {
                         frames: [0, 1, 2, 1],
@@ -99,14 +99,14 @@ class Character {
                         this.isWalkingRight = false;
                         this.hasChanged = true;
                     }
-                    move.x = -5;
+                    move.x = -this.velocity.x;
                 }
                 if (this.keys[39]) {
                     if(!this.isWalkingRight) {
                         this.isWalkingRight = true;
                         this.hasChanged = true;
                     }
-                    move.x = 5;
+                    move.x = this.velocity.x;
                 }
             }
             collision = calculateCollision(this.spriteA, object, 'x', move);

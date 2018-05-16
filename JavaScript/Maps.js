@@ -10,7 +10,7 @@ function Maps(stage, levelStr) {
 
 
     //###################################################################
-    var hero = new Character(stage, 200, -200, false);
+    var hero = new Character(stage, 200, -200, true);
 
     var keyHandlers = function (ev) {
         hero.keys[ev.keyCode] = (ev.type === "keydown");
