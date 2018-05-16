@@ -1,6 +1,7 @@
 "   use strict";
 
 function Student_Menu(stage,save) {
+    console.log(save);
     document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
     var isCanvas = true;
 
@@ -81,7 +82,7 @@ function Student_Menu(stage,save) {
             x += 130;
         }
     }
-    
+
     function Click_Handler(ev) {
         if (ev.target.text === "Back") {
             stage.removeAllChildren();

@@ -36,7 +36,6 @@ function mainMenu() {
         TeacherProgress: 1
     };
     var save = loadGame('save');
-    console.log(save);
     if (save === null) {
         save = state;
         saveGame('save',save);
