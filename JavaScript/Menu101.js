@@ -8,14 +8,10 @@ function mainMenu() {
     /*Music Stuff*/
 
     createjs.Sound.alternateExtensions = ["mp3"];
-    createjs.Sound.on("fileload", soundLoad);
+    createjs.Sound.on("fileload", playMenuSong);
     createjs.Sound.registerSound("../Resources/Audio/menuMusic.mp3", "menuMusic", 1);
     createjs.Sound.registerSound("../Resources/Audio/gameMusic.mp3", "gameMusic", 2);
 
-    function soundLoad() {
-        var instance = createjs.Sound.play("menuMusic");
-        instance.on("complete", soundLoad);
-    }
 
     /*Background Information*/
     document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
@@ -102,6 +98,19 @@ function mouseHandler(ev, flags) {
         ev.target.alpha = (ev.type === "mouseover") ? 1 : 0.8;
         ev.target.shadow = (ev.type === "mouseover") ? new createjs.Shadow("#000000", 15, 15, 10) : new createjs.Shadow("#000000", 5, 5, 10);
     }
+}
+x
+
+function playMenuSong() {
+    createjs.Sound.stop("gameMusic");
+    var instance = createjs.Sound.play("menuMusic");
+    instance.on("complete", playMenuSong);
+}
+
+function playGameSong() {
+    createjs.Sound.stop("menuMusic");
+    var instance = createjs.Sound.play("gameMusic");
+    instance.on("complete", playGameSong);
 }
 
 function saveGame(SAVE, state) {
