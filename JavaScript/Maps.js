@@ -7,8 +7,6 @@ function Maps(stage, levelStr,save) {
     createMenu();
     loadSong();
     window.addEventListener("keydown", KeyHandler);
-
-
     var level;
     switch (levelStr) {
         case "level1":

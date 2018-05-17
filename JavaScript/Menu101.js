@@ -4,7 +4,13 @@
     window.addEventListener("load", mainMenu);
 }());
 
-function mainMenu() {
+function mainMenu(teste) {
+    var flags;
+    if(teste.type == "load"){
+        flags = new Flags();
+    }else{
+        flags = teste;
+    }
     /*Music Stuff*/
     var audioPath = "../Resources/Audio/";
     var sounds = [
@@ -67,23 +73,24 @@ function mainMenu() {
         stage.addChild(text);
     }
 
-    /*Flags for Options*/
-    var flags = new Flags();
-    createHelp(stage, flags);
-    createOptions(stage, flags);
-
     ContainerMenu(stage, "Help", flags);
     ContainerMenu(stage, "Options", flags);
+    createHelp(stage, flags);
+    createOptions(stage, flags);
 
     function clickHandler_SP_MP_AC(ev) {
         console.log(ev.target.text);
         if (flags.isCanvas && ev.target.text === "SinglePlayer") {
             stage.removeAllChildren();
-            SP_Menu(stage,save);
+            SP_Menu(stage,save, flags);
         }
         if(flags.isCanvas && ev.target.text === "MultiPlayer") {
             stage.removeAllChildren();
-            MapsTeacherMode(stage);
+            MapsTeacherMode(stage, flags);
+        }
+        if (flags.isCanvas && ev.target.text === "Arcade") {
+            stage.removeAllChildren();
+            SP_Menu(stage,save, flags);
         }
         if (flags.isCanvas && ev.target.text === "Quit") {
             //window.close();
