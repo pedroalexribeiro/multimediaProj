@@ -12,21 +12,12 @@ function mainMenu(teste) {
         flags = teste;
     }
     /*Music Stuff*/
-    var audioPath = "../Resources/Audio/";
-    var sounds = [
-        {id: "gameMusic", src: "gameMusic.mp3"},
-        {id: "another", src: "menuMusic.mp3"}
-    ];
 
     createjs.Sound.alternateExtensions = ["mp3"];
-    createjs.Sound.on("fileload", soundLoad);
+    createjs.Sound.on("fileload", playMenuSong);
     createjs.Sound.registerSound("../Resources/Audio/menuMusic.mp3", "menuMusic", 1);
     createjs.Sound.registerSound("../Resources/Audio/gameMusic.mp3", "gameMusic", 2);
 
-    function soundLoad() {
-        var instance = createjs.Sound.play("menuMusic");
-        instance.on("complete", soundLoad);
-    }
 
     /*Background Information*/
     document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
@@ -86,7 +77,7 @@ function mainMenu(teste) {
         }
         if(flags.isCanvas && ev.target.text === "MultiPlayer") {
             stage.removeAllChildren();
-            MapsTeacherMode(stage, flags);
+            MapsTeacherMode(stage,"level1",save);
         }
         if (flags.isCanvas && ev.target.text === "Arcade") {
             stage.removeAllChildren();
@@ -107,6 +98,26 @@ function customize(object, canvas, number) {
     object.x = (canvas.width / 2) - (b.width / 2);
     object.y = (canvas.height / 2.3) + number * 50;
     object.alpha = 0.8;
+
+}
+function mouseHandler(ev, flags) {
+    if (flags.isCanvas || ev.target.text === "Back" || ev.target.text === "On" || ev.target.text === "Off" || ev.target.text === "Exit" || ev.target.text === "Continue" || ev.target.text === "Yes" || ev.target.text === "No") {
+        ev.target.alpha = (ev.type === "mouseover") ? 1 : 0.8;
+        ev.target.shadow = (ev.type === "mouseover") ? new createjs.Shadow("#000000", 15, 15, 10) : new createjs.Shadow("#000000", 5, 5, 10);
+    }
+}
+x
+
+function playMenuSong() {
+    createjs.Sound.stop("gameMusic");
+    var instance = createjs.Sound.play("menuMusic");
+    instance.on("complete", playMenuSong);
+}
+
+function playGameSong() {
+    createjs.Sound.stop("menuMusic");
+    var instance = createjs.Sound.play("gameMusic");
+    instance.on("complete", playGameSong);
 }
 
 function saveGame(SAVE, state) {

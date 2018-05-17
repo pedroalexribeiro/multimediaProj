@@ -86,6 +86,7 @@ function Student_Menu(stage,save, flags) {
     }
 
     function Click_Handler(ev) {
+        console.log(ev.target.text);
         if (ev.target.text === "Back") {
             stage.removeAllChildren();
             SP_Menu(stage,save, flags);
@@ -97,6 +98,8 @@ function Student_Menu(stage,save, flags) {
             stage.removeAllChildren();
             Maps(stage,"level2",save);
         } else if (ev.target.text === "level3") {
+            stage.removeAllChildren();
+            Maps(stage,"level3",save);
         }
     }
 
