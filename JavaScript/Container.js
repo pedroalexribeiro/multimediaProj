@@ -22,7 +22,7 @@ function createHelp(stage, flags) {
     bitmap.on("mouseout", mouseFunction);
     var teste = function(ev){
         containerMove(stage, flags, ev);
-    }
+    };
     bitmap.on("click", teste);
     help.bitmap = bitmap;
 }
@@ -199,7 +199,7 @@ function customizeContainer(object, container, iterator, hitBox, flag, flags) {
         containerReset(ev, flags)
     }
     var audioState = function (ev) {
-        clickHandlerAudio(ev, flags);
+        clickHandlerAudio(ev, flags,"menuMusic");
     };
 
     var b = object.getBounds();
@@ -242,7 +242,7 @@ function mouseHandlerContainer(ev, flags) {
     }
 }
 
-function clickHandlerAudio(ev, flags) {
+function clickHandlerAudio(ev, flags,musicId) {
     console.log(ev.target.id);
     if (ev.target.id === "SoundState") {
         if (ev.target.text === "On") {
@@ -261,7 +261,7 @@ function clickHandlerAudio(ev, flags) {
             ev.target.text = "Off";
         }
         else if (ev.target.text === "Off") {
-            createjs.Sound.play("menuMusic");
+            createjs.Sound.play(musicId);
             flags.mState = true;
             ev.target.text = "On";
         }
