@@ -29,6 +29,7 @@ function mainMenu(teste) {
 
     //SaveGame Loader
     var state = {
+        Senior: false,
         StudentProgress: 1,
         TeacherProgress: 1
     };
@@ -75,14 +76,17 @@ function mainMenu(teste) {
             stage.removeAllChildren();
             SP_Menu(stage,save, flags, false);
         }
-        if(flags.isCanvas && ev.target.text === "MultiPlayer") {
+        else if(flags.isCanvas && ev.target.text === "MultiPlayer") {
 
         }
-        if (flags.isCanvas && ev.target.text === "Arcade") {
+        else if (flags.isCanvas && ev.target.text === "Arcade") {
             stage.removeAllChildren();
             SP_Menu(stage,save, flags, true);
+        }else if(flags.isCanvas && ev.target.text === "Extras"){
+            stage.removeAllChildren();
+            Extras(stage,save,flags);
         }
-        if (flags.isCanvas && ev.target.text === "Quit") {
+        else if (flags.isCanvas && ev.target.text === "Quit") {
             //window.close();
         }
     }
@@ -119,7 +123,6 @@ function playGameSong() {
 }
 
 function saveGame(SAVE, state) {
-    console.log(state.StudentProgress + " " + state.TeacherProgress);
     localStorage.setItem(SAVE, JSON.stringify(state));
 }
 
