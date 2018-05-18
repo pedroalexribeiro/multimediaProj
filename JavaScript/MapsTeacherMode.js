@@ -28,10 +28,18 @@ function MapsTeacherMode(stage, levelStr, save) {
             level = new LevelOneTeacherMode(stage);
             break;
         case "level2":
+            level = new LevelTwoTeacherMode(stage);
             break;
         case "level3":
-            //level = new LevelThree(stage);
+            level = new LevelThreeTeacherMode(stage);
             break;
+    }
+
+    for(let i=0; i<level.lives; i++) {
+        stage.addChild(level.hearts[i]);
+        level.hearts[i].x = 10+(i*5) + i*32;
+        level.hearts[i].y = 10;
+        stage.update();
     }
 
     var gameStart = createjs.Ticker.getTime(true);
@@ -57,17 +65,24 @@ function MapsTeacherMode(stage, levelStr, save) {
         if (!event.paused) {
             for (let i = 0; i < level.npcs.length; i++) {
                 if (level.npcs[i].isUsed == true) {
-                    if (level.npcs[i].spriteA.x > 848 || level.npcs[i].spriteA.x < -48) {
+                    if (level.npcs[i].spriteA.x > 848 || level.npcs[i].spriteA.x < -48 || (level.npcs[i].spriteA.y > 800 + level.npcs[i].spriteA.getTransformedBounds().height)) {
+                        console.log("faleceu");
                         level.npcs[i].isUsed = false;
                         level.npcs[i].spriteA.visible = false;
                         level.lives -= 1;
+                        level.hearts[level.lives].visible = false;
                     } else {
                         if (level.npcs[i].spriteA.originalX < 400) {
-                            level.npcs[i].moveRight();
+                            if(level.npcs[i].spriteA.x == level.npcs[i].spriteA.originalX) {
+                                level.npcs[i].spriteA.gotoAndPlay("run_right");
+                            }
+                            level.npcs[i].moveRight(level.platforms);
                         } else {
-                            level.npcs[i].moveLeft();
+                            if(level.npcs[i].spriteA.x == level.npcs[i].spriteA.originalX) {
+                                level.npcs[i].spriteA.gotoAndPlay("run_left");
+                            }
+                            level.npcs[i].moveLeft(level.platforms);
                         }
-                        level.npcs[i].spriteA.gotoAndPlay("run");
                         stage.update();
                     }
                 }
@@ -82,6 +97,7 @@ function MapsTeacherMode(stage, levelStr, save) {
                         if (level.npcs[i].isUsed == false) {
                             level.npcs[i].spriteA.originalX = level.position(level.npcs[i].spriteA.getTransformedBounds().width, stage);
                             level.npcs[i].spriteA.x = level.npcs[i].spriteA.originalX;
+                            level.npcs[i].spriteA.y = 0;
                             level.npcs[i].spriteA.visible = true;
                             level.npcs[i].isUsed = true;
                             break;
@@ -371,7 +387,13 @@ function MapsTeacherMode(stage, levelStr, save) {
 class MapTeacherMode {
     constructor() {
         this.platforms = new Array();
+        this.hearts = new Array();
         this.npcs = new Array();
+        this.lives = 3;
+
+        for(let i=0; i<this.lives; i++) {
+            this.hearts.push(new createjs.Bitmap("../Resources/levels/Extras/life.png"));
+        }
     }
 }
 
@@ -387,12 +409,11 @@ class LevelOneTeacherMode extends MapTeacherMode {
         //Level Game Related Information
         this.totalTime = 15000; // Tempo total do jogo
         this.npcInterval = 2000; //Intervalo entre cada NPC
-        this.lives = 3;
 
         //Level NPCs
         var neededNPCs = this.totalTime / this.npcInterval;
         for (let i = 0; i < neededNPCs; i++) {
-            this.npcs.push(new Character(stage, 200, 325));
+            this.npcs.push(new Character(stage, 200, 0));
             this.npcs[i].spriteA.visible = false;
         }
     }
@@ -400,10 +421,69 @@ class LevelOneTeacherMode extends MapTeacherMode {
     position(widthObj, stage) { //For level One
         var side = Math.random();
         if (side > 0.5) { // Right
-            var xNew = stage.canvas.width + widthObj;
+            var xNew = stage.canvas.width - widthObj;
         } else { //Left
-            var xNew = 0 - widthObj;
+            var xNew = 1;
         }
         return xNew;
+    }
+}
+
+class LevelTwoTeacherMode extends MapTeacherMode {
+    constructor(stage) {
+        super(stage);
+        //Level Background
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/test.png)";
+
+        //Level Platforms
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level2/Slab.png", 0, 400));
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level2/Slab.png", 300, 400));
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level2/Slab.png", 600, 400));
+
+        //Level Game Related Information
+        this.totalTime = 30000; // Tempo total do jogo
+        this.npcInterval = 1000; //Intervalo entre cada NPC
+
+        //Level NPCs
+        var neededNPCs = this.totalTime / this.npcInterval;
+        for (let i = 0; i < neededNPCs; i++) {
+            this.npcs.push(new Character(stage, 200, 0));//325
+            this.npcs[i].spriteA.visible = false;
+        }
+    }
+
+    position(widthObj, stage) { //For level One
+        var x = Math.floor(Math.random() * 799);
+        return x;
+    }
+}
+
+class LevelThreeTeacherMode extends MapTeacherMode {
+    constructor(stage) {
+        super(stage);
+        //Level Background
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/test.png)";
+
+        //Level Platforms
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level3/platform.png", 0, 100));
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level3/platform.png", 200, 250));
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level3/platform.png", 400, 400));
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level3/platform.png", 600, 550));
+
+        //Level Game Related Information
+        this.totalTime = 60000; // Tempo total do jogo
+        this.npcInterval = 800; //Intervalo entre cada NPC
+
+        //Level NPCs
+        var neededNPCs = this.totalTime / this.npcInterval;
+        for (let i = 0; i < neededNPCs; i++) {
+            this.npcs.push(new Character(stage, 200, 0));//325
+            this.npcs[i].spriteA.visible = false;
+        }
+    }
+
+    position(widthObj, stage) { //For level One
+        var x = Math.floor(Math.random() * 799);
+        return x;
     }
 }
