@@ -77,8 +77,7 @@ function mainMenu() {
             SP_Menu(stage,save);
         }
         if(flags.isCanvas && ev.target.text === "MultiPlayer") {
-            stage.removeAllChildren();
-            MapsTeacherMode(stage,"level1",save);
+
         }
         if (flags.isCanvas && ev.target.text === "Quit") {
             //window.close();

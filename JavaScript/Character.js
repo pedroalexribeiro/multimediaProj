@@ -116,12 +116,51 @@ class Character {
             this.spriteA.x += move.x;
         }
     }
-    moveLeft() {
-        this.spriteA.x += -5;
+
+    moveLeft(platforms) {
+        if(this.spriteA.x < 800 && this.spriteA.x > 0) {
+            var move = {x: 0, y: 7};
+            var collision = null;
+
+            collision = calculateCollision(this.spriteA, platforms, 'y', move);
+
+            if (!collision) {
+                if (this.onGround) {
+                    this.onGround = false;
+                }
+            } else {
+                if (move.y >= 0) {
+                    this.onGround = true;
+                }
+            }
+            this.spriteA.y += move.y;
+        }
+        if(this.onGround) {
+            this.spriteA.x -= 5;
+        }
     }
 
-    moveRight() {
-        this.spriteA.x += 5;
+    moveRight(platforms) {
+        if(this.spriteA.x < 800 && this.spriteA.x > 0) {
+            var move = {x: 0, y: 7};
+            var collision = null;
+
+            collision = calculateCollision(this.spriteA, platforms, 'y', move);
+
+            if (!collision) {
+                if (this.onGround) {
+                    this.onGround = false;
+                }
+            } else {
+                if (move.y >= 0) {
+                    this.onGround = true;
+                }
+            }
+            this.spriteA.y += move.y;
+        }
+        if(this.onGround) {
+            this.spriteA.x += 5;
+        }
     }
 
     collide(objects, menuFlag){

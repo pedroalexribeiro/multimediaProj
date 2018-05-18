@@ -66,14 +66,21 @@ function Teacher_Menu(stage,save) {
         };
     }
 
-
-
     function Click_Handler(ev){
         console.log(ev.target.text);
 
         if(ev.target.text === "Back") {
             stage.removeAllChildren();
             SP_Menu(stage,save);
+        } else if(ev.target.text === "level1") {
+            stage.removeAllChildren();
+            MapsTeacherMode(stage,"level1",save);
+        } else if(ev.target.text === "level2") {
+            stage.removeAllChildren();
+            MapsTeacherMode(stage,"level2",save);
+        } else if(ev.target.text === "level3") {
+            stage.removeAllChildren();
+            MapsTeacherMode(stage,"level3",save);
         }
     }
 
