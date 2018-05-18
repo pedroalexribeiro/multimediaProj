@@ -5,7 +5,7 @@ function Maps(stage, levelStr, save, flags, isArcade) {
     var container, containerEx, timer, init, goodJob, gameOver, msg, flag, flag2, timeoutId;
     var menuFlag = false, isExit = false, lost = false;
     createMenu();
-    playGameSong();
+    playGameSong(flags);
     window.addEventListener("keydown", KeyHandler);
     var level;
     switch (levelStr) {
@@ -55,7 +55,7 @@ function Maps(stage, levelStr, save, flags, isArcade) {
 
     function handle() {
         //##################################################
-        level.hero.move(level.platforms, menuFlag);
+        level.hero.move(level.platforms, menuFlag, flags);
         if (level.hero.isMoving === false) {
             if (level.hero.isWalkingRight) {
                 level.hero.spriteA.gotoAndPlay("idle_right");
@@ -73,7 +73,7 @@ function Maps(stage, levelStr, save, flags, isArcade) {
             }
         }
         stage.update();
-        var test = level.hero.collide(level.objects, menuFlag);
+        var test = level.hero.collide(level.objects, menuFlag, flags);
         if (test === 1) { // gameOver
             gameStatus("gameOver", save);
         }
@@ -215,7 +215,7 @@ function Maps(stage, levelStr, save, flags, isArcade) {
             isExit = true;
         }
         else if (ev.target.text === "Yes") {
-            playMenuSong();
+            playMenuSong(flags);
             createjs.Ticker.paused = false;
             createjs.Ticker.removeEventListener("tick", handle);
             window.removeEventListener("keydown", KeyHandler);
@@ -230,7 +230,8 @@ function Maps(stage, levelStr, save, flags, isArcade) {
 
         else if (ev.keyCode === 27 && lost) {
             lost = false;
-            playMenuSong();
+            playMenuSong(flags);
+
             stage.removeAllChildren();
             window.removeEventListener("keydown", KeyHandler);
             Student_Menu(stage, save, flags, isArcade);
@@ -242,11 +243,11 @@ function Maps(stage, levelStr, save, flags, isArcade) {
         lost = true;
 
         if (Flag === "gameOver") {
-            playSound(true,"gameOver");
+            playSound(true, "gameOver", flags);
             gameOver.bitmap.alpha = 1;
             stage.addChild(gameOver.bitmap);
         } else if (Flag === "goodJob") {
-            playSound("true","goodJob");
+            playSound("true", "goodJob", flags);
             if (level.lvl >= save.StudentProgress || save.StudentProgress < 5) {
                 save.StudentProgress += 1;
                 saveGame('save', save);
@@ -262,11 +263,11 @@ function Maps(stage, levelStr, save, flags, isArcade) {
 
     function createMenu() {
         var audioFunction = function (ev) {
-            clickHandlerAudio(ev, flags);
-        }
+            clickHandlerAudio(ev, flags, "gameMusic");
+        };
         var mouseFunction = function (ev) {
             mouseHandler(ev, flags);
-        }
+        };
         //Loads container
         var img = new Image();
         img.src = "../Resources/Options/ChalkBoard.png";
@@ -331,34 +332,49 @@ function Maps(stage, levelStr, save, flags, isArcade) {
             sounds.y = img.height * 0.55;
             container.addChild(sounds);
 
-            //On/Off Buttons and Hitboxes
-            var Sound_btn = new createjs.Text("On", "35px Georgia", "#ffffff");
-            Sound_btn.id = "Sound_btn";
-            Sound_btn.alpha = 0.8;
-            Sound_btn.x = img.width / 2 - Sound_btn.getMeasuredWidth() / 2;
-            Sound_btn.y = img.height * 0.55;
-            Sound_btn.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-            var hit_ON = new createjs.Shape();
-            hit_ON.graphics.beginFill("#000").drawRect(0, 0, Sound_btn.getMeasuredWidth(), Sound_btn.getMeasuredHeight());
-            Sound_btn.hitArea = hit_ON;
-            Sound_btn.on("mouseover", mouseFunction);
-            Sound_btn.on("mouseout", mouseFunction);
-            Sound_btn.on("click", audioFunction);
-            container.addChild(Sound_btn);
 
-            var Music_btn = new createjs.Text("On", "35px Georgia", "#ffffff");
-            Music_btn.id = "Music_btn";
-            Music_btn.alpha = 0.8;
-            Music_btn.x = img.width / 2 - Music_btn.getMeasuredWidth() / 2;
-            Music_btn.y = img.height * 0.4;
-            Music_btn.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+            //On/Off Buttons and Hitboxes
+            var soundButton = new createjs.Text("", "35px Georgia", "#ffffff");
+            if (flags.sState) {
+                soundButton.text = "On";
+                soundButton.id = "SoundState";
+            }
+            else {
+                soundButton.text = "Off";
+                soundButton.id = "SoundState";
+            }
+            soundButton.alpha = 0.8;
+            soundButton.x = img.width / 2 - soundButton.getMeasuredWidth() / 2;
+            soundButton.y = img.height * 0.55;
+            soundButton.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+            var hit_ON = new createjs.Shape();
+            hit_ON.graphics.beginFill("#000").drawRect(0, 0, soundButton.getMeasuredWidth(), soundButton.getMeasuredHeight());
+            soundButton.hitArea = hit_ON;
+            soundButton.on("mouseover", mouseFunction);
+            soundButton.on("mouseout", mouseFunction);
+            soundButton.on("click", audioFunction);
+            container.addChild(soundButton);
+
+            var musicButton = new createjs.Text("", "35px Georgia", "#ffffff");
+            if (flags.mState) {
+                musicButton.text = "On";
+                musicButton.id = "MusicState";
+            }
+            else {
+                musicButton.text = "Off";
+                musicButton.id = "MusicState";
+            }
+            musicButton.alpha = 0.8;
+            musicButton.x = img.width / 2 - musicButton.getMeasuredWidth() / 2;
+            musicButton.y = img.height * 0.4;
+            musicButton.shadow = new createjs.Shadow("#000000", 5, 5, 10);
             var hit_ON_M = new createjs.Shape();
-            hit_ON_M.graphics.beginFill("#000").drawRect(0, 0, Music_btn.getMeasuredWidth(), Music_btn.getMeasuredHeight());
-            Music_btn.hitArea = hit_ON_M;
-            Music_btn.on("mouseover", mouseFunction);
-            Music_btn.on("mouseout", mouseFunction);
-            Music_btn.on("click", audioFunction);
-            container.addChild(Music_btn);
+            hit_ON_M.graphics.beginFill("#000").drawRect(0, 0, musicButton.getMeasuredWidth(), musicButton.getMeasuredHeight());
+            musicButton.hitArea = hit_ON_M;
+            musicButton.on("mouseover", mouseFunction);
+            musicButton.on("mouseout", mouseFunction);
+            musicButton.on("click", audioFunction);
+            container.addChild(musicButton);
         };
 
         createExitMenu();
@@ -459,16 +475,21 @@ function Maps(stage, levelStr, save, flags, isArcade) {
         createjs.Ticker.paused = false;
     }
 
-    function playMenuSong() {
-        createjs.Sound.stop("gameMusic");
-        var instance = createjs.Sound.play("menuMusic");
-        instance.on("complete", playMenuSong);
+    function playMenuSong(flags) {
+        createjs.Sound.stop("gameOver");
+        if (flags.mState) {
+            createjs.Sound.stop("gameMusic");
+            var instance = createjs.Sound.play("menuMusic");
+            instance.on("complete", playMenuSong);
+        }
     }
 
-    function playGameSong() {
-        createjs.Sound.stop("menuMusic");
-        var instance = createjs.Sound.play("gameMusic");
-        instance.on("complete", playGameSong);
+    function playGameSong(flags) {
+        if (flags.mState) {
+            createjs.Sound.stop("menuMusic");
+            var instance = createjs.Sound.play("gameMusic");
+            instance.on("complete", playGameSong);
+        }
     }
 
 }
@@ -690,11 +711,11 @@ class LevelFour extends Map {
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level4/background.png)";
 
         //Level Platforms
-        let x= 350;
-        let y=230;
+        let x = 350;
+        let y = 230;
         this.platforms.push(new Platform(stage, "../Resources/levels/Level4/pongPlatform.png", x, y));
         x = 480;
-        y= 420;
+        y = 420;
         this.platforms.push(new Platform(stage, "../Resources/levels/Level4/tablePlatform.png", x, y));
         x = 230;
         this.platforms.push(new Platform(stage, "../Resources/levels/Level4/tablePlatform.png", x, y));
@@ -775,10 +796,10 @@ class LevelFive extends Map {
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level5/background.png)";
 
         //Level Platforms
-        let x= 350;
-        let y=200;
+        let x = 350;
+        let y = 200;
         this.platforms.push(new Platform(stage, "../Resources/levels/Level5/platformPcG.png", x, y));
-        y=400;
+        y = 400;
         x = 320;
         this.platforms.push(new Platform(stage, "../Resources/levels/Level5/platformKeyboardG.png", x, y));
         //Level Buffs

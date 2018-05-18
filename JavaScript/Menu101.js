@@ -6,13 +6,12 @@
 
 function mainMenu(teste) {
     var flags;
-    if(teste.type === "load"){
+    if (teste.type === "load") {
         flags = new Flags();
-    }else{
+    } else {
         flags = teste;
     }
-    /*Music Stuff*/
-
+    /*Music/Sound Stuff*/
     createjs.Sound.alternateExtensions = ["mp3"];
     createjs.Sound.on("fileload", playMenuSong);
     createjs.Sound.registerSound("../Resources/Audio/menuMusic.mp3", "menuMusic", 1);
@@ -23,7 +22,6 @@ function mainMenu(teste) {
     createjs.Sound.registerSound("../Resources/Audio/jump.wav", "jump", 2);
     createjs.Sound.registerSound("../Resources/Audio/gulp.mp3", "gulp", 2);
     createjs.Sound.registerSound("../Resources/Audio/lives.wav", "lives", 2);
-
 
 
     /*Background Information*/
@@ -45,7 +43,7 @@ function mainMenu(teste) {
     save = null;
     if (save === null) {
         save = state;
-        saveGame('save',save);
+        saveGame('save', save);
     }
 
     var mouseFunctionMain = function (ev) {
@@ -74,7 +72,7 @@ function mainMenu(teste) {
         stage.addChild(text);
     }
 
-    ContainerMenu(stage, "Help", flags,"You really clicked help on the Main screen?");
+    ContainerMenu(stage, "Help", flags, "You really clicked help on the Main screen?");
     ContainerMenu(stage, "Options", flags);
     createHelp(stage, flags);
     createOptions(stage, flags);
@@ -83,20 +81,20 @@ function mainMenu(teste) {
         console.log(ev.target.text);
         if (flags.isCanvas && ev.target.text === "SinglePlayer") {
             stage.removeAllChildren();
-            SP_Menu(stage,save, flags, false);
+            SP_Menu(stage, save, flags, false);
         }
-        else if(flags.isCanvas && ev.target.text === "MultiPlayer") {
+        else if (flags.isCanvas && ev.target.text === "MultiPlayer") {
 
         }
         else if (flags.isCanvas && ev.target.text === "Arcade") {
             stage.removeAllChildren();
-            SP_Menu(stage,save, flags, true)
-        }else if (flags.isCanvas && ev.target.text === "Leaderboard") {
+            SP_Menu(stage, save, flags, true)
+        } else if (flags.isCanvas && ev.target.text === "Leaderboard") {
             stage.removeAllChildren();
-            Leaderboard(stage, save,flags);
-        }else if(flags.isCanvas && ev.target.text === "Extras"){
+            Leaderboard(stage, save, flags);
+        } else if (flags.isCanvas && ev.target.text === "Extras") {
             stage.removeAllChildren();
-            Extras(stage,save,flags);
+            Extras(stage, save, flags);
         }
         else if (flags.isCanvas && ev.target.text === "Quit") {
             //window.close();
@@ -115,6 +113,7 @@ function customize(object, canvas, number) {
     object.alpha = 0.8;
 
 }
+
 function mouseHandler(ev, flags) {
     if (flags.isCanvas || ev.target.text === "Back" || ev.target.text === "On" || ev.target.text === "Off" || ev.target.text === "Exit" || ev.target.text === "Continue" || ev.target.text === "Yes" || ev.target.text === "No") {
         ev.target.alpha = (ev.type === "mouseover") ? 1 : 0.8;
@@ -128,17 +127,14 @@ function playMenuSong() {
     instance.on("complete", playMenuSong);
 }
 
-function playGameSong() {
-    createjs.Sound.stop("menuMusic");
-    var instance = createjs.Sound.play("gameMusic");
-    instance.on("complete", playGameSong);
-}
 
-function playSound(flag,string){
-    if(flag){
-        createjs.Sound.stop("gameMusic");
+function playSound(flag, string, flags) {
+    if (flags.sState) {
+        if (flag) {
+            createjs.Sound.stop("gameMusic");
+        }
+        createjs.Sound.play(string);
     }
-    createjs.Sound.play(string);
 }
 
 function saveGame(SAVE, state) {
