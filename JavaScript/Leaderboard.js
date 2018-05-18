@@ -101,7 +101,7 @@ function Leaderboard(stage, save, flags) {
             }
             for(let text of arrayButtons) {
                 if(text.id === ite.toString()){
-                    text.text = ite.toString() + " " + "----->" + " " + save[mode][ite.toString()].toString();
+                    text.text = ite.toString() + " " + "----->" + " " + save[mode][number.toString()][ite.toString()].toString();
                     ite++;
                 }
             }

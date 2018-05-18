@@ -534,9 +534,9 @@ class LevelOne extends Map {
 
         //Level Game Related Information
         this.lvl = 1;
-        this.totalTime = 15000; // Tempo total do jogo
-        this.objInterval = 2000; //Intervalo entre cada Objeto
-        this.speed = [1300, 1700]; //Max e Min de speed dos Objetos
+        this.totalTime = 30000; // Tempo total do jogo
+        this.objInterval = 1500; //Intervalo entre cada Objeto
+        this.speed = [1200, 1600]; //Max e Min de speed dos Objetos
         this.nObj = 1;
         this.nBuffs = 2;
     }
@@ -589,9 +589,9 @@ class LevelTwo extends Map {
 
         //Level Game Related Information
         this.lvl = 2;
-        this.totalTime = 15000; // Tempo total do jogo
+        this.totalTime = 25000; // Tempo total do jogo
         this.objInterval = 1600; //Intervalo entre cada Objeto
-        this.speed = [1250, 1550]; //Max e Min de speed dos Objetos
+        this.speed = [1300, 1600]; //Max e Min de speed dos Objetos
         this.nObj = 2;
         this.nBuffs = 2;
     }
