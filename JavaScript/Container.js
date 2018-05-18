@@ -55,7 +55,8 @@ function createOptions(stage, flags) {
     options.bitmap = bitmap;
 }
 
-function ContainerMenu(stage, opt, flags) {
+function ContainerMenu(stage, opt, flags,string) {
+    var texto = string || null;
     var mouseFunction = function(ev){
         mouseHandlerContainer(ev, flags);
     };
@@ -85,6 +86,12 @@ function ContainerMenu(stage, opt, flags) {
             title.x = img.width / 2 - title.getMeasuredWidth() / 2;
             title.y = title.getMeasuredHeight();
             container.addChild(title);
+
+            var txt = new createjs.Text(texto, "20px Georgia", "#ffffff");
+            txt.alpha = 0.8;
+            txt.x = img.width / 2 - txt.getMeasuredWidth() / 2;
+            txt.y = img.height * 0.5;
+            container.addChild(txt);
 
             var back2 = new createjs.Text("Back", "35px Georgia", "#ffffff");
             back2.id = "Help";

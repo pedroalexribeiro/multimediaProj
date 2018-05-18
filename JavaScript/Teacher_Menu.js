@@ -1,9 +1,9 @@
 "use strict";
 
-function Teacher_Menu(stage,save, flags, isArcade) {
-    document.getElementById("Menu").style.backgroundImage="url(../Resources/test.png)";
+function Teacher_Menu(stage, save, flags, isArcade) {
+    document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
 
-    var mouseFunction = function(ev){
+    var mouseFunction = function (ev) {
         mouseHandler(ev, flags);
     };
 
@@ -14,114 +14,133 @@ function Teacher_Menu(stage,save, flags, isArcade) {
     arrayBoxes.push(new createjs.Shape);
     arrayBoxes.push(new createjs.Shape);
 
-    ContainerMenu(stage, "Help", flags);
-    ContainerMenu(stage, "Options", flags);
-    createHelp(stage, flags);
-    createOptions(stage, flags);
 
-    var count=1;
-    var width=100;
-    var height=100;
-    var x = stage.canvas.width/6 - width/2;
-    var y = stage.canvas.height/2 - height/3;
-    for(let level of arrayBoxes){
-        var img = new Image();
-        img.src = "../Resources/Background.png";
-        img.onload = function () {
-            //Image
-            var m = new createjs.Matrix2D();
-            m.translate(x,y);
-            m.scale(width/img.width,height/img.height);
+    var count = 1;
+    var width = 100;
+    var height = 100;
+    var x = stage.canvas.width / 6 - width / 2;
+    var y = stage.canvas.height / 2 - height / 3;
+    var queue;
+    queue = new createjs.LoadQueue(false);
 
-            //level Draw
-            level.graphics.beginStroke("#fff");
-            level.graphics.beginBitmapFill(img,"no-repeat",m);
-            level.graphics.drawRect(x,y,width,height);
+    queue.loadFile({id: "lock", src: "../Resources/Options/lock.jpg"});
+    queue.loadFile({id: "image", src: "../Resources/test.png"});
+    queue.load();
+    queue.on("complete", loadLevels);
 
+    function loadLevels() {
+        for (let level of arrayBoxes) {
+            if (count > save.TeacherProgress) {
+                var bitmap = new createjs.Bitmap(queue.getResult("lock"));
+                var m = new createjs.Matrix2D();
+                m.translate(x, y);
+                m.scale(width / bitmap.image.width, height / bitmap.image.height);
 
-            //Hitbox && Effects
-            var hit_HP = new createjs.Shape();
-            hit_HP.graphics.beginFill("#ff000").drawRect(x,y,width,height);
-            level.hitArea = hit_HP;
-            level.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-            level.alpha = 0.8;
+                //level Draw
+                level.graphics.beginStroke("#fff");
+                level.graphics.beginBitmapFill(bitmap.image, "no-repeat", m);
+                level.graphics.drawRect(x, y, width, height);
 
-            //Events
-            if(!isArcade){
-                level.on("click",Click_Handler);
-            }else{
-                level.on("click",clickHandlerArcade);
+            } else {
+                var bitmap = new createjs.Bitmap(queue.getResult("image"));
+
+                var m = new createjs.Matrix2D();
+                m.translate(x, y);
+                m.scale(width / bitmap.image.width, height / bitmap.image.height);
+
+                //level Draw
+                level.graphics.beginStroke("#fff");
+                level.graphics.beginBitmapFill(bitmap.image.src, "no-repeat", m);
+                level.graphics.drawRect(x, y, width, height);
+
+                //Hitbox && Effects
+                var hit_HP = new createjs.Shape();
+                hit_HP.graphics.beginFill("#ff000").drawRect(x, y, width, height);
+                level.hitArea = hit_HP;
+                level.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+                level.alpha = 0.8;
+
+                //Events
+                if (!isArcade) {
+                    level.on("click", Click_Handler);
+                } else {
+                    level.on("click", clickHandlerArcade);
+                }
+                level.on("mouseover", mouseFunction);
+                level.on("mouseout", mouseFunction);
             }
-            level.on("mouseover",mouseFunction);
-            level.on("mouseout",mouseFunction);
-
-
             //Title
-            var title = new createjs.Text("Level"+count, "22px Georgia", "#fff");
-            title.x = x + title.getMeasuredWidth()/3;
+            var title = new createjs.Text("Level" + count, "22px Georgia", "#fff");
+            title.x = x + title.getMeasuredWidth() / 3;
             title.y = y + 110;
             stage.addChild(title);
-
 
             //Update
             level.text = "level" + count;
             stage.addChild(level);
             count += 1;
-            x +=130;
-        };
+            x += 130;
+        }
+        ContainerMenu(stage, "Help", flags);
+        ContainerMenu(stage, "Options", flags);
+        createHelp(stage, flags);
+        createOptions(stage, flags);
     }
 
     function clickHandlerArcade(ev) {
-        if(ev.target.text === "Back") {
-            stage.removeAllChildren();
-            SP_Menu(stage,save, flags, isArcade);
-        } else if(ev.target.text === "level1") {
-            stage.removeAllChildren();
-            MapsTeacherModeArcade(stage,"level1",save, flags, isArcade);
-        } else if(ev.target.text === "level2") {
-            stage.removeAllChildren();
-            MapsTeacherModeArcade(stage,"level2",save, flags, isArcade);
-        } else if(ev.target.text === "level3") {
-            stage.removeAllChildren();
-            MapsTeacherModeArcade(stage,"level3",save, flags, isArcade);
+        if (flags.isCanvas) {
+            if (ev.target.text === "Back") {
+                stage.removeAllChildren();
+                SP_Menu(stage, save, flags, isArcade);
+            } else if (ev.target.text === "level1") {
+                stage.removeAllChildren();
+                MapsTeacherModeArcade(stage, "level1", save, flags, isArcade);
+            } else if (ev.target.text === "level2") {
+                stage.removeAllChildren();
+                MapsTeacherModeArcade(stage, "level2", save, flags, isArcade);
+            } else if (ev.target.text === "level3") {
+                stage.removeAllChildren();
+                MapsTeacherModeArcade(stage, "level3", save, flags, isArcade);
+            }
         }
     }
-    
-    function Click_Handler(ev){
-        console.log(ev.target.text);
-        if(ev.target.text === "Back") {
-            stage.removeAllChildren();
-            SP_Menu(stage,save, flags, isArcade);
-        } else if(ev.target.text === "level1") {
-            stage.removeAllChildren();
-            MapsTeacherMode(stage,"level1",save, flags, isArcade);
-        } else if(ev.target.text === "level2") {
-            stage.removeAllChildren();
-            MapsTeacherMode(stage,"level2",save, flags, isArcade);
-        } else if(ev.target.text === "level3") {
-            stage.removeAllChildren();
-            MapsTeacherMode(stage,"level3",save, flags, isArcade);
-        } else if(ev.target.text === "level4") {
-            stage.removeAllChildren();
-            MapsTeacherMode(stage,"level4",save, flags, isArcade);
+
+    function Click_Handler(ev) {
+        if (flags.isCanvas) {
+            if (ev.target.text === "Back") {
+                stage.removeAllChildren();
+                SP_Menu(stage, save, flags, isArcade);
+            } else if (ev.target.text === "level1") {
+                stage.removeAllChildren();
+                MapsTeacherMode(stage, "level1", save, flags, isArcade);
+            } else if (ev.target.text === "level2") {
+                stage.removeAllChildren();
+                MapsTeacherMode(stage, "level2", save, flags, isArcade);
+            } else if (ev.target.text === "level3") {
+                stage.removeAllChildren();
+                MapsTeacherMode(stage, "level3", save, flags, isArcade);
+            } else if (ev.target.text === "level4") {
+                stage.removeAllChildren();
+                MapsTeacherMode(stage, "level4", save, flags, isArcade);
+            }
         }
     }
 
     //Back Button
     var back = (new createjs.Text("Back", "35px Georgia", "#ffffff"));
-    customize(back,stage.canvas,4);
+    customize(back, stage.canvas, 4);
     var hit = new createjs.Shape(); //Creates Hitbox
     hit.graphics.beginFill("#000").drawRect(0, 0, back.getMeasuredWidth(), back.getMeasuredHeight());
     back.hitArea = hit;
     back.on("mouseover", mouseFunction);
     back.on("mouseout", mouseFunction);
-    if(!isArcade){
-        back.on("click",Click_Handler);
-    }else{
-        back.on("click",clickHandlerArcade);
+    if (!isArcade) {
+        back.on("click", Click_Handler);
+    } else {
+        back.on("click", clickHandlerArcade);
     }
     stage.addChild(back);
 
-    createjs.Ticker.framerate =60;
+    createjs.Ticker.framerate = 60;
     createjs.Ticker.addEventListener("tick", stage);
 }

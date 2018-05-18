@@ -4,6 +4,12 @@ function Extras(stage, save, flags) {
     document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
 
 
+
+    ContainerMenu(stage, "Help", flags);
+    ContainerMenu(stage, "Options", flags);
+    createHelp(stage, flags);
+    createOptions(stage, flags);
+
     var mouseFunction = function (ev) {
         mouseHandler(ev, flags);
     };
@@ -13,6 +19,7 @@ function Extras(stage, save, flags) {
     arrayButtons.push(new createjs.Text("Credits", "35px Georgia", "#ffffff"));
     arrayButtons.push(new createjs.Text("Character: ", "35px Georgia", "#ffffff"));
     arrayButtons.push(new createjs.Text("", "35px Georgia", "#ffffff"));
+    arrayButtons.push(new createjs.Text("Reset", "35px Georgia", "#ffffff"));
     arrayButtons.push(new createjs.Text("Back", "35px Georgia", "#ffffff"));
 
 
@@ -71,11 +78,13 @@ function Extras(stage, save, flags) {
         if (flags.isCanvas && ev.target.text === "Credits") {
             
           }
-        if (flags.isCanvas && ev.target.id === "Char") {
+        else if (flags.isCanvas && ev.target.id === "Char") {
             if(ev.target.text === "Normal"){
-                ev.target.text = "Senior";
-                save.Senior = true;
-                saveGame('save',save);
+                if(save.StudentProgress >= 3 && save.TeacherProgress >= 4 ) {
+                    ev.target.text = "Senior";
+                    save.Senior = true;
+                    saveGame('save', save);
+                }
             }
             else{
                 ev.target.text = "Normal";
@@ -83,7 +92,17 @@ function Extras(stage, save, flags) {
                 saveGame('save',save);
             }
         }
-        if (flags.isCanvas && ev.target.text === "Back") {
+        else if (flags.isCanvas && ev.target.text === "Back") {
+            stage.removeAllChildren();
+            mainMenu(flags);
+        }else if(flags.isCanvas && ev.target.text === "Reset"){
+
+            var state = {
+                Senior: false,
+                StudentProgress: 1,
+                TeacherProgress: 1
+            };
+            saveGame('save',state);
             stage.removeAllChildren();
             mainMenu(flags);
         }

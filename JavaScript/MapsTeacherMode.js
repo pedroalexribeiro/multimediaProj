@@ -25,16 +25,16 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
     var level;
     switch (levelStr) {
         case "level1":
-            level = new LevelOneTeacherMode(stage);
+            level = new LevelOneTeacherMode(stage,save);
             break;
         case "level2":
-            level = new LevelTwoTeacherMode(stage);
+            level = new LevelTwoTeacherMode(stage,save);
             break;
         case "level3":
-            level = new LevelThreeTeacherMode(stage);
+            level = new LevelThreeTeacherMode(stage,save);
             break;
         case "level4":
-            level = new LevelFourTeacherMode(stage);
+            level = new LevelFourTeacherMode(stage,save);
             break;
     }
 
@@ -170,8 +170,8 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
             gameOver.bitmap.alpha = 1;
             stage.addChild(gameOver.bitmap);
         } else if (Flag === "goodJob") {
-            if (level.lvl >= save.StudentProgress) {
-                save.StudentProgress += 1;
+            if (level.lvl >= save.TeacherProgress) {
+                save.TeacherProgress += 1;
                 saveGame('save', save);
             }
             goodJob.bitmap.alpha = 1;
@@ -409,8 +409,8 @@ class MapTeacherMode {
 }
 
 class LevelOneTeacherMode extends MapTeacherMode {
-    constructor(stage) {
-        super(stage);
+    constructor(stage,save) {
+        super(stage,save);
         //Level Background
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level1/background.png)";
 
@@ -424,7 +424,7 @@ class LevelOneTeacherMode extends MapTeacherMode {
         //Level NPCs
         var neededNPCs = this.totalTime / this.npcInterval;
         for (let i = 0; i < neededNPCs; i++) {
-            this.npcs.push(new Character(stage, 200, 0));
+            this.npcs.push(new Character(stage, 200, 0,save.Senior));
             this.npcs[i].spriteA.visible = false;
         }
     }
@@ -441,8 +441,8 @@ class LevelOneTeacherMode extends MapTeacherMode {
 }
 
 class LevelTwoTeacherMode extends MapTeacherMode {
-    constructor(stage) {
-        super(stage);
+    constructor(stage,save) {
+        super(stage,save);
         //Level Background
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level2/background.png)";
 
@@ -458,7 +458,7 @@ class LevelTwoTeacherMode extends MapTeacherMode {
         //Level NPCs
         var neededNPCs = this.totalTime / this.npcInterval;
         for (let i = 0; i < neededNPCs; i++) {
-            this.npcs.push(new Character(stage, 200, 0));//325
+            this.npcs.push(new Character(stage, 200, 0,save.Senior));//325
             this.npcs[i].spriteA.visible = false;
         }
     }
@@ -470,8 +470,8 @@ class LevelTwoTeacherMode extends MapTeacherMode {
 }
 
 class LevelThreeTeacherMode extends MapTeacherMode {
-    constructor(stage) {
-        super(stage);
+    constructor(stage,save) {
+        super(stage,save);
         //Level Background
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level3/background.png)";
 
@@ -488,7 +488,7 @@ class LevelThreeTeacherMode extends MapTeacherMode {
         //Level NPCs
         var neededNPCs = this.totalTime / this.npcInterval;
         for (let i = 0; i < neededNPCs; i++) {
-            this.npcs.push(new Character(stage, 200, 0));//325
+            this.npcs.push(new Character(stage, 200, 0,save.Senior));//325
             this.npcs[i].spriteA.visible = false;
         }
     }
@@ -500,8 +500,8 @@ class LevelThreeTeacherMode extends MapTeacherMode {
 }
 
 class LevelFourTeacherMode extends MapTeacherMode {
-    constructor(stage) {
-        super(stage);
+    constructor(stage,save) {
+        super(stage,save);
         //Level Background
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level4/background.png)";
 
@@ -516,7 +516,7 @@ class LevelFourTeacherMode extends MapTeacherMode {
         //Level NPCs
         var neededNPCs = this.totalTime / this.npcInterval;
         for (let i = 0; i < neededNPCs; i++) {
-            this.npcs.push(new Character(stage, 200, 0));//325
+            this.npcs.push(new Character(stage, 200, 0,save.Senior));//325
             this.npcs[i].spriteA.visible = false;
         }
     }

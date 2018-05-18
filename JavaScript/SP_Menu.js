@@ -7,7 +7,7 @@ function SP_Menu(stage,save, flags, isArcade) {
         mouseHandler(ev, flags);
     };
 
-    ContainerMenu(stage, "Help", flags);
+    ContainerMenu(stage, "Help", flags,"");
     ContainerMenu(stage, "Options", flags);
     createHelp(stage, flags);
     createOptions(stage, flags);
