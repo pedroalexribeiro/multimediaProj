@@ -28,7 +28,7 @@ function Teacher_Menu(stage, save, flags, isArcade) {
     queue.loadFile({id: "level2", src: "../Resources/levels/thumbnails/teacher/level2.PNG"});
     queue.loadFile({id: "level3", src: "../Resources/levels/thumbnails/teacher/level3.PNG"});
     queue.loadFile({id: "level4", src: "../Resources/levels/thumbnails/teacher/level4.PNG"});
-    //queue.loadFile({id: "level5", src: "../Resources/levels/thumbnails/teacher/level5.PNG"});
+    queue.loadFile({id: "level5", src: "../Resources/levels/thumbnails/teacher/level5.PNG"});
     queue.load();
     queue.on("complete", loadLevels);
 
