@@ -139,6 +139,37 @@ function playSound(flag, string, flags) {
     }
 }
 
+function leaderBoardUpdate(save,level,gameMode,timer){
+    if(timer > save[gameMode][level.toString()][5]){
+        var dict = save[gameMode][level.toString()];
+        if(timer > dict["1"]){
+            dict["5"] = dict["4"];
+            dict["4"] = dict["3"];
+            dict["3"] = dict["2"];
+            dict["2"] = dict["1"];
+            dict["1"] = timer;
+
+        }else if(timer > dict["2"]){
+            dict["5"] = dict["4"];
+            dict["4"] = dict["3"];
+            dict["3"] = dict["2"];
+            dict["2"] = timer
+        }else if(timer > dict["3"]){
+            dict["5"] = dict["4"];
+            dict["4"] = dict["3"];
+            dict["3"] = timer;
+        }else if(timer > dict["4"]){
+            dict["5"] = dict["4"];
+            dict["4"] =  timer;
+        }else if(timer > dict["5"]){
+            dict["5"] = timer;
+        }
+        save[gameMode][level.toString()] = dict;
+        saveGame("save", save);
+    }
+}
+
+
 function saveGame(SAVE, state) {
     localStorage.setItem(SAVE, JSON.stringify(state));
 }

@@ -2,7 +2,7 @@
 
 function StudentArcade(stage, levelStr, save, flags, isArcade) {
     //Game Menu Information
-    var container, containerEx, timer, init, goodJob, gameOver, msg, flag, flag2, timeoutId;
+    var container, containerEx, timer, init, goodJob, gameOver, msg, flag, flag2, timeoutId,currTime;
     var menuFlag = false, isExit = false, lost = false;
     createMenu();
     playGameSong(flags);
@@ -75,14 +75,14 @@ function StudentArcade(stage, levelStr, save, flags, isArcade) {
         stage.update();
         var test = level.hero.collide(level.objects, menuFlag, flags);
         if (test === 1) { // gameOver
-            gameStatus("gameOver", save);
+            gameStatus("gameOver", save,Math.ceil(((currTime - gameStart)) / 1000));
         }
         if (level.hero.spriteA.y > 600) {
-            gameStatus("gameOver", save);
+            gameStatus("gameOver", save,Math.ceil(((currTime - gameStart)) / 1000));
         }
         //##################################################
 
-        var currTime = createjs.Ticker.getTime(true);
+        currTime = createjs.Ticker.getTime(true);
         if (currTime - init >= level.objInterval) {
             //Escolhe objetos do level
             if (level.nObj === 1) { // 1 objeto
@@ -238,11 +238,12 @@ function StudentArcade(stage, levelStr, save, flags, isArcade) {
         }
     }
 
-    function gameStatus(Flag, save) {
+    function gameStatus(Flag, save,timer) {
         console.log("End of level");
         lost = true;
 
         if (Flag === "gameOver") {
+            leaderBoardUpdate(save,level.lvl,"Student",timer);
             playSound(true, "gameOver", flags);
             gameOver.bitmap.alpha = 1;
             stage.addChild(gameOver.bitmap);
@@ -491,7 +492,6 @@ function StudentArcade(stage, levelStr, save, flags, isArcade) {
             instance.on("complete", playGameSong);
         }
     }
-
 }
 
 

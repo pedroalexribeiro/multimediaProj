@@ -2,7 +2,7 @@
 
 function TeacherArcade(stage, levelStr, save, flags, isArcade) {
     //Game Menu Information
-    var container, containerEx, timer, init, goodJob, gameOver, timeoutId, msg;
+    var container, containerEx, timer, init, goodJob, gameOver, timeoutId, msg,currTime;
     var menuFlag = false, isExit = false, lost = false;
     createMenu();
     playGameSong(flags);
@@ -85,9 +85,9 @@ function TeacherArcade(stage, levelStr, save, flags, isArcade) {
                     }
                 }
             }
-            var currTime = createjs.Ticker.getTime(true);
+            currTime = createjs.Ticker.getTime(true);
             if (level.lives == 0) {
-                gameStatus("gameOver", save);
+                gameStatus("gameOver", save, Math.ceil(((currTime - gameStart)) / 1000));
             }
             if (currTime - init >= level.npcInterval) {
                 for (let i = 0; i < level.npcs.length; i++) {
@@ -152,12 +152,13 @@ function TeacherArcade(stage, levelStr, save, flags, isArcade) {
         }
     }
 
-    function gameStatus(Flag, save) {
+    function gameStatus(Flag, save, timer) {
         console.log("End of level");
         lost = true;
 
         if (Flag === "gameOver") {
             playSound(true, "gameOver", flags);
+            leaderBoardUpdate(save, level.lvl, "Teacher", timer);
             gameOver.bitmap.alpha = 1;
             stage.addChild(gameOver.bitmap);
         } else if (Flag === "goodJob") {
