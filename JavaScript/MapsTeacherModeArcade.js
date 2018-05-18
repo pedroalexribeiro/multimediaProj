@@ -2,7 +2,7 @@
 
 function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
     //Game Menu Information
-    var container, containerEx, timer, init, goodJob, gameOver,timeoutId;
+    var container, containerEx, timer, init, goodJob, gameOver,timeoutId, msg;
     var menuFlag = false, isExit = false, lost = false;
     createMenu();
     playGameSong();
@@ -350,7 +350,6 @@ function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
         bitmap.alpha = 0;
         bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
         gameOver.bitmap = bitmap;
-
 
         //Click esc To go to Menu
         msg = new createjs.Text("Click ESC to leave", "30px monospace", "#000");

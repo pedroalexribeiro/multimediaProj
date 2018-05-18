@@ -1,4 +1,4 @@
-"use strict";
+//"use strict";
 
 function createHelp(stage, flags) {
     var mouseFunction = function(ev){

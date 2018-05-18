@@ -11,7 +11,7 @@
 function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
 
     //Game Menu Information
-    var container, containerEx, timer, init, goodJob, gameOver,timeoutId;
+    var container, containerEx, timer, init, goodJob, gameOver,timeoutId, msg;
     var menuFlag = false, isExit = false, lost = false;
     createMenu();
     playGameSong();
