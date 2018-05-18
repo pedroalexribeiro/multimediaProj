@@ -691,11 +691,14 @@ class LevelFour extends Map {
 
         //Level Platforms
         let x= 350;
-        let y=200;
+        let y=230;
         this.platforms.push(new Platform(stage, "../Resources/levels/Level4/pongPlatform.png", x, y));
-        x = 450;
+        x = 480;
         y= 420;
         this.platforms.push(new Platform(stage, "../Resources/levels/Level4/tablePlatform.png", x, y));
+        x = 230;
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level4/tablePlatform.png", x, y));
+
 
         //Level Buffs
         var initCords = this.Position(100, 100, "Horizontal", stage); // Beer -> Slows permanently the character
