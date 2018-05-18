@@ -78,7 +78,7 @@ function ContainerMenu(stage, opt, flags) {
         container.addChild(bg);
 
 
-        if (opt === "Options") {
+        if (opt === "Help") {
             containerHelp = container;
             var title = new createjs.Text("Help", "50px Georgia", "#ffffff");
             title.alpha = 0.8;
@@ -88,8 +88,8 @@ function ContainerMenu(stage, opt, flags) {
 
             var back2 = new createjs.Text("Back", "35px Georgia", "#ffffff");
             back2.id = "Help";
-            back2.x = container.width / 2 - back2.width / 2;
-            back2.y = container.height * 0.8;
+            back2.x = img.width / 2 - back2.getMeasuredWidth() / 2;
+            back2.y = img.height * 0.75;
             back2.alpha = 0.8;
             back2.shadow = new createjs.Shadow("#000000", 5, 5, 10);
             var hit = new createjs.Shape(); //Creates Hitbox
@@ -98,10 +98,11 @@ function ContainerMenu(stage, opt, flags) {
             back2.on("mouseover", mouseFunction);
             back2.on("mouseout", mouseFunction);
             back2.on("click", containerFunction);
+            container.addChild(back2);
             return containerHelp;
 
         }
-        else if (opt === "Help") {
+        else if (opt === "Options") {
             containerOptions = container;
 
             var options_title = new createjs.Text("Options", "50px Georgia", "#ffffff");
@@ -171,6 +172,8 @@ function containerReset(ev, flags) {
 }
 
 function containerMove(stage, flags, ev) {
+    ev.target.alpha = 0.8;
+    ev.target.shadow = new createjs.Shadow("#000000", 5, 5, 10);
     if (flags.isCanvas && ev.target.id === "Help") {
         createjs.Tween.get(containerHelp).to({y: (stage.canvas.height / 5)}, 750, createjs.Ease.sineIn);
         changeIsCanvas(flags);

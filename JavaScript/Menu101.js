@@ -4,18 +4,20 @@
     window.addEventListener("load", mainMenu);
 }());
 
-function mainMenu() {
+function mainMenu(teste) {
+    var flags;
+    if(teste.type == "load"){
+        flags = new Flags();
+    }else{
+        flags = teste;
+    }
     /*Music Stuff*/
 
     createjs.Sound.alternateExtensions = ["mp3"];
-    createjs.Sound.on("fileload", soundLoad);
+    createjs.Sound.on("fileload", playMenuSong);
     createjs.Sound.registerSound("../Resources/Audio/menuMusic.mp3", "menuMusic", 1);
     createjs.Sound.registerSound("../Resources/Audio/gameMusic.mp3", "gameMusic", 2);
 
-    function soundLoad() {
-        var instance = createjs.Sound.play("menuMusic");
-        instance.on("complete", soundLoad);
-    }
 
     /*Background Information*/
     document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
@@ -62,22 +64,23 @@ function mainMenu() {
         stage.addChild(text);
     }
 
-    /*Flags for Options*/
-    var flags = new Flags();
-    createHelp(stage, flags);
-    createOptions(stage, flags);
-
     ContainerMenu(stage, "Help", flags);
     ContainerMenu(stage, "Options", flags);
+    createHelp(stage, flags);
+    createOptions(stage, flags);
 
     function clickHandler_SP_MP_AC(ev) {
         console.log(ev.target.text);
         if (flags.isCanvas && ev.target.text === "SinglePlayer") {
             stage.removeAllChildren();
-            SP_Menu(stage,save);
+            SP_Menu(stage,save, flags);
         }
         if(flags.isCanvas && ev.target.text === "MultiPlayer") {
 
+        }
+        if (flags.isCanvas && ev.target.text === "Arcade") {
+            stage.removeAllChildren();
+            SP_Menu(stage,save, flags);
         }
         if (flags.isCanvas && ev.target.text === "Quit") {
             //window.close();
@@ -101,6 +104,19 @@ function mouseHandler(ev, flags) {
         ev.target.alpha = (ev.type === "mouseover") ? 1 : 0.8;
         ev.target.shadow = (ev.type === "mouseover") ? new createjs.Shadow("#000000", 15, 15, 10) : new createjs.Shadow("#000000", 5, 5, 10);
     }
+}
+x
+
+function playMenuSong() {
+    createjs.Sound.stop("gameMusic");
+    var instance = createjs.Sound.play("menuMusic");
+    instance.on("complete", playMenuSong);
+}
+
+function playGameSong() {
+    createjs.Sound.stop("menuMusic");
+    var instance = createjs.Sound.play("gameMusic");
+    instance.on("complete", playGameSong);
 }
 
 function saveGame(SAVE, state) {

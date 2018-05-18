@@ -1,13 +1,11 @@
 "   use strict";
 
-function Student_Menu(stage,save) {
+function Student_Menu(stage,save, flags) {
     console.log(save);
     document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
-    var isCanvas = true;
-
 
     var mouseFunction = function (ev) {
-        mouseHandler(ev, isCanvas);
+        mouseHandler(ev, flags);
     };
 
 
@@ -18,6 +16,10 @@ function Student_Menu(stage,save) {
     arrayBoxes.push(new createjs.Shape);
     arrayBoxes.push(new createjs.Shape);
 
+    ContainerMenu(stage, "Help", flags);
+    ContainerMenu(stage, "Options", flags);
+    createHelp(stage, flags);
+    createOptions(stage, flags);
 
     var count = 1;
     var width = 100;
@@ -87,7 +89,7 @@ function Student_Menu(stage,save) {
         console.log(ev.target.text);
         if (ev.target.text === "Back") {
             stage.removeAllChildren();
-            SP_Menu(stage,save);
+            SP_Menu(stage,save, flags);
         }
         else if (ev.target.text === "level1") {
             stage.removeAllChildren();
@@ -112,13 +114,6 @@ function Student_Menu(stage,save) {
     back.on("click", Click_Handler);
     stage.addChild(back);
 
-    /*Flags for Options*/
-    var flags = new Flags();
-    createHelp(stage, flags);
-    createOptions(stage, flags);
-
-    ContainerMenu(stage, "Help", flags);
-    ContainerMenu(stage, "Options", flags);
 
     createjs.Ticker.framerate = 60;
     createjs.Ticker.addEventListener("tick", stage);

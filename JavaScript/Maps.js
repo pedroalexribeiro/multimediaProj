@@ -7,8 +7,6 @@ function Maps(stage, levelStr, save) {
     createMenu();
     playGameSong();
     window.addEventListener("keydown", KeyHandler);
-
-
     var level;
     switch (levelStr) {
         case "level1":
@@ -18,7 +16,7 @@ function Maps(stage, levelStr, save) {
             level = new LevelTwo(stage);
             break;
         case "level3":
-            //level = new LevelThree(stage);
+            level = new LevelThree(stage);
             break;
     }
 
@@ -73,10 +71,8 @@ function Maps(stage, levelStr, save) {
         if (test === 1) { // gameOver
             gameStatus("gameOver", save);
         }
-        else if (test === 2) { // beer
-            console.log("beer");
-        } else if (test === 3) { // deadLine
-            console.log("deadLIne");
+        if (level.hero.spriteA.y > 600) {
+            gameStatus("gameOver", save);
         }
         //##################################################
 
@@ -97,7 +93,7 @@ function Maps(stage, levelStr, save) {
 
                     var obj = level.objects[objectOfArray];
 
-                    if (obj.object.bitmap.y > 0) { // Horizontal
+                    if (obj.object.bitmap.y > 0 && obj.object.bitmap.y < 600) { // Horizontal
                         flag = "Horizontal";
                     }
                     else if (obj.object.bitmap.x > 0 && obj.object.bitmap.x < 800) { // Vertical
@@ -118,7 +114,9 @@ function Maps(stage, levelStr, save) {
                     //Move Object
                     obj.Move(cords[0], cords[1], speed, resetCords[0], resetCords[1]);
                 }
-                else { // Case for 2 Objects each Time
+
+                // Case for 2 Objects each Time
+                else {
                     var objectOfArray, objectOfArray2;
                     var x = Math.random();
                     if (x < 0.25) { // 1/4th of chance of appearing buff/Debuff (first numbers(level.nBuffs) of Array)
@@ -134,7 +132,7 @@ function Maps(stage, levelStr, save) {
 
                     var obj = level.objects[objectOfArray];
 
-                    if (obj.object.bitmap.y > 0) { // Horizontal
+                    if (obj.object.bitmap.y > 0 && obj.object.bitmap.y < 600) { // Horizontal
                         flag = "Horizontal";
                     }
                     else if (obj.object.bitmap.x > 0 && obj.object.bitmap.x < 800) { // Vertical
@@ -144,9 +142,10 @@ function Maps(stage, levelStr, save) {
                         flag = "Diagonal";
                     }
 
+
                     var obj2 = level.objects[objectOfArray2];
 
-                    if (obj2.object.bitmap.y > 0) { // Horizontal
+                    if (obj2.object.bitmap.y > 0 && obj2.object.bitmap.y < 600) { // Horizontal
                         flag2 = "Horizontal";
                     }
                     else if (obj2.object.bitmap.x > 0 && obj2.object.bitmap.x < 800) { // Vertical
@@ -166,6 +165,7 @@ function Maps(stage, levelStr, save) {
 
                     //Move Object
                     var speed = Math.random() * (level.speed[0] - level.speed[1]) + level.speed[1];
+
                     obj.Move(cords[0], cords[1], speed, resetCords[0], resetCords[1]);
                     speed = Math.random() * (level.speed[0] - level.speed[1]) + level.speed[1];
                     obj2.Move(cords2[0], cords2[1], speed, resetCords2[0], resetCords2[1]);
@@ -250,19 +250,6 @@ function Maps(stage, levelStr, save) {
         stage.addChild(msg);
         createjs.Ticker.removeEventListener("tick", handle);
         stage.update();
-    }
-
-
-    function playMenuSong() {
-        createjs.Sound.stop("gameMusic");
-        var instance = createjs.Sound.play("menuMusic");
-        instance.on("complete", playMenuSong);
-    }
-
-    function playGameSong() {
-        createjs.Sound.stop("menuMusic");
-        var instance = createjs.Sound.play("gameMusic");
-        instance.on("complete", playGameSong);
     }
 
     function createMenu() {
@@ -454,6 +441,19 @@ function Maps(stage, levelStr, save) {
         menuFlag = false;
         createjs.Ticker.paused = false;
     }
+
+    function playMenuSong() {
+        createjs.Sound.stop("gameMusic");
+        var instance = createjs.Sound.play("menuMusic");
+        instance.on("complete", playMenuSong);
+    }
+
+    function playGameSong() {
+        createjs.Sound.stop("menuMusic");
+        var instance = createjs.Sound.play("gameMusic");
+        instance.on("complete", playGameSong);
+    }
+
 }
 
 
@@ -461,7 +461,6 @@ class Map {
     constructor(stage) {
         this.platforms = new Array();
         this.objects = new Array();
-        this.hero = new Character(stage, 200, -200, false);
     }
 }
 
@@ -492,6 +491,8 @@ class LevelOne extends Map {
         initCords = this.Position(100, 100, "", stage);
         this.objects.push(new Objectt(stage, "../Resources/levels/Level1/carYellow.png", initCords[0], initCords[1]));
 
+
+        this.hero = new Character(stage, 200, -200, false);
 
         //Level Game Related Information
         this.lvl = 1;
@@ -546,6 +547,8 @@ class LevelTwo extends Map {
         //this.objects.push(new Objectt(stage, "../Resources/levels/Level2/umbrella.png", initCords[0], initCords[1]));
 
 
+        this.hero = new Character(stage, 200, -200, false);
+
         //Level Game Related Information
         this.lvl = 2;
         this.totalTime = 15000; // Tempo total do jogo
@@ -587,24 +590,30 @@ class LevelThree extends Map {
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/test.png)";
 
         //Level Platforms
-        let x = 160;
+        let x = 60;
         let y = 400;
         for (let i = 0; i < 3; i++) {
             this.platforms.push(new Platform(stage, "../Resources/levels/Level3/platform.png", x, y));
-            x += 160;
+            x += 250;
         }
         //Level Buffs
-        var initCords = this.Position(100, 100, "", stage); // Beer -> Slows permanently the character
+        var initCords = this.Position(100, 100, "Horizontal", stage); // Beer -> Slows permanently the character
         this.objects.push(new Objectt(stage, "../Resources/levels/Extras/Beer.png", initCords[0], initCords[1]));
-        initCords = this.Position(100, 100, "", stage); //DeadLine -> Speeds permanently the character
+        initCords = this.Position(100, 100, "Horizontal", stage); //DeadLine -> Speeds permanently the character
         this.objects.push(new Objectt(stage, "../Resources/levels/Extras/deadLine.png", initCords[0], initCords[1]));
 
         //Level Objects
-        initCords = this.Position(100, 100, "Vertical", stage);
-        this.objects.push(new Objectt(stage, "../Resources/levels/Level2/rainDrop.png", initCords[0], initCords[1]));
         initCords = this.Position(100, 100, "Horizontal", stage);
-        this.objects.push(new Objectt(stage, "../Resources/levels/Level2/umbrella.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level3/hamBurguer.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "Vertical", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level3/coffee.png", initCords[0], initCords[1]));
+        initCords = this.Position(150, 150, "Diagonal", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level3/nata.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "Vertical", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level3/cocaCola.png", initCords[0], initCords[1]));
 
+
+        this.hero = new Character(stage, 400, -200, false);
 
         //Level Game Related Information
         this.lvl = 3;
@@ -626,13 +635,32 @@ class LevelThree extends Map {
             else { //Left
                 xNew = 0 - widthObj;
             }
-
             yNew = Math.floor((Math.random() * ((this.platforms[0].platform.bitmap.y - heightObj) - (this.platforms[0].platform.bitmap.y / 5 + heightObj))) + (this.platforms[0].platform.bitmap.y / 5 + heightObj));
-            //Random entre 260 e 340 +/-
 
-        } else if (flagg === "Vertical"){ //Mudar 261 (Numero Magico)
+        } else if (flag === "Vertical") {
             xNew = Math.random() * ((this.platforms[0].platform.bitmap.x + 261) - this.platforms[0].platform.bitmap.x) + (this.platforms[0].platform.bitmap.x);
             yNew = 0 - heightObj;
+        }
+
+        else if (flag === "Diagonal") {
+            let rand = Math.random();
+            if (0 < rand < 0.25) {
+                xNew = stage.canvas.width + widthObj;
+                yNew = 0 - heightObj;
+            }
+            else if (0.25 <= rand < 0.5) {
+                xNew = stage.canvas.width + widthObj;
+                yNew = stage.canvas.height + heightObj;
+            }
+            else if (0.5 <= rand < 0.75) {
+                xNew = 0 - widthObj;
+                yNew = 0 - heightObj;
+            }
+            else {
+                xNew = 0 - widthObj;
+                yNew = stage.canvas.height + heightObj;
+            }
+
         }
         return [xNew, yNew];
     }
@@ -677,38 +705,51 @@ class Objectt {
 
     NewCords(xChar, yChar, Flag, stage) {
         if (Flag === "Horizontal") {
-            //y vai ser yChar (pequeno ajuste para ir ter com personagem)
-            //x vai ser ou 0-objeto ou 800+objeto
             if (this.object.bitmap.x > 0) { //Varia do lado a que se encontra o objeto
                 return [(0 - this.object.bitmap.image.width), yChar];
             }
             else {
                 return [(stage.canvas.width + this.object.bitmap.image.width), yChar];
             }
+
         }
         else if (Flag === "Vertical") {
-            //x vai ser sempre onde o objeto da "spawn"
-            //y vai ser sempre 600 + objeto
             return [this.object.bitmap.x, (600 + this.object.bitmap.image.height)];
-
         }
-        else if (Flag === "Diagonal") {
-            /*POR AGORA E TEORICAMENTE UM TESTE*/
-            //4 casos para cada canto
 
-            if (this.object.bitmap.x > 0) {
-                if (this.object.bitmap.y > 0) {// Left-Down Corner
-                }
-                else { //Left-Up Corner
-                }
+        else if (Flag === "Diagonal") { // y = mx + b
+            let xNew, yNew;
+            let m = (this.object.bitmap.y - yChar) / (this.object.bitmap.x - xChar);
+
+            if (this.object.bitmap.x < 0 && this.object.bitmap.y < 0) {
+                xNew = ((600 - yChar) / m) + xChar;
+                yNew = m * (800 - xChar) + yChar;
+            }
+            else if (this.object.bitmap.x < 0 && this.object.bitmap.y > 600) {
+                xNew = ((0 - yChar) / m) + xChar;
+                yNew = m * (800 - xChar) + yChar;
+            }
+            else if (this.object.bitmap.x > 800 && this.object.bitmap.y < 0) {
+                xNew = ((600 - yChar) / m) + xChar;
+                yNew = m * (0 - xChar) + yChar;
             }
             else {
-                if (this.object.bitmap.y > 0) { //Right-Down Corner
-                }
-                else { //Right-Up Corner
-                }
-
+                xNew = ((0 - yChar) / m) + xChar;
+                yNew = m * (0 - xChar) + yChar;
             }
+
+            //devido ao facto de quando reta é muito inclinada, metia Y e X muito elevados e tweenjs para acompanhar -> + rapido
+            if (yNew > stage.canvas.height + this.object.bitmap.image.height) {
+                yNew = stage.canvas.height + this.object.bitmap.image.height;
+            } else if (yNew < 0 - this.object.bitmap.image.height) {
+                yNew = 0 - this.object.bitmap.image.height;
+            }
+            if (xNew > stage.canvas.width + this.object.bitmap.image.width) {
+                xNew = stage.canvas.width + this.object.bitmap.image.width;
+            } else if (xNew < 0 - this.object.bitmap.image.width) {
+                xNew = 0 - this.object.bitmap.image.width;
+            }
+            return [xNew, yNew];
         }
     }
 }
