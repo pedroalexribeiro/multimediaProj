@@ -10,13 +10,16 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
     var level;
     switch (levelStr) {
         case "level1":
-            level = new LevelOne(stage);
+            level = new LevelOne(stage,save);
             break;
         case "level2":
-            level = new LevelTwo(stage);
+            level = new LevelTwo(stage,save);
             break;
         case "level3":
-            level = new LevleThree(stage);
+            level = new LevelThree(stage,save);
+            break;
+        case "level4":
+            level = new LevelFour(stage,save);
             break;
     }
 
@@ -258,7 +261,7 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
         }
         var mouseFunction = function (ev) {
             mouseHandler(ev,flags);
-        }
+        };
         //Loads container
         var img = new Image();
         img.src = "../Resources/Options/ChalkBoard.png";

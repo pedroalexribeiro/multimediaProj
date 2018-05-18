@@ -6,7 +6,7 @@
 
 function mainMenu(teste) {
     var flags;
-    if(teste.type == "load"){
+    if(teste.type === "load"){
         flags = new Flags();
     }else{
         flags = teste;
@@ -29,12 +29,13 @@ function mainMenu(teste) {
 
     //SaveGame Loader
     var state = {
-        Senior: false,
-        StudentProgress: 1,
-        TeacherProgress: 1
+        Senior: true,
+        StudentProgress: 5,
+        TeacherProgress: 5
     };
-    
+
     var save = loadGame('save');
+    save = null;
     if (save === null) {
         save = state;
         saveGame('save',save);
@@ -50,7 +51,7 @@ function mainMenu(teste) {
     arrayButtons.push(new createjs.Text("SinglePlayer", "35px Georgia", "#ffffff"));
     //arrayButtons.push(new createjs.Text("MultiPlayer", "35px Georgia", "#ffffff"));
     arrayButtons.push(new createjs.Text("Arcade", "35px Georgia", "#ffffff"));
-    arrayButtons.push(new createjs.Text("Leaderboard", "35px Georgia", "#ffffff"))
+    arrayButtons.push(new createjs.Text("Leaderboard", "35px Georgia", "#ffffff"));
     arrayButtons.push(new createjs.Text("Extras", "35px Georgia", "#ffffff"));
     arrayButtons.push(new createjs.Text("Quit", "35px Georgia", "#ffffff"));
 

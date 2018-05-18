@@ -24,7 +24,11 @@ function Teacher_Menu(stage, save, flags, isArcade) {
     queue = new createjs.LoadQueue(false);
 
     queue.loadFile({id: "lock", src: "../Resources/Options/lock.jpg"});
-    queue.loadFile({id: "image", src: "../Resources/test.png"});
+    queue.loadFile({id: "level1", src: "../Resources/levels/thumbnails/student/level1.PNG"});
+    queue.loadFile({id: "level2", src: "../Resources/levels/thumbnails/teacher/level2.PNG"});
+    queue.loadFile({id: "level3", src: "../Resources/levels/thumbnails/teacher/level3.PNG"});
+    queue.loadFile({id: "level4", src: "../Resources/levels/thumbnails/teacher/level4.PNG"});
+    //queue.loadFile({id: "level5", src: "../Resources/levels/thumbnails/teacher/level5.PNG"});
     queue.load();
     queue.on("complete", loadLevels);
 
@@ -42,7 +46,7 @@ function Teacher_Menu(stage, save, flags, isArcade) {
                 level.graphics.drawRect(x, y, width, height);
 
             } else {
-                var bitmap = new createjs.Bitmap(queue.getResult("image"));
+                var bitmap = new createjs.Bitmap(queue.getResult("level"+count));
 
                 var m = new createjs.Matrix2D();
                 m.translate(x, y);
@@ -50,7 +54,7 @@ function Teacher_Menu(stage, save, flags, isArcade) {
 
                 //level Draw
                 level.graphics.beginStroke("#fff");
-                level.graphics.beginBitmapFill(bitmap.image.src, "no-repeat", m);
+                level.graphics.beginBitmapFill(bitmap.image, "no-repeat", m);
                 level.graphics.drawRect(x, y, width, height);
 
                 //Hitbox && Effects
@@ -101,6 +105,9 @@ function Teacher_Menu(stage, save, flags, isArcade) {
             } else if (ev.target.text === "level3") {
                 stage.removeAllChildren();
                 MapsTeacherModeArcade(stage, "level3", save, flags, isArcade);
+            }else if (ev.target.text === "level4") {
+                stage.removeAllChildren();
+                MapsTeacherModeArcade(stage, "level4", save, flags, isArcade);
             }
         }
     }

@@ -130,7 +130,7 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
             if (!isExit) {
                 container.alpha = 0;
                 clearTimeout(timeoutId);
-                timeoutId = setTimeout(timeOut, 2000);
+                timeoutId = setTimeout(timeOut, 500);
             }
         }
 
@@ -145,7 +145,7 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
             createjs.Ticker.removeEventListener("tick", handle);
             window.removeEventListener("keydown", KeyHandler);
             stage.removeAllChildren();
-            Student_Menu(stage, save, flags, isArcade);
+            Teacher_Menu(stage, save, flags, isArcade);
         }
         else if (ev.target.text === "No") {
             containerEx.alpha = 0;
@@ -158,7 +158,7 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
             playMenuSong();
             stage.removeAllChildren();
             window.removeEventListener("keydown", KeyHandler);
-            Student_Menu(stage, save, flags, isArcade);
+            Teacher_Menu(stage, save, flags, isArcade);
         }
     }
 
@@ -170,7 +170,7 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
             gameOver.bitmap.alpha = 1;
             stage.addChild(gameOver.bitmap);
         } else if (Flag === "goodJob") {
-            if (level.lvl >= save.TeacherProgress) {
+            if (level.lvl >= save.TeacherProgress || save.TeacherProgress < 5) {
                 save.TeacherProgress += 1;
                 saveGame('save', save);
             }
@@ -412,10 +412,10 @@ class LevelOneTeacherMode extends MapTeacherMode {
     constructor(stage,save) {
         super(stage,save);
         //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level1/background.png)";
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level1/background.png)";
 
         //Level Platforms
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level1/Platform.png", 0, 400));
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platformBig.png", 0, 400));
 
         //Level Game Related Information
         this.totalTime = 15000; // Tempo total do jogo
@@ -444,12 +444,12 @@ class LevelTwoTeacherMode extends MapTeacherMode {
     constructor(stage,save) {
         super(stage,save);
         //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level2/background.png)";
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level2/background.png)";
 
         //Level Platforms
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level2/Slab.png", 0, 400));
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level2/Slab.png", 300, 400));
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level2/Slab.png", 600, 400));
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level2/SlabBig.png", 0, 400));
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level2/SlabBig.png", 300, 400));
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level2/SlabBig.png", 600, 400));
 
         //Level Game Related Information
         this.totalTime = 30000; // Tempo total do jogo
@@ -473,13 +473,13 @@ class LevelThreeTeacherMode extends MapTeacherMode {
     constructor(stage,save) {
         super(stage,save);
         //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level3/background.png)";
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level3/background.png)";
 
         //Level Platforms
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level3/platform.png", 0, 100));
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level3/platform.png", 200, 250));
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level3/platform.png", 400, 400));
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level3/platform.png", 600, 550));
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level3/platformBig.png", 0, 100));
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level3/platformBig.png", 200, 250));
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level3/platformBig.png", 400, 400));
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level3/platformBig.png", 600, 550));
 
         //Level Game Related Information
         this.totalTime = 60000; // Tempo total do jogo
@@ -503,11 +503,11 @@ class LevelFourTeacherMode extends MapTeacherMode {
     constructor(stage,save) {
         super(stage,save);
         //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level4/background.png)";
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level4/background.png)";
 
         //Level Platforms
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level4/platform.png", 0, 400));
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level4/table.png", 200, 100));
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level4/platformBig.png", 0, 400));
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level4/tableBig.png", 200, 100));
 
         //Level Game Related Information
         this.totalTime = 60000; // Tempo total do jogo
