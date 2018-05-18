@@ -655,9 +655,9 @@ class LevelThree extends Map {
 
         //Level Game Related Information
         this.lvl = 3;
-        this.totalTime = 15000; // Tempo total do jogo
-        this.objInterval = 2000; //Intervalo entre cada Objeto
-        this.speed = [1300, 1700]; //Max e Min de speed dos Objetos
+        this.totalTime = 30000; // Tempo total do jogo
+        this.objInterval = 2100; //Intervalo entre cada Objeto
+        this.speed = [1400, 1700]; //Max e Min de speed dos Objetos
         this.nObj = 2;
         this.nBuffs = 2;
     }
@@ -740,9 +740,9 @@ class LevelFour extends Map {
 
         //Level Game Related Information
         this.lvl = 4;
-        this.totalTime = 15000; // Tempo total do jogo
-        this.objInterval = 2000; //Intervalo entre cada Objeto
-        this.speed = [1300, 1700]; //Max e Min de speed dos Objetos
+        this.totalTime = 30000; // Tempo total do jogo
+        this.objInterval = 2100; //Intervalo entre cada Objeto
+        this.speed = [1300, 1600]; //Max e Min de speed dos Objetos
         this.nObj = 2;
         this.nBuffs = 2;
     }
@@ -800,7 +800,7 @@ class LevelFive extends Map {
         let y = 200;
         this.platforms.push(new Platform(stage, "../Resources/levels/Level5/platformPcG.png", x, y));
         y = 400;
-        x = 320;
+        x = 285;
         this.platforms.push(new Platform(stage, "../Resources/levels/Level5/platformKeyboardG.png", x, y));
         //Level Buffs
         var initCords = this.Position(100, 100, "Horizontal", stage); // Beer -> Slows permanently the character
@@ -831,9 +831,9 @@ class LevelFive extends Map {
 
         //Level Game Related Information
         this.lvl = 5;
-        this.totalTime = 15000; // Tempo total do jogo
-        this.objInterval = 2000; //Intervalo entre cada Objeto
-        this.speed = [1100, 1500]; //Max e Min de speed dos Objetos
+        this.totalTime = 45000; // Tempo total do jogo
+        this.objInterval = 1800; //Intervalo entre cada Objeto
+        this.speed = [1100, 1400]; //Max e Min de speed dos Objetos
         this.nObj = 2;
         this.nBuffs = 2;
     }
