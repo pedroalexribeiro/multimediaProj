@@ -19,9 +19,6 @@ function Leaderboard(stage, save, flags) {
     arrayButtons.push(new createjs.Text("Level 1", "35px Georgia", "#ffffff"));
     arrayButtons.push(new createjs.Text("Back", "35px Georgia", "#ffffff"));
 
-    var buttonsFunction = function (ev) {
-        leaderboardClickHandler(ev, arrayButtons);
-    }
     for (let text of arrayButtons) {
         if(text.text === "Leaderboard"){
             text.x = (stage.canvas.width / 2) - (text.getMeasuredWidth()/2);
@@ -39,7 +36,7 @@ function Leaderboard(stage, save, flags) {
             text.hitArea = hit;
             text.on("mouseover", mouseFunction);
             text.on("mouseout", mouseFunction);
-            text.on("click", buttonsFunction);
+            text.on("click", leaderboardClickHandler);
             stage.addChild(text);
         }else if(text.text === "Student"){
             text.x = stage.canvas.width - text.getMeasuredWidth() - stage.canvas.width/8 + 5 ;
@@ -51,7 +48,7 @@ function Leaderboard(stage, save, flags) {
             text.hitArea = hit;
             text.on("mouseover", mouseFunction);
             text.on("mouseout", mouseFunction);
-            text.on("click", buttonsFunction);
+            text.on("click", leaderboardClickHandler);
             stage.addChild(text);
         }else if(text.text === "Level 1"){
             text.x = stage.canvas.width - text.getMeasuredWidth() - stage.canvas.width/8;
@@ -63,7 +60,7 @@ function Leaderboard(stage, save, flags) {
             text.hitArea = hit;
             text.on("mouseover", mouseFunction);
             text.on("mouseout", mouseFunction);
-            text.on("click", buttonsFunction);
+            text.on("click", leaderboardClickHandler);
             stage.addChild(text);
         }else{
             text.text = iterator.toString() + " " + text.text + " " + "0";
@@ -75,7 +72,9 @@ function Leaderboard(stage, save, flags) {
         }
     }
 
-    function leaderboardClickHandler(ev, arrayButtons) {
+    updateNumbers(1);
+
+    function leaderboardClickHandler(ev) {
         if (flags.isCanvas && ev.target.text === "Back") {
             stage.removeAllChildren();
             mainMenu(flags);
@@ -92,22 +91,29 @@ function Leaderboard(stage, save, flags) {
             }else{
                 number = 1;
             }
-            var ite = 1;
-            for(let text of arrayButtons) {
-                if (text.id === "mode") {
-                    var mode = text.text;
-                    break;
-                }
-            }
-            for(let text of arrayButtons) {
-                if(text.id === ite.toString()){
-                    text.text = ite.toString() + " " + "----->" + " " + save[mode][number.toString()][ite.toString()].toString();
-                    ite++;
-                }
-            }
+            updateNumbers(number);
             ev.target.text = "Level" + " " + number.toString();
         }
     }
+
+    function updateNumbers(number){
+        var ite = 1;
+        for(let text of arrayButtons) {
+            if (text.id === "mode") {
+                var mode = text.text;
+                break;
+            }
+        }
+        for(let text of arrayButtons) {
+            if(text.id === ite.toString()){
+                console.log(save);
+                console.log(save[mode][number.toString()][ite.toString()].toString());
+                text.text = ite.toString() + " " + "----->" + " " + save[mode][number.toString()][ite.toString()].toString();
+                ite++;
+            }
+        }
+    }
+
     createjs.Ticker.framerate = 60;
     createjs.Ticker.addEventListener("tick", stage);
 }
