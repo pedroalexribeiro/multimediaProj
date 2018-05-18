@@ -1,4 +1,4 @@
-"user strict";
+"use strict";
 
 function Maps(stage, levelStr, save) {
     //Game Menu Information

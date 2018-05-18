@@ -73,7 +73,7 @@ function mainMenu(teste) {
         console.log(ev.target.text);
         if (flags.isCanvas && ev.target.text === "SinglePlayer") {
             stage.removeAllChildren();
-            SP_Menu(stage,save, flags);
+            SP_Menu(stage,save, flags, false);
         }
         if(flags.isCanvas && ev.target.text === "MultiPlayer") {
             stage.removeAllChildren();
@@ -81,7 +81,7 @@ function mainMenu(teste) {
         }
         if (flags.isCanvas && ev.target.text === "Arcade") {
             stage.removeAllChildren();
-            SP_Menu(stage,save, flags);
+            SP_Menu(stage,save, flags, true);
         }
         if (flags.isCanvas && ev.target.text === "Quit") {
             //window.close();
@@ -106,7 +106,6 @@ function mouseHandler(ev, flags) {
         ev.target.shadow = (ev.type === "mouseover") ? new createjs.Shadow("#000000", 15, 15, 10) : new createjs.Shadow("#000000", 5, 5, 10);
     }
 }
-x
 
 function playMenuSong() {
     createjs.Sound.stop("gameMusic");

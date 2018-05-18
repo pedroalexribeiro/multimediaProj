@@ -1,6 +1,6 @@
-"   use strict";
+"use strict";
 
-function Student_Menu(stage,save, flags) {
+function Student_Menu(stage,save, flags, isArcade) {
     console.log(save);
     document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
 
@@ -67,7 +67,11 @@ function Student_Menu(stage,save, flags) {
                 level.alpha = 0.8;
 
                 //Events
-                level.on("click", Click_Handler);
+                if(!isArcade){
+                    level.on("click", Click_Handler);
+                }else{
+                    level.on("click", ClickHandlerArcade);
+                }
                 level.on("mouseover", mouseFunction);
                 level.on("mouseout", mouseFunction);
             }
@@ -85,21 +89,38 @@ function Student_Menu(stage,save, flags) {
         }
     }
 
+    function ClickHandlerArcade(ev){
+        if (ev.target.text === "Back") {
+            stage.removeAllChildren();
+            SP_Menu(stage,save, flags, isArcade);
+        }
+        else if (ev.target.text === "level1") {
+            stage.removeAllChildren();
+            MapsArcade(stage,"level1",save, isArcade);
+        } else if (ev.target.text === "level2") {
+            stage.removeAllChildren();
+            Maps(stage,"level2",save, isArcade);
+        } else if (ev.target.text === "level3") {
+            stage.removeAllChildren();
+            Maps(stage,"level3",save, isArcade);
+        }
+    }
+
     function Click_Handler(ev) {
         console.log(ev.target.text);
         if (ev.target.text === "Back") {
             stage.removeAllChildren();
-            SP_Menu(stage,save, flags);
+            SP_Menu(stage,save, flags, isArcade);
         }
         else if (ev.target.text === "level1") {
             stage.removeAllChildren();
-            Maps(stage,"level1",save);
+            Maps(stage,"level1",save, isArcade);
         } else if (ev.target.text === "level2") {
             stage.removeAllChildren();
-            Maps(stage,"level2",save);
+            Maps(stage,"level2",save, isArcade);
         } else if (ev.target.text === "level3") {
             stage.removeAllChildren();
-            Maps(stage,"level3",save);
+            Maps(stage,"level3",save, isArcade);
         }
     }
 
@@ -111,7 +132,12 @@ function Student_Menu(stage,save, flags) {
     back.hitArea = hit;
     back.on("mouseover", mouseFunction);
     back.on("mouseout", mouseFunction);
-    back.on("click", Click_Handler);
+    if(!isArcade){
+        back.on("click", Click_Handler);
+    }else{
+        console.log("IM HERE");
+        back.on("click", ClickHandlerArcade);
+    }
     stage.addChild(back);
 
 

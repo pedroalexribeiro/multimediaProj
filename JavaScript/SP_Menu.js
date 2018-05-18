@@ -1,6 +1,6 @@
 "use strict";
 
-function SP_Menu(stage,save, flags) {
+function SP_Menu(stage,save, flags, isArcade) {
     document.getElementById("Menu").style.backgroundImage="url(../Resources/test.png)";
 
     var mouseFunction = function(ev){
@@ -34,7 +34,7 @@ function SP_Menu(stage,save, flags) {
     function clickHandler_ST_TC(ev){
         if(flags.isCanvas && ev.target.text === "Student") {
             stage.removeAllChildren();
-            Student_Menu(stage,save, flags);
+            Student_Menu(stage,save, flags, isArcade);
         }
         else if( flags.isCanvas && ev.target.text === "Teacher") {
             stage.removeAllChildren();
