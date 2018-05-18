@@ -47,7 +47,11 @@ function Teacher_Menu(stage,save, flags, isArcade) {
             level.alpha = 0.8;
 
             //Events
-            level.on("click", Click_Handler);
+            if(!isArcade){
+                level.on("click",Click_Handler);
+            }else{
+                level.on("click",clickHandlerArcade);
+            }
             level.on("mouseover",mouseFunction);
             level.on("mouseout",mouseFunction);
 
@@ -67,6 +71,22 @@ function Teacher_Menu(stage,save, flags, isArcade) {
         };
     }
 
+    function clickHandlerArcade(ev) {
+        if(ev.target.text === "Back") {
+            stage.removeAllChildren();
+            SP_Menu(stage,save, flags, isArcade);
+        } else if(ev.target.text === "level1") {
+            stage.removeAllChildren();
+            MapsTeacherModeArcade(stage,"level1",save, flags, isArcade);
+        } else if(ev.target.text === "level2") {
+            stage.removeAllChildren();
+            MapsTeacherModeArcade(stage,"level2",save, flags, isArcade);
+        } else if(ev.target.text === "level3") {
+            stage.removeAllChildren();
+            MapsTeacherModeArcade(stage,"level3",save, flags, isArcade);
+        }
+    }
+    
     function Click_Handler(ev){
         console.log(ev.target.text);
         if(ev.target.text === "Back") {
@@ -92,7 +112,11 @@ function Teacher_Menu(stage,save, flags, isArcade) {
     back.hitArea = hit;
     back.on("mouseover", mouseFunction);
     back.on("mouseout", mouseFunction);
-    back.on("click",Click_Handler);
+    if(!isArcade){
+        back.on("click",Click_Handler);
+    }else{
+        back.on("click",clickHandlerArcade);
+    }
     stage.addChild(back);
 
     createjs.Ticker.framerate =60;

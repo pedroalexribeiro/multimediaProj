@@ -1,190 +1,104 @@
 "use strict";
 
-function MapsArcade(stage, levelStr, save, flags, isArcade) {
+function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
     //Game Menu Information
-    var container, containerEx, timer, init, goodJob, gameOver, msg, flag, flag2, timeoutId;
+    var container, containerEx, timer, init, goodJob, gameOver,timeoutId;
     var menuFlag = false, isExit = false, lost = false;
     createMenu();
     playGameSong();
+
     window.addEventListener("keydown", KeyHandler);
+    var despawn = function () {
+        killNPC(level);
+    };
+    window.addEventListener("click", despawn);
+
     var level;
     switch (levelStr) {
         case "level1":
-            level = new LevelOne(stage);
+            level = new LevelOneTeacherMode(stage);
             break;
         case "level2":
-            level = new LevelTwo(stage);
+            level = new LevelTwoTeacherMode(stage);
             break;
         case "level3":
-            level = new LevleThree(stage);
+            level = new LevelThreeTeacherMode(stage);
             break;
     }
 
-
-    //###################################################################
-    var keyHandlers = function (ev) {
-        let right = 37, left = 39, up = 39, down = 40;
-
-        level.hero.keys[ev.keyCode] = (ev.type === "keydown");
-        if (ev.type === "keydown") {
-            if ((ev.keyCode === right || ev.keyCode === left) && level.hero.isMoving === false && !menuFlag) {
-                level.hero.isMoving = true;
-                level.hero.hasChanged = true;
-
-            }
-        } else {
-            if (!level.hero.keys[right] && !level.hero.keys[left] && !level.hero.keys[up] && !level.hero.keys[down] && level.hero.isMoving === true) {
-                level.hero.isMoving = false;
-            }
-        }
-    };
-
-    window.addEventListener("keydown", keyHandlers);
-    window.addEventListener('keyup', keyHandlers);
-    //####################################################################
-
+    for(let i=0; i<level.lives; i++) {
+        stage.addChild(level.hearts[i]);
+        level.hearts[i].x = 10+(i*5) + i*32;
+        level.hearts[i].y = 10;
+        stage.update();
+    }
 
     var gameStart = createjs.Ticker.getTime(true);
     game();
 
-    function handle() {
-        //##################################################
-        level.hero.move(level.platforms, menuFlag);
-        if (level.hero.isMoving === false) {
-            if (level.hero.isWalkingRight) {
-                level.hero.spriteA.gotoAndPlay("idle_right");
-            } else {
-                level.hero.spriteA.gotoAndPlay("idle_left");
-            }
-        } else {
-            if (level.hero.hasChanged) {
-                level.hero.hasChanged = false;
-                if (level.hero.isWalkingRight) {
-                    level.hero.spriteA.gotoAndPlay("run_right");
-                } else {
-                    level.hero.spriteA.gotoAndPlay("run_left");
-                }
+    function killNPC(level) {
+        for (let i = 0; i < level.npcs.length; i++) {
+            var pt = level.npcs[i].spriteA.globalToLocal(stage.mouseX, stage.mouseY);
+            if (level.npcs[i].spriteA.hitTest(pt.x, pt.y)) {
+                level.npcs[i].spriteA.visible = false;
+                level.npcs[i].isUsed = false;
             }
         }
-        stage.update();
-        var test = level.hero.collide(level.objects, menuFlag);
-        if (test === 1) { // gameOver
-            gameStatus("gameOver", save);
-        }
-        if (level.hero.spriteA.y > 600) {
-            gameStatus("gameOver", save);
-        }
-        //##################################################
-
-        var currTime = createjs.Ticker.getTime(true);
-        if (currTime - init >= level.objInterval) {
-                //Escolhe objetos do level
-                if (level.nObj === 1) { // 1 objeto
-                    var objectOfArray;
-                    var x = Math.random();
-                    if (x < 0.25) { // 1/4th of chance of appearing buff/Debuff (first numbers(level.nBuffs) of Array)
-                        objectOfArray = Math.floor(Math.random() * level.nBuffs);
-                    }
-                    else {
-                        objectOfArray = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
-                    }
-
-                    var obj = level.objects[objectOfArray];
-
-                    if (obj.object.bitmap.y > 0 && obj.object.bitmap.y < 600) { // Horizontal
-                        flag = "Horizontal";
-                    }
-                    else if (obj.object.bitmap.x > 0 && obj.object.bitmap.x < 800) { // Vertical
-                        flag = "Vertical";
-                    }
-                    else {
-                        flag = "Diagonal";
-                    }
-
-                    //Calcula coordinates para onde objeto se vai mover
-                    var cords = obj.NewCords(level.hero.spriteA.x, level.hero.spriteA.y, flag, stage);
-
-
-                    //Calcula coordinates para onde objeto vai no Reset
-                    var resetCords = level.Position(obj.object.bitmap.image.width, obj.object.bitmap.image.height, flag, stage);
-
-                    var speed = Math.random() * (level.speed[0] - level.speed[1]) + level.speed[1];
-                    //Move Object
-                    obj.Move(cords[0], cords[1], speed, resetCords[0], resetCords[1]);
-                }
-
-                // Case for 2 Objects each Time
-                else {
-                    var objectOfArray, objectOfArray2;
-                    var x = Math.random();
-                    if (x < 0.25) { // 1/4th of chance of appearing buff/Debuff (first numbers(level.nBuffs) of Array)
-                        objectOfArray = Math.floor(Math.random() * level.nBuffs);
-                        objectOfArray2 = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
-                    }
-                    else {
-                        do {
-                            objectOfArray = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
-                            objectOfArray2 = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
-                        } while (objectOfArray === objectOfArray2);
-                    }
-
-                    var obj = level.objects[objectOfArray];
-
-                    if (obj.object.bitmap.y > 0 && obj.object.bitmap.y < 600) { // Horizontal
-                        flag = "Horizontal";
-                    }
-                    else if (obj.object.bitmap.x > 0 && obj.object.bitmap.x < 800) { // Vertical
-                        flag = "Vertical";
-                    }
-                    else {
-                        flag = "Diagonal";
-                    }
-
-
-                    var obj2 = level.objects[objectOfArray2];
-
-                    if (obj2.object.bitmap.y > 0 && obj2.object.bitmap.y < 600) { // Horizontal
-                        flag2 = "Horizontal";
-                    }
-                    else if (obj2.object.bitmap.x > 0 && obj2.object.bitmap.x < 800) { // Vertical
-                        flag2 = "Vertical";
-                    }
-                    else {
-                        flag2 = "Diagonal";
-                    }
-
-                    //Calcula coordinates para onde objeto se vai mover
-                    var cords = obj.NewCords(level.hero.spriteA.x, level.hero.spriteA.y, flag, stage);
-                    var cords2 = obj2.NewCords(level.hero.spriteA.x, level.hero.spriteA.y, flag2, stage);
-
-                    //Calcula coordinates para onde objeto vai no Reset
-                    var resetCords = level.Position(obj.object.bitmap.image.width, obj.object.bitmap.image.height, flag, stage);
-                    var resetCords2 = level.Position(obj2.object.bitmap.image.width, obj2.object.bitmap.image.height, flag2, stage);
-
-                    //Move Object
-                    var speed = Math.random() * (level.speed[0] - level.speed[1]) + level.speed[1];
-
-                    obj.Move(cords[0], cords[1], speed, resetCords[0], resetCords[1]);
-                    speed = Math.random() * (level.speed[0] - level.speed[1]) + level.speed[1];
-                    obj2.Move(cords2[0], cords2[1], speed, resetCords2[0], resetCords2[1]);
-                }
-                createjs.Ticker.removeEventListener("tick", handle);
-                game();
-        }
-        if (level.objInterval > 1000){
-            level.objInterval -= 0.80;
-        }
-        if(level.speed[0] > 800){
-            level.speed[0] -= 0.95;
-            level.speed[1] -= 0.95;
-        }
-        timer.text = "Timer: " + Math.ceil(((currTime - gameStart)) / 1000);
     }
 
     function game() {
         init = createjs.Ticker.getTime(true);
         createjs.Ticker.addEventListener("tick", handle);
         createjs.Ticker.framerate = 60;
+    }
+
+    function handle(event) {
+        if (!event.paused) {
+            for (let i = 0; i < level.npcs.length; i++) {
+                if (level.npcs[i].isUsed == true) {
+                    if (level.npcs[i].spriteA.x > 848 || level.npcs[i].spriteA.x < -48 || (level.npcs[i].spriteA.y > 800 + level.npcs[i].spriteA.getTransformedBounds().height)) {
+                        console.log("faleceu");
+                        level.npcs[i].isUsed = false;
+                        level.npcs[i].spriteA.visible = false;
+                        level.lives -= 1;
+                        level.hearts[level.lives].visible = false;
+                    } else {
+                        if (level.npcs[i].spriteA.originalX < 400) {
+                            if(level.npcs[i].spriteA.x == level.npcs[i].spriteA.originalX) {
+                                level.npcs[i].spriteA.gotoAndPlay("run_right");
+                            }
+                            level.npcs[i].moveRight(level.platforms);
+                        } else {
+                            if(level.npcs[i].spriteA.x == level.npcs[i].spriteA.originalX) {
+                                level.npcs[i].spriteA.gotoAndPlay("run_left");
+                            }
+                            level.npcs[i].moveLeft(level.platforms);
+                        }
+                        stage.update();
+                    }
+                }
+            }
+            var currTime = createjs.Ticker.getTime(true);
+            if (level.lives == 0) {
+                gameStatus("gameOver", save);
+            }
+            if (currTime - init >= level.npcInterval) {
+                for (let i = 0; i < level.npcs.length; i++) {
+                    if (level.npcs[i].isUsed == false) {
+                        level.npcs[i].spriteA.originalX = level.position(level.npcs[i].spriteA.getTransformedBounds().width, stage);
+                        level.npcs[i].spriteA.x = level.npcs[i].spriteA.originalX;
+                        level.npcs[i].spriteA.y = 0;
+                        level.npcs[i].spriteA.visible = true;
+                        level.npcs[i].isUsed = true;
+                        break;
+                    }
+                }
+
+                createjs.Ticker.removeEventListener("tick", handle);
+                game();
+            }
+            timer.text = "Timer: " + Math.ceil(((currTime - gameStart)) / 1000);
+        }
     }
 
     function KeyHandler(ev) {
@@ -462,7 +376,4 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
         var instance = createjs.Sound.play("gameMusic");
         instance.on("complete", playGameSong);
     }
-
 }
-
-

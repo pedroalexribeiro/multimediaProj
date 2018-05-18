@@ -1,4 +1,4 @@
-"user strict";
+"use strict";
 
 /*Steps for Every Object
 * 1st -> Chose a starting Position (diff from every map)
