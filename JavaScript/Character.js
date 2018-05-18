@@ -10,7 +10,7 @@ class Character {
         this.originalX = 0;
         this.isWalkingRight = true;
         this.hasChanged = false;
-        if(!otherChar) {
+        if (!otherChar) {
             var spriteSheet = new createjs.SpriteSheet({
                 images: ["../Resources/Character/Running/R_SpriteSheet.png"],
                 frames: {"height": 75, "width": 48, "regX": 0, "regY": 0},
@@ -35,7 +35,7 @@ class Character {
                     },
                 }
             });
-        }else{
+        } else {
             var spriteSheet = new createjs.SpriteSheet({
                 images: ["../Resources/Character/Running/R_SpriteSheet2.png"],
                 frames: {"height": 84, "width": 48, "regX": 0, "regY": 0},
@@ -67,7 +67,7 @@ class Character {
         stage.addChildAt(this.spriteA, 0);
     }
 
-    move(object, menuFlag,flags) {
+    move(object, menuFlag, flags) {
         if (!menuFlag) {
             this.velocity.y += 1;
 
@@ -75,7 +75,7 @@ class Character {
                 if (this.keys[38]) {
                     this.onGround = false;
                     this.velocity.y = -20;
-                    playSound(false,"jump",flags);
+                    playSound(false, "jump", flags);
                 }
             }
 
@@ -97,14 +97,14 @@ class Character {
             }
             if (this.isMoving === true) {
                 if (this.keys[37]) {
-                    if(this.isWalkingRight) {
+                    if (this.isWalkingRight) {
                         this.isWalkingRight = false;
                         this.hasChanged = true;
                     }
                     move.x = -this.velocity.x;
                 }
                 if (this.keys[39]) {
-                    if(!this.isWalkingRight) {
+                    if (!this.isWalkingRight) {
                         this.isWalkingRight = true;
                         this.hasChanged = true;
                     }
@@ -119,7 +119,7 @@ class Character {
     }
 
     moveLeft(platforms) {
-        if(this.spriteA.x < 800 && this.spriteA.x > 0) {
+        if (this.spriteA.x < 800 && this.spriteA.x > 0) {
             var move = {x: 0, y: 7};
             var collision = null;
 
@@ -136,13 +136,13 @@ class Character {
             }
             this.spriteA.y += move.y;
         }
-        if(this.onGround) {
+        if (this.onGround) {
             this.spriteA.x -= 5;
         }
     }
 
     moveRight(platforms) {
-        if(this.spriteA.x < 800 && this.spriteA.x > 0) {
+        if (this.spriteA.x < 800 && this.spriteA.x > 0) {
             var move = {x: 0, y: 7};
             var collision = null;
 
@@ -159,26 +159,28 @@ class Character {
             }
             this.spriteA.y += move.y;
         }
-        if(this.onGround) {
+        if (this.onGround) {
             this.spriteA.x += 5;
         }
     }
 
-    collide(objects, menuFlag,flags){
+    collide(objects, menuFlag, flags) {
         var bool = false;
-        if( !menuFlag){
-            for(let obj of objects){
-                if(obj.object.bitmap.visible) {   //objects[cc].platform.bitmap.visible
+        if (!menuFlag) {
+            for (let obj of objects) {
+                if (obj.object.bitmap.visible) {   //objects[cc].platform.bitmap.visible
                     var collide = ndgmr.checkPixelCollision(this.spriteA, obj.object.bitmap, 0, true);
                     if (collide) {
                         if (obj.flag === "../Resources/levels/Extras/Beer.png") {
-                            playSound(false,"gulp",flags);
-                            this.velocity.x -= 0.2;
-                            this.velocity.y -= 0.05;
+                            playSound(false, "gulp", flags);
+                            if (this.velocity.x > 1 && this.velocity.y > 1) {
+                                this.velocity.x -= 0.2;
+                                this.velocity.y -= 0.08;
+                            }
                         }
                         else if (obj.flag === "../Resources/levels/Extras/deadLine.png") {
                             this.velocity.x += 0.2;
-                            this.velocity.y += 0.05;
+                            this.velocity.y += 0.08;
                         }
                         else return 1;
                     }

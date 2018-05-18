@@ -1,25 +1,28 @@
 "use strict";
 
-function MapsArcade(stage, levelStr, save, flags, isArcade) {
+function StudentArcade(stage, levelStr, save, flags, isArcade) {
     //Game Menu Information
     var container, containerEx, timer, init, goodJob, gameOver, msg, flag, flag2, timeoutId;
     var menuFlag = false, isExit = false, lost = false;
     createMenu();
-    playGameSong();
+    playGameSong(flags);
     window.addEventListener("keydown", KeyHandler);
     var level;
     switch (levelStr) {
         case "level1":
-            level = new LevelOne(stage,save);
+            level = new LevelOne(stage, save);
             break;
         case "level2":
-            level = new LevelTwo(stage,save);
+            level = new LevelTwo(stage, save);
             break;
         case "level3":
-            level = new LevelThree(stage,save);
+            level = new LevelThree(stage, save);
             break;
         case "level4":
-            level = new LevelFour(stage,save);
+            level = new LevelFour(stage, save);
+            break;
+        case "level5":
+            level = new LevelFive(stage, save);
             break;
     }
 
@@ -52,7 +55,7 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
 
     function handle() {
         //##################################################
-        level.hero.move(level.platforms, menuFlag);
+        level.hero.move(level.platforms, menuFlag, flags);
         if (level.hero.isMoving === false) {
             if (level.hero.isWalkingRight) {
                 level.hero.spriteA.gotoAndPlay("idle_right");
@@ -70,7 +73,7 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
             }
         }
         stage.update();
-        var test = level.hero.collide(level.objects, menuFlag);
+        var test = level.hero.collide(level.objects, menuFlag, flags);
         if (test === 1) { // gameOver
             gameStatus("gameOver", save);
         }
@@ -81,103 +84,103 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
 
         var currTime = createjs.Ticker.getTime(true);
         if (currTime - init >= level.objInterval) {
-                //Escolhe objetos do level
-                if (level.nObj === 1) { // 1 objeto
-                    var objectOfArray;
-                    var x = Math.random();
-                    if (x < 0.25) { // 1/4th of chance of appearing buff/Debuff (first numbers(level.nBuffs) of Array)
-                        objectOfArray = Math.floor(Math.random() * level.nBuffs);
-                    }
-                    else {
-                        objectOfArray = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
-                    }
-
-                    var obj = level.objects[objectOfArray];
-
-                    if (obj.object.bitmap.y > 0 && obj.object.bitmap.y < 600) { // Horizontal
-                        flag = "Horizontal";
-                    }
-                    else if (obj.object.bitmap.x > 0 && obj.object.bitmap.x < 800) { // Vertical
-                        flag = "Vertical";
-                    }
-                    else {
-                        flag = "Diagonal";
-                    }
-
-                    //Calcula coordinates para onde objeto se vai mover
-                    var cords = obj.NewCords(level.hero.spriteA.x, level.hero.spriteA.y, flag, stage);
-
-
-                    //Calcula coordinates para onde objeto vai no Reset
-                    var resetCords = level.Position(obj.object.bitmap.image.width, obj.object.bitmap.image.height, flag, stage);
-
-                    var speed = Math.random() * (level.speed[0] - level.speed[1]) + level.speed[1];
-                    //Move Object
-                    obj.Move(cords[0], cords[1], speed, resetCords[0], resetCords[1]);
+            //Escolhe objetos do level
+            if (level.nObj === 1) { // 1 objeto
+                var objectOfArray;
+                var x = Math.random();
+                if (x < 0.25) { // 1/4th of chance of appearing buff/Debuff (first numbers(level.nBuffs) of Array)
+                    objectOfArray = Math.floor(Math.random() * level.nBuffs);
                 }
-
-                // Case for 2 Objects each Time
                 else {
-                    var objectOfArray, objectOfArray2;
-                    var x = Math.random();
-                    if (x < 0.25) { // 1/4th of chance of appearing buff/Debuff (first numbers(level.nBuffs) of Array)
-                        objectOfArray = Math.floor(Math.random() * level.nBuffs);
-                        objectOfArray2 = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
-                    }
-                    else {
-                        do {
-                            objectOfArray = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
-                            objectOfArray2 = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
-                        } while (objectOfArray === objectOfArray2);
-                    }
-
-                    var obj = level.objects[objectOfArray];
-
-                    if (obj.object.bitmap.y > 0 && obj.object.bitmap.y < 600) { // Horizontal
-                        flag = "Horizontal";
-                    }
-                    else if (obj.object.bitmap.x > 0 && obj.object.bitmap.x < 800) { // Vertical
-                        flag = "Vertical";
-                    }
-                    else {
-                        flag = "Diagonal";
-                    }
-
-
-                    var obj2 = level.objects[objectOfArray2];
-
-                    if (obj2.object.bitmap.y > 0 && obj2.object.bitmap.y < 600) { // Horizontal
-                        flag2 = "Horizontal";
-                    }
-                    else if (obj2.object.bitmap.x > 0 && obj2.object.bitmap.x < 800) { // Vertical
-                        flag2 = "Vertical";
-                    }
-                    else {
-                        flag2 = "Diagonal";
-                    }
-
-                    //Calcula coordinates para onde objeto se vai mover
-                    var cords = obj.NewCords(level.hero.spriteA.x, level.hero.spriteA.y, flag, stage);
-                    var cords2 = obj2.NewCords(level.hero.spriteA.x, level.hero.spriteA.y, flag2, stage);
-
-                    //Calcula coordinates para onde objeto vai no Reset
-                    var resetCords = level.Position(obj.object.bitmap.image.width, obj.object.bitmap.image.height, flag, stage);
-                    var resetCords2 = level.Position(obj2.object.bitmap.image.width, obj2.object.bitmap.image.height, flag2, stage);
-
-                    //Move Object
-                    var speed = Math.random() * (level.speed[0] - level.speed[1]) + level.speed[1];
-
-                    obj.Move(cords[0], cords[1], speed, resetCords[0], resetCords[1]);
-                    speed = Math.random() * (level.speed[0] - level.speed[1]) + level.speed[1];
-                    obj2.Move(cords2[0], cords2[1], speed, resetCords2[0], resetCords2[1]);
+                    objectOfArray = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
                 }
-                createjs.Ticker.removeEventListener("tick", handle);
-                game();
+
+                var obj = level.objects[objectOfArray];
+
+                if (obj.object.bitmap.y > 0 && obj.object.bitmap.y < 600) { // Horizontal
+                    flag = "Horizontal";
+                }
+                else if (obj.object.bitmap.x > 0 && obj.object.bitmap.x < 800) { // Vertical
+                    flag = "Vertical";
+                }
+                else {
+                    flag = "Diagonal";
+                }
+
+                //Calcula coordinates para onde objeto se vai mover
+                var cords = obj.NewCords(level.hero.spriteA.x, level.hero.spriteA.y, flag, stage);
+
+
+                //Calcula coordinates para onde objeto vai no Reset
+                var resetCords = level.Position(obj.object.bitmap.image.width, obj.object.bitmap.image.height, flag, stage);
+
+                var speed = Math.random() * (level.speed[0] - level.speed[1]) + level.speed[1];
+                //Move Object
+                obj.Move(cords[0], cords[1], speed, resetCords[0], resetCords[1]);
+            }
+
+            // Case for 2 Objects each Time
+            else {
+                var objectOfArray, objectOfArray2;
+                var x = Math.random();
+                if (x < 0.25) { // 1/4th of chance of appearing buff/Debuff (first numbers(level.nBuffs) of Array)
+                    objectOfArray = Math.floor(Math.random() * level.nBuffs);
+                    objectOfArray2 = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
+                }
+                else {
+                    do {
+                        objectOfArray = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
+                        objectOfArray2 = Math.floor(Math.random() * (level.objects.length - level.nBuffs) + level.nBuffs);
+                    } while (objectOfArray === objectOfArray2);
+                }
+
+                var obj = level.objects[objectOfArray];
+
+                if (obj.object.bitmap.y > 0 && obj.object.bitmap.y < 600) { // Horizontal
+                    flag = "Horizontal";
+                }
+                else if (obj.object.bitmap.x > 0 && obj.object.bitmap.x < 800) { // Vertical
+                    flag = "Vertical";
+                }
+                else {
+                    flag = "Diagonal";
+                }
+
+
+                var obj2 = level.objects[objectOfArray2];
+
+                if (obj2.object.bitmap.y > 0 && obj2.object.bitmap.y < 600) { // Horizontal
+                    flag2 = "Horizontal";
+                }
+                else if (obj2.object.bitmap.x > 0 && obj2.object.bitmap.x < 800) { // Vertical
+                    flag2 = "Vertical";
+                }
+                else {
+                    flag2 = "Diagonal";
+                }
+
+                //Calcula coordinates para onde objeto se vai mover
+                var cords = obj.NewCords(level.hero.spriteA.x, level.hero.spriteA.y, flag, stage);
+                var cords2 = obj2.NewCords(level.hero.spriteA.x, level.hero.spriteA.y, flag2, stage);
+
+                //Calcula coordinates para onde objeto vai no Reset
+                var resetCords = level.Position(obj.object.bitmap.image.width, obj.object.bitmap.image.height, flag, stage);
+                var resetCords2 = level.Position(obj2.object.bitmap.image.width, obj2.object.bitmap.image.height, flag2, stage);
+
+                //Move Object
+                var speed = Math.random() * (level.speed[0] - level.speed[1]) + level.speed[1];
+
+                obj.Move(cords[0], cords[1], speed, resetCords[0], resetCords[1]);
+                speed = Math.random() * (level.speed[0] - level.speed[1]) + level.speed[1];
+                obj2.Move(cords2[0], cords2[1], speed, resetCords2[0], resetCords2[1]);
+            }
+            createjs.Ticker.removeEventListener("tick", handle);
+            game();
         }
-        if (level.objInterval > 1000){
+        if (level.objInterval > 1000) {
             level.objInterval -= 0.80;
         }
-        if(level.speed[0] > 800){
+        if (level.speed[0] > 800) {
             level.speed[0] -= 0.95;
             level.speed[1] -= 0.95;
         }
@@ -212,7 +215,7 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
             isExit = true;
         }
         else if (ev.target.text === "Yes") {
-            playMenuSong();
+            playMenuSong(flags);
             createjs.Ticker.paused = false;
             createjs.Ticker.removeEventListener("tick", handle);
             window.removeEventListener("keydown", KeyHandler);
@@ -227,7 +230,8 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
 
         else if (ev.keyCode === 27 && lost) {
             lost = false;
-            playMenuSong();
+            playMenuSong(flags);
+
             stage.removeAllChildren();
             window.removeEventListener("keydown", KeyHandler);
             Student_Menu(stage, save, flags, isArcade);
@@ -239,10 +243,12 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
         lost = true;
 
         if (Flag === "gameOver") {
+            playSound(true, "gameOver", flags);
             gameOver.bitmap.alpha = 1;
             stage.addChild(gameOver.bitmap);
         } else if (Flag === "goodJob") {
-            if (level.lvl >= save.StudentProgress) {
+            playSound("true", "goodJob", flags);
+            if (level.lvl >= save.StudentProgress || save.StudentProgress < 5) {
                 save.StudentProgress += 1;
                 saveGame('save', save);
             }
@@ -256,11 +262,11 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
     }
 
     function createMenu() {
-        var audioFunction = function(ev){
-            clickHandlerAudio(ev, flags);
-        }
+        var audioFunction = function (ev) {
+            clickHandlerAudio(ev, flags, "gameMusic");
+        };
         var mouseFunction = function (ev) {
-            mouseHandler(ev,flags);
+            mouseHandler(ev, flags);
         };
         //Loads container
         var img = new Image();
@@ -326,34 +332,49 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
             sounds.y = img.height * 0.55;
             container.addChild(sounds);
 
-            //On/Off Buttons and Hitboxes
-            var Sound_btn = new createjs.Text("On", "35px Georgia", "#ffffff");
-            Sound_btn.id = "Sound_btn";
-            Sound_btn.alpha = 0.8;
-            Sound_btn.x = img.width / 2 - Sound_btn.getMeasuredWidth() / 2;
-            Sound_btn.y = img.height * 0.55;
-            Sound_btn.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-            var hit_ON = new createjs.Shape();
-            hit_ON.graphics.beginFill("#000").drawRect(0, 0, Sound_btn.getMeasuredWidth(), Sound_btn.getMeasuredHeight());
-            Sound_btn.hitArea = hit_ON;
-            Sound_btn.on("mouseover", mouseFunction);
-            Sound_btn.on("mouseout", mouseFunction);
-            Sound_btn.on("click", audioFunction);
-            container.addChild(Sound_btn);
 
-            var Music_btn = new createjs.Text("On", "35px Georgia", "#ffffff");
-            Music_btn.id = "Music_btn";
-            Music_btn.alpha = 0.8;
-            Music_btn.x = img.width / 2 - Music_btn.getMeasuredWidth() / 2;
-            Music_btn.y = img.height * 0.4;
-            Music_btn.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+            //On/Off Buttons and Hitboxes
+            var soundButton = new createjs.Text("", "35px Georgia", "#ffffff");
+            if (flags.sState) {
+                soundButton.text = "On";
+                soundButton.id = "SoundState";
+            }
+            else {
+                soundButton.text = "Off";
+                soundButton.id = "SoundState";
+            }
+            soundButton.alpha = 0.8;
+            soundButton.x = img.width / 2 - soundButton.getMeasuredWidth() / 2;
+            soundButton.y = img.height * 0.55;
+            soundButton.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+            var hit_ON = new createjs.Shape();
+            hit_ON.graphics.beginFill("#000").drawRect(0, 0, soundButton.getMeasuredWidth(), soundButton.getMeasuredHeight());
+            soundButton.hitArea = hit_ON;
+            soundButton.on("mouseover", mouseFunction);
+            soundButton.on("mouseout", mouseFunction);
+            soundButton.on("click", audioFunction);
+            container.addChild(soundButton);
+
+            var musicButton = new createjs.Text("", "35px Georgia", "#ffffff");
+            if (flags.mState) {
+                musicButton.text = "On";
+                musicButton.id = "MusicState";
+            }
+            else {
+                musicButton.text = "Off";
+                musicButton.id = "MusicState";
+            }
+            musicButton.alpha = 0.8;
+            musicButton.x = img.width / 2 - musicButton.getMeasuredWidth() / 2;
+            musicButton.y = img.height * 0.4;
+            musicButton.shadow = new createjs.Shadow("#000000", 5, 5, 10);
             var hit_ON_M = new createjs.Shape();
-            hit_ON_M.graphics.beginFill("#000").drawRect(0, 0, Music_btn.getMeasuredWidth(), Music_btn.getMeasuredHeight());
-            Music_btn.hitArea = hit_ON_M;
-            Music_btn.on("mouseover", mouseFunction);
-            Music_btn.on("mouseout", mouseFunction);
-            Music_btn.on("click", audioFunction);
-            container.addChild(Music_btn);
+            hit_ON_M.graphics.beginFill("#000").drawRect(0, 0, musicButton.getMeasuredWidth(), musicButton.getMeasuredHeight());
+            musicButton.hitArea = hit_ON_M;
+            musicButton.on("mouseover", mouseFunction);
+            musicButton.on("mouseout", mouseFunction);
+            musicButton.on("click", audioFunction);
+            container.addChild(musicButton);
         };
 
         createExitMenu();
@@ -362,7 +383,7 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
 
     function createExitMenu() {
         var mouseFunction = function (ev) {
-            mouseHandler(ev,flags);
+            mouseHandler(ev, flags);
         }
         var img = new Image();
         img.src = "../Resources/Options/ChalkBoard.png";
@@ -454,16 +475,21 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
         createjs.Ticker.paused = false;
     }
 
-    function playMenuSong() {
-        createjs.Sound.stop("gameMusic");
-        var instance = createjs.Sound.play("menuMusic");
-        instance.on("complete", playMenuSong);
+    function playMenuSong(flags) {
+        createjs.Sound.stop("gameOver");
+        if (flags.mState) {
+            createjs.Sound.stop("gameMusic");
+            var instance = createjs.Sound.play("menuMusic");
+            instance.on("complete", playMenuSong);
+        }
     }
 
-    function playGameSong() {
-        createjs.Sound.stop("menuMusic");
-        var instance = createjs.Sound.play("gameMusic");
-        instance.on("complete", playGameSong);
+    function playGameSong(flags) {
+        if (flags.mState) {
+            createjs.Sound.stop("menuMusic");
+            var instance = createjs.Sound.play("gameMusic");
+            instance.on("complete", playGameSong);
+        }
     }
 
 }

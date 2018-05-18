@@ -8,7 +8,7 @@
 *
 * All of the above already implemented
 * */
-function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
+function TeacherGame(stage, levelStr, save, flags, isArcade) {
 
     //Game Menu Information
     var container, containerEx, timer, init, goodJob, gameOver, timeoutId, msg;

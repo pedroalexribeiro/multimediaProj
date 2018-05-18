@@ -1,6 +1,6 @@
 "use strict";
 
-function Maps(stage, levelStr, save, flags, isArcade) {
+function StudentGame(stage, levelStr, save, flags, isArcade) {
     //Game Menu Information
     var container, containerEx, timer, init, goodJob, gameOver, msg, flag, flag2, timeoutId;
     var menuFlag = false, isExit = false, lost = false;
