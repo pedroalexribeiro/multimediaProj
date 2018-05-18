@@ -84,7 +84,7 @@ function Student_Menu(stage, save, flags, isArcade) {
             count += 1;
             x += 130;
         }
-        ContainerMenu(stage, "Help", flags);
+        ContainerMenu(stage, "Help", flags,"Dodge stuff or you die!\n Beer makes you trip and slows you down\nDeadLines give you an adrenaline Rush!\nArrows to Move and Jump");
         ContainerMenu(stage, "Options", flags);
         createHelp(stage, flags);
         createOptions(stage, flags);

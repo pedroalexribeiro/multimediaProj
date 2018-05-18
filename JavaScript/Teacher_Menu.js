@@ -81,7 +81,7 @@ function Teacher_Menu(stage, save, flags, isArcade) {
             count += 1;
             x += 130;
         }
-        ContainerMenu(stage, "Help", flags);
+        ContainerMenu(stage, "Help", flags,"Fail everyone or you lose!\n You have 3 lifes!\n Just click on those lil hobbits!");
         ContainerMenu(stage, "Options", flags);
         createHelp(stage, flags);
         createOptions(stage, flags);

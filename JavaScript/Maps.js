@@ -682,11 +682,11 @@ class LevelFour extends Map {
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level4/background.png)";
 
         //Level Platforms
-        let x = 60;
-        let y = 400;
+        let x = 350;
+        let y = 500;
         for (let i = 0; i < 3; i++) {
             this.platforms.push(new Platform(stage, "../Resources/levels/Level4 /platform.png", x, y));
-            x += 250;
+            y -= 250;
         }
         //Level Buffs
         var initCords = this.Position(100, 100, "Horizontal", stage); // Beer -> Slows permanently the character
