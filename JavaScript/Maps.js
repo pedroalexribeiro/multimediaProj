@@ -468,7 +468,7 @@ class LevelOne extends Map {
     constructor(stage) {
         super(stage);
         //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/test.png)";
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level1/background.png)";
 
         //Level Platforms
         this.platforms.push(new Platform(stage, "../Resources/levels/Level1/platform.png", 100, 400));
@@ -523,7 +523,7 @@ class LevelTwo extends Map {
     constructor(stage) {
         super(stage);
         //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level2/background.png)";
 
         //Level Platforms
         let x = 160;
@@ -587,7 +587,7 @@ class LevelThree extends Map {
     constructor(stage) {
         super(stage);
         //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/test.png)";
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level3/background.png)";
 
         //Level Platforms
         let x = 60;

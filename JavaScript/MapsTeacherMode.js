@@ -401,7 +401,7 @@ class LevelOneTeacherMode extends MapTeacherMode {
     constructor(stage) {
         super(stage);
         //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/test.png)";
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level1/background.png)";
 
         //Level Platforms
         this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level1/Platform.png", 0, 400));
@@ -433,7 +433,7 @@ class LevelTwoTeacherMode extends MapTeacherMode {
     constructor(stage) {
         super(stage);
         //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/test.png)";
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level2/background.png)";
 
         //Level Platforms
         this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level2/Slab.png", 0, 400));
@@ -462,7 +462,7 @@ class LevelThreeTeacherMode extends MapTeacherMode {
     constructor(stage) {
         super(stage);
         //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/test.png)";
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level3/background.png)";
 
         //Level Platforms
         this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level3/platform.png", 0, 100));
