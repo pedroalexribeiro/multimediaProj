@@ -48,8 +48,9 @@ function mainMenu(teste) {
     var arrayButtons = new Array();
     var iterator = 0;
     arrayButtons.push(new createjs.Text("SinglePlayer", "35px Georgia", "#ffffff"));
-    arrayButtons.push(new createjs.Text("MultiPlayer", "35px Georgia", "#ffffff"));
+    //arrayButtons.push(new createjs.Text("MultiPlayer", "35px Georgia", "#ffffff"));
     arrayButtons.push(new createjs.Text("Arcade", "35px Georgia", "#ffffff"));
+    arrayButtons.push(new createjs.Text("Leaderboard", "35px Georgia", "#ffffff"))
     arrayButtons.push(new createjs.Text("Extras", "35px Georgia", "#ffffff"));
     arrayButtons.push(new createjs.Text("Quit", "35px Georgia", "#ffffff"));
 
@@ -81,7 +82,10 @@ function mainMenu(teste) {
         }
         else if (flags.isCanvas && ev.target.text === "Arcade") {
             stage.removeAllChildren();
-            SP_Menu(stage,save, flags, true);
+            SP_Menu(stage,save, flags, true)
+        }else if (flags.isCanvas && ev.target.text === "Leaderboard") {
+            stage.removeAllChildren();
+            Leaderboard(stage, save,flags);
         }else if(flags.isCanvas && ev.target.text === "Extras"){
             stage.removeAllChildren();
             Extras(stage,save,flags);
