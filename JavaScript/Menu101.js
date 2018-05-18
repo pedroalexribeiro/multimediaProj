@@ -42,7 +42,6 @@ function mainMenu(teste) {
     };
 
     var save = loadGame('save');
-    save = null;
     if (save === null) {
         save = state;
         saveGame('save', save);
@@ -142,26 +141,27 @@ function playSound(flag, string, flags) {
 function leaderBoardUpdate(save,level,gameMode,timer){
     if(timer > save[gameMode][level.toString()][5]){
         var dict = save[gameMode][level.toString()];
-        if(timer > dict["1"]){
+        if(timer >= dict["1"]){
             dict["5"] = dict["4"];
             dict["4"] = dict["3"];
             dict["3"] = dict["2"];
             dict["2"] = dict["1"];
             dict["1"] = timer;
+            console.log(dict["2"]);
 
-        }else if(timer > dict["2"]){
+        }else if(timer >= dict["2"]){
             dict["5"] = dict["4"];
             dict["4"] = dict["3"];
             dict["3"] = dict["2"];
             dict["2"] = timer
-        }else if(timer > dict["3"]){
+        }else if(timer >= dict["3"]){
             dict["5"] = dict["4"];
             dict["4"] = dict["3"];
             dict["3"] = timer;
-        }else if(timer > dict["4"]){
+        }else if(timer >= dict["4"]){
             dict["5"] = dict["4"];
             dict["4"] =  timer;
-        }else if(timer > dict["5"]){
+        }else if(timer >= dict["5"]){
             dict["5"] = timer;
         }
         save[gameMode][level.toString()] = dict;
