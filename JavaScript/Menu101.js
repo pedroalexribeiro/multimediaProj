@@ -98,7 +98,7 @@ function mainMenu(teste) {
             Extras(stage, save, flags);
         }
         else if (flags.isCanvas && ev.target.text === "Quit") {
-            //window.close();
+            window.close();
         }
     }
 
