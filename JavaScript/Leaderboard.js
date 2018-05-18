@@ -94,10 +94,14 @@ function Leaderboard(stage, save, flags) {
             }
             var ite = 1;
             for(let text of arrayButtons) {
-                if(text.id === "mode"){
+                if (text.id === "mode") {
                     var mode = text.text;
-                }if(text.id === ite.toString()){
-                    text.text = ite.toString() + " " + "----->" + " " + "0"
+                    break;
+                }
+            }
+            for(let text of arrayButtons) {
+                if(text.id === ite.toString()){
+                    text.text = ite.toString() + " " + "----->" + " " + save[mode][ite.toString()].toString();
                     ite++;
                 }
             }

@@ -89,8 +89,12 @@ function ContainerMenu(stage, opt, flags,string) {
 
             var txt = new createjs.Text(texto, "20px Georgia", "#ffffff");
             txt.alpha = 0.8;
-            txt.x = img.width / 2 - txt.getMeasuredWidth() / 2;
-            txt.y = img.height * 0.5;
+            txt.textAlign = "center";
+            txt.textBaseline = "middle";
+            txt.x =  img.width / 2;
+            txt.y = img.height / 2;
+            //txt.x = img.width / 2 - txt.getMeasuredWidth() / 2;
+            //txt.y = img.height * 0.5;
             container.addChild(txt);
 
             var back2 = new createjs.Text("Back", "35px Georgia", "#ffffff");
