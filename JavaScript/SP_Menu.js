@@ -38,7 +38,7 @@ function SP_Menu(stage,save, flags, isArcade) {
         }
         else if( flags.isCanvas && ev.target.text === "Teacher") {
             stage.removeAllChildren();
-            Teacher_Menu(stage,save);
+            Teacher_Menu(stage,save, flags, isArcade);
         }
         else if(ev.target.text === "Back") {
             stage.removeAllChildren();

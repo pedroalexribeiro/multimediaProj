@@ -1,15 +1,6 @@
 "use strict";
 
-/*Steps for Every Object
-* 1st -> Chose a starting Position (diff from every map)
-* 2nd -> calculate trajectory with Character
-* 3rd -> Tween Move to other side of Screen
-* 4th -> Reset Position to another Random Position (Diff from every map)
-*
-* All of the above already implemented
-* */
-function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
-
+function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
     //Game Menu Information
     var container, containerEx, timer, init, goodJob, gameOver,timeoutId, msg;
     var menuFlag = false, isExit = false, lost = false;
@@ -32,9 +23,6 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
             break;
         case "level3":
             level = new LevelThreeTeacherMode(stage);
-            break;
-        case "level4":
-            level = new LevelFourTeacherMode(stage);
             break;
     }
 
@@ -91,30 +79,25 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
                 }
             }
             var currTime = createjs.Ticker.getTime(true);
-            if (currTime - gameStart <= level.totalTime) {
-                if (level.lives == 0) {
-                    gameStatus("gameOver", save);
-                }
-                if (currTime - init >= level.npcInterval) {
-                    for (let i = 0; i < level.npcs.length; i++) {
-                        if (level.npcs[i].isUsed == false) {
-                            level.npcs[i].spriteA.originalX = level.position(level.npcs[i].spriteA.getTransformedBounds().width, stage);
-                            level.npcs[i].spriteA.x = level.npcs[i].spriteA.originalX;
-                            level.npcs[i].spriteA.y = 0;
-                            level.npcs[i].spriteA.visible = true;
-                            level.npcs[i].isUsed = true;
-                            break;
-                        }
+            if (level.lives == 0) {
+                gameStatus("gameOver", save);
+            }
+            if (currTime - init >= level.npcInterval) {
+                for (let i = 0; i < level.npcs.length; i++) {
+                    if (level.npcs[i].isUsed == false) {
+                        level.npcs[i].spriteA.originalX = level.position(level.npcs[i].spriteA.getTransformedBounds().width, stage);
+                        level.npcs[i].spriteA.x = level.npcs[i].spriteA.originalX;
+                        level.npcs[i].spriteA.y = 0;
+                        level.npcs[i].spriteA.visible = true;
+                        level.npcs[i].isUsed = true;
+                        break;
                     }
-
-                    createjs.Ticker.removeEventListener("tick", handle);
-                    game();
                 }
+
+                createjs.Ticker.removeEventListener("tick", handle);
+                game();
             }
-            else {
-                gameStatus("goodJob", save);
-            }
-            timer.text = "Timer: " + Math.ceil((level.totalTime - (currTime - gameStart)) / 1000);
+            timer.text = "Timer: " + Math.ceil(((currTime - gameStart)) / 1000);
         }
     }
 
@@ -368,7 +351,6 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
         bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
         gameOver.bitmap = bitmap;
 
-
         //Click esc To go to Menu
         msg = new createjs.Text("Click ESC to leave", "30px monospace", "#000");
         msg.x = stage.canvas.width / 2 - 150;
@@ -392,137 +374,5 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
         createjs.Sound.stop("menuMusic");
         var instance = createjs.Sound.play("gameMusic");
         instance.on("complete", playGameSong);
-    }
-}
-
-class MapTeacherMode {
-    constructor() {
-        this.platforms = new Array();
-        this.hearts = new Array();
-        this.npcs = new Array();
-        this.lives = 3;
-
-        for(let i=0; i<this.lives; i++) {
-            this.hearts.push(new createjs.Bitmap("../Resources/levels/Extras/life.png"));
-        }
-    }
-}
-
-class LevelOneTeacherMode extends MapTeacherMode {
-    constructor(stage) {
-        super(stage);
-        //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level1/background.png)";
-
-        //Level Platforms
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level1/Platform.png", 0, 400));
-
-        //Level Game Related Information
-        this.totalTime = 15000; // Tempo total do jogo
-        this.npcInterval = 2000; //Intervalo entre cada NPC
-
-        //Level NPCs
-        var neededNPCs = this.totalTime / this.npcInterval;
-        for (let i = 0; i < neededNPCs; i++) {
-            this.npcs.push(new Character(stage, 200, 0));
-            this.npcs[i].spriteA.visible = false;
-        }
-    }
-
-    position(widthObj, stage) { //For level One
-        var side = Math.random();
-        if (side > 0.5) { // Right
-            var xNew = stage.canvas.width - widthObj;
-        } else { //Left
-            var xNew = 1;
-        }
-        return xNew;
-    }
-}
-
-class LevelTwoTeacherMode extends MapTeacherMode {
-    constructor(stage) {
-        super(stage);
-        //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level2/background.png)";
-
-        //Level Platforms
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level2/Slab.png", 0, 400));
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level2/Slab.png", 300, 400));
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level2/Slab.png", 600, 400));
-
-        //Level Game Related Information
-        this.totalTime = 30000; // Tempo total do jogo
-        this.npcInterval = 1000; //Intervalo entre cada NPC
-
-        //Level NPCs
-        var neededNPCs = this.totalTime / this.npcInterval;
-        for (let i = 0; i < neededNPCs; i++) {
-            this.npcs.push(new Character(stage, 200, 0));//325
-            this.npcs[i].spriteA.visible = false;
-        }
-    }
-
-    position(widthObj, stage) { //For level One
-        var x = Math.floor(Math.random() * 799);
-        return x;
-    }
-}
-
-class LevelThreeTeacherMode extends MapTeacherMode {
-    constructor(stage) {
-        super(stage);
-        //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level3/background.png)";
-
-        //Level Platforms
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level3/platform.png", 0, 100));
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level3/platform.png", 200, 250));
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level3/platform.png", 400, 400));
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level3/platform.png", 600, 550));
-
-        //Level Game Related Information
-        this.totalTime = 60000; // Tempo total do jogo
-        this.npcInterval = 800; //Intervalo entre cada NPC
-
-        //Level NPCs
-        var neededNPCs = this.totalTime / this.npcInterval;
-        for (let i = 0; i < neededNPCs; i++) {
-            this.npcs.push(new Character(stage, 200, 0));//325
-            this.npcs[i].spriteA.visible = false;
-        }
-    }
-
-    position(widthObj, stage) { //For level One
-        var x = Math.floor(Math.random() * 799);
-        return x;
-    }
-}
-
-class LevelFourTeacherMode extends MapTeacherMode {
-    constructor(stage) {
-        super(stage);
-        //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level4/background.png)";
-
-        //Level Platforms
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level4/platform.png", 0, 400));
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level4/table.png", 200, 100));
-
-        //Level Game Related Information
-        this.totalTime = 60000; // Tempo total do jogo
-        this.npcInterval = 1000; //Intervalo entre cada NPC
-
-        //Level NPCs
-        var neededNPCs = this.totalTime / this.npcInterval;
-        for (let i = 0; i < neededNPCs; i++) {
-            this.npcs.push(new Character(stage, 200, 0));//325
-            this.npcs[i].spriteA.visible = false;
-        }
-    }
-
-    position(widthObj, stage) { //For level One
-        var x = Math.floor(Math.random() * 799);
-        return x;
     }
 }
