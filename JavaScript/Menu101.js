@@ -81,7 +81,6 @@ function mainMenu(teste) {
     createOptions(stage, flags);
 
     function clickHandler_SP_MP_AC(ev) {
-        console.log(ev.target.text);
         if (flags.isCanvas && ev.target.text === "SinglePlayer") {
             stage.removeAllChildren();
             SinglePlayerMenu(stage, save, flags, false);
@@ -149,7 +148,6 @@ function leaderBoardUpdate(save,level,gameMode,timer){
             dict["3"] = dict["2"];
             dict["2"] = dict["1"];
             dict["1"] = timer;
-            console.log(dict["2"]);
 
         }else if(timer >= dict["2"]){
             dict["5"] = dict["4"];

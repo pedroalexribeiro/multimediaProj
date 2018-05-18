@@ -1,7 +1,6 @@
 "use strict";
 
 function Student_Menu(stage, save, flags, isArcade) {
-    console.log(save);
     document.getElementById("Menu").style.backgroundImage = "url(../Resources/Background.png)";
 
     var mouseFunction = function (ev) {
