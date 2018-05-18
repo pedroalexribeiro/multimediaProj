@@ -73,12 +73,21 @@ function Extras(stage, save, flags) {
         }
     }
 
-    function ExtrasClickHandler(ev) {
+    function exitCredits(bitmap) {
+        stage.removeChild(bitmap);
+    }
 
+    function ExtrasClickHandler(ev) {
         if (flags.isCanvas && ev.target.text === "Credits") {
-            
-          }
-        else if (flags.isCanvas && ev.target.id === "Char") {
+            var introVideo = document.getElementById("creditsVideo");
+            introVideo.play();
+            var bitmap = new createjs.Bitmap(introVideo);
+            stage.addChild(bitmap);
+            var endCredits = function () {
+                exitCredits(bitmap);
+            };
+            setTimeout(endCredits, 13000);
+        } else if (flags.isCanvas && ev.target.id === "Char") {
             if(ev.target.text === "Normal"){
                 if(save.StudentProgress >= 3 && save.TeacherProgress >= 4 ) {
                     ev.target.text = "Senior";

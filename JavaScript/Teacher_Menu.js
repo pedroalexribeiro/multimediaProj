@@ -112,6 +112,10 @@ function Teacher_Menu(stage, save, flags, isArcade) {
         }
     }
 
+    function exitStoryline(){
+        stage.removeAllChildren();
+        MapsTeacherMode(stage, "level1", save, flags, isArcade);
+    }
     function Click_Handler(ev) {
         if (flags.isCanvas) {
             if (ev.target.text === "Back") {
@@ -119,7 +123,18 @@ function Teacher_Menu(stage, save, flags, isArcade) {
                 SP_Menu(stage, save, flags, isArcade);
             } else if (ev.target.text === "level1") {
                 stage.removeAllChildren();
-                MapsTeacherMode(stage, "level1", save, flags, isArcade);
+                var introVideo = document.getElementById("teacherVideo");
+                introVideo.play();
+                var bitmap = new createjs.Bitmap(introVideo);
+                stage.addChild(bitmap);
+                var timeoutId = setTimeout(exitStoryline, 21000);
+                document.onkeydown = function(evt) {
+                    evt = evt || window.event;
+                    if (evt.keyCode == 13) {
+                        clearTimeout(timeoutId);
+                        exitStoryline();
+                    }
+                };
             } else if (ev.target.text === "level2") {
                 stage.removeAllChildren();
                 MapsTeacherMode(stage, "level2", save, flags, isArcade);
