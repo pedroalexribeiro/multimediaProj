@@ -122,6 +122,9 @@ function Teacher_Menu(stage, save, flags, isArcade) {
             } else if (ev.target.text === "level4") {
                 stage.removeAllChildren();
                 MapsTeacherMode(stage, "level4", save, flags, isArcade);
+            } else if (ev.target.text === "level5") {
+                stage.removeAllChildren();
+                MapsTeacherMode(stage, "level5", save, flags, isArcade);
             }
         }
     }

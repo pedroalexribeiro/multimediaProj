@@ -36,6 +36,9 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
         case "level4":
             level = new LevelFourTeacherMode(stage,save);
             break;
+        case "level5":
+            level = new LevelFiveTeacherMode(stage,save);
+            break;
     }
 
     for(let i=0; i<level.lives; i++) {
@@ -507,6 +510,34 @@ class LevelFourTeacherMode extends MapTeacherMode {
 
         //Level Platforms
         this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level4/platform.png", 0, 400));
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level4/table.png", 200, 100));
+
+        //Level Game Related Information
+        this.totalTime = 60000; // Tempo total do jogo
+        this.npcInterval = 1000; //Intervalo entre cada NPC
+
+        //Level NPCs
+        var neededNPCs = this.totalTime / this.npcInterval;
+        for (let i = 0; i < neededNPCs; i++) {
+            this.npcs.push(new Character(stage, 200, 0,save.Senior));//325
+            this.npcs[i].spriteA.visible = false;
+        }
+    }
+
+    position(widthObj, stage) { //For level One
+        var x = Math.floor(Math.random() * 799);
+        return x;
+    }
+}
+
+class LevelFiveTeacherMode extends MapTeacherMode {
+    constructor(stage,save) {
+        super(stage,save);
+        //Level Background
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level4/background.png)";
+
+        //Level Platforms
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level4/platform_pc.png", 0, 400));
         this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level4/table.png", 200, 100));
 
         //Level Game Related Information
