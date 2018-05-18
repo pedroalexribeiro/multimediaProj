@@ -19,6 +19,11 @@ function Leaderboard(stage, save, flags) {
     arrayButtons.push(new createjs.Text("Level 1", "35px Georgia", "#ffffff"));
     arrayButtons.push(new createjs.Text("Back", "35px Georgia", "#ffffff"));
 
+    ContainerMenu(stage, "Help", flags,"Chose game mode and Level and Check the scores!");
+    ContainerMenu(stage, "Options", flags);
+    createHelp(stage, flags);
+    createOptions(stage, flags);
+
     for (let text of arrayButtons) {
         if(text.text === "Leaderboard"){
             text.x = (stage.canvas.width / 2) - (text.getMeasuredWidth()/2);

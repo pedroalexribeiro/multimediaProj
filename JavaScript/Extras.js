@@ -89,7 +89,7 @@ function Extras(stage, save, flags) {
             setTimeout(endCredits, 13000);
         } else if (flags.isCanvas && ev.target.id === "Char") {
             if(ev.target.text === "Normal"){
-                if(save.StudentProgress >= 3 && save.TeacherProgress >= 4 ) {
+                if(save.StudentProgress >= 5 && save.TeacherProgress >= 5 ) {
                     ev.target.text = "Senior";
                     save.Senior = true;
                     saveGame('save', save);
@@ -107,9 +107,11 @@ function Extras(stage, save, flags) {
         }else if(flags.isCanvas && ev.target.text === "Reset"){
 
             var state = {
+                Student: {"1":{"1":0, "2":0, "3":0, "4":0, "5":0}, "2":{"1":0, "2":0, "3":0, "4":0, "5":0}, "3":{"1":0, "2":0, "3":0, "4":0, "5":0}, "4":{"1":0, "2":0, "3":0, "4":0, "5":0}, "5":{"1":0, "2":0, "3":0, "4":0, "5":0}},
+                Teacher: {"1":{"1":0, "2":0, "3":0, "4":0, "5":0}, "2":{"1":0, "2":0, "3":0, "4":0, "5":0}, "3":{"1":0, "2":0, "3":0, "4":0, "5":0}, "4":{"1":0, "2":0, "3":0, "4":0, "5":0}, "5":{"1":0, "2":0, "3":0, "4":0, "5":0}},
                 Senior: false,
                 StudentProgress: 1,
-                TeacherProgress: 1
+                TeacherProgress: 1,
             };
             saveGame('save',state);
             stage.removeAllChildren();

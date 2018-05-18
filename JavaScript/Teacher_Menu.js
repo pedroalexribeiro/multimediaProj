@@ -116,8 +116,9 @@ function Teacher_Menu(stage, save, flags, isArcade) {
     }
 
     function exitStoryline(){
+        document.onkeydown = null;
         stage.removeAllChildren();
-        MapsTeacherMode(stage, "level1", save, flags, isArcade);
+        TeacherGame(stage, "level1", save, flags, isArcade);
     }
     function Click_Handler(ev) {
         if (flags.isCanvas) {
@@ -138,7 +139,6 @@ function Teacher_Menu(stage, save, flags, isArcade) {
                         exitStoryline();
                     }
                 };
-                TeacherGame(stage, "level1", save, flags, isArcade);
             } else if (ev.target.text === "level2") {
                 stage.removeAllChildren();
                 TeacherGame(stage, "level2", save, flags, isArcade);

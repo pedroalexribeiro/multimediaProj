@@ -122,8 +122,9 @@ function Student_Menu(stage, save, flags, isArcade) {
     }
 
     function exitStoryline() {
+        document.onkeydown = null;
         stage.removeAllChildren();
-        Maps(stage, "level1", save, flags, isArcade);
+        StudentGame(stage, "level1", save, flags, isArcade);
     }
 
     function Click_Handler(ev) {
@@ -146,7 +147,6 @@ function Student_Menu(stage, save, flags, isArcade) {
                         exitStoryline();
                     }
                 };
-                StudentGame(stage, "level1", save, flags, isArcade);
             } else if (ev.target.text === "level2") {
                 stage.removeAllChildren();
                 StudentGame(stage, "level2", save, flags, isArcade);
