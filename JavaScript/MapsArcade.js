@@ -77,7 +77,7 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
         //##################################################
 
         var currTime = createjs.Ticker.getTime(true);
-            if (currTime - init >= level.objInterval) {
+        if (currTime - init >= level.objInterval) {
                 //Escolhe objetos do level
                 if (level.nObj === 1) { // 1 objeto
                     var objectOfArray;
@@ -253,6 +253,12 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
     }
 
     function createMenu() {
+        var audioFunction = function(ev){
+            clickHandlerAudio(ev, flags);
+        }
+        var mouseFunction = function (ev) {
+            mouseHandler(ev,flags);
+        }
         //Loads container
         var img = new Image();
         img.src = "../Resources/Options/ChalkBoard.png";
@@ -284,8 +290,8 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
             var hitExit = new createjs.Shape();
             hitExit.graphics.beginFill("#000").drawRect(0, 0, exit.getMeasuredWidth(), exit.getMeasuredHeight());
             exit.hitArea = hitExit;
-            exit.on("mouseover", mouseHandler);
-            exit.on("mouseout", mouseHandler);
+            exit.on("mouseover", mouseFunction);
+            exit.on("mouseout", mouseFunction);
             exit.on("click", KeyHandler);
             container.addChild(exit);
 
@@ -299,8 +305,8 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
             var hitCont = new createjs.Shape();
             hitCont.graphics.beginFill("#000").drawRect(0, 0, cont.getMeasuredWidth(), cont.getMeasuredHeight());
             cont.hitArea = hitCont;
-            cont.on("mouseover", mouseHandler);
-            cont.on("mouseout", mouseHandler);
+            cont.on("mouseover", mouseFunction);
+            cont.on("mouseout", mouseFunction);
             cont.on("click", KeyHandler);
             container.addChild(cont);
 
@@ -327,9 +333,9 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
             var hit_ON = new createjs.Shape();
             hit_ON.graphics.beginFill("#000").drawRect(0, 0, Sound_btn.getMeasuredWidth(), Sound_btn.getMeasuredHeight());
             Sound_btn.hitArea = hit_ON;
-            Sound_btn.on("mouseover", mouseHandler);
-            Sound_btn.on("mouseout", mouseHandler);
-            Sound_btn.on("click", clickHandlerAudio);
+            Sound_btn.on("mouseover", mouseFunction);
+            Sound_btn.on("mouseout", mouseFunction);
+            Sound_btn.on("click", audioFunction);
             container.addChild(Sound_btn);
 
             var Music_btn = new createjs.Text("On", "35px Georgia", "#ffffff");
@@ -341,9 +347,9 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
             var hit_ON_M = new createjs.Shape();
             hit_ON_M.graphics.beginFill("#000").drawRect(0, 0, Music_btn.getMeasuredWidth(), Music_btn.getMeasuredHeight());
             Music_btn.hitArea = hit_ON_M;
-            Music_btn.on("mouseover", mouseHandler);
-            Music_btn.on("mouseout", mouseHandler);
-            Music_btn.on("click", clickHandlerAudio);
+            Music_btn.on("mouseover", mouseFunction);
+            Music_btn.on("mouseout", mouseFunction);
+            Music_btn.on("click", audioFunction);
             container.addChild(Music_btn);
         };
 
@@ -352,6 +358,9 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
     }
 
     function createExitMenu() {
+        var mouseFunction = function (ev) {
+            mouseHandler(ev,flags);
+        }
         var img = new Image();
         img.src = "../Resources/Options/ChalkBoard.png";
         img.onload = function () {
@@ -380,8 +389,8 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
             var hitNo = new createjs.Shape();
             hitNo.graphics.beginFill("#000").drawRect(0, 0, no.getMeasuredWidth(), no.getMeasuredHeight());
             no.hitArea = hitNo;
-            no.on("mouseover", mouseHandler);
-            no.on("mouseout", mouseHandler);
+            no.on("mouseover", mouseFunction);
+            no.on("mouseout", mouseFunction);
             no.on("click", KeyHandler);
             containerEx.addChild(no);
 
@@ -393,8 +402,8 @@ function MapsArcade(stage, levelStr, save, flags, isArcade) {
             var hitYes = new createjs.Shape();
             hitYes.graphics.beginFill("#000").drawRect(0, 0, yes.getMeasuredWidth(), yes.getMeasuredHeight());
             yes.hitArea = hitYes;
-            yes.on("mouseover", mouseHandler);
-            yes.on("mouseout", mouseHandler);
+            yes.on("mouseover", mouseFunction);
+            yes.on("mouseout", mouseFunction);
             yes.on("click", KeyHandler);
             containerEx.addChild(yes);
 

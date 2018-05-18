@@ -8,7 +8,7 @@
 *
 * All of the above already implemented
 * */
-function MapsTeacherMode(stage, levelStr, save) {
+function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
 
     //Game Menu Information
     var container, containerEx, timer, init, goodJob, gameOver,timeoutId;
@@ -115,7 +115,78 @@ function MapsTeacherMode(stage, levelStr, save) {
         }
     }
 
+    function KeyHandler(ev) {
+        if (ev.keyCode === 27 && !menuFlag && !lost) {
+            clearTimeout(timeoutId);
+            menuFlag = true;
+            container.alpha = 1;
+            //Disable Character Movement -> A flag?
+            createjs.Ticker.paused = true;
+        }
+        else if (ev.keyCode === 27 && menuFlag && !lost || ev.target.text === "Continue") {
+            if (!isExit) {
+                container.alpha = 0;
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(timeOut, 2000);
+            }
+        }
+
+        else if (ev.target.text === "Exit") {
+            containerEx.alpha = 1;
+            container.alpha = 0;
+            isExit = true;
+        }
+        else if (ev.target.text === "Yes") {
+            playMenuSong();
+            createjs.Ticker.paused = false;
+            createjs.Ticker.removeEventListener("tick", handle);
+            window.removeEventListener("keydown", KeyHandler);
+            stage.removeAllChildren();
+            Student_Menu(stage, save, flags, isArcade);
+        }
+        else if (ev.target.text === "No") {
+            containerEx.alpha = 0;
+            container.alpha = 1;
+            isExit = false;
+        }
+
+        else if (ev.keyCode === 27 && lost) {
+            lost = false;
+            playMenuSong();
+            stage.removeAllChildren();
+            window.removeEventListener("keydown", KeyHandler);
+            Student_Menu(stage, save, flags, isArcade);
+        }
+    }
+
+    function gameStatus(Flag, save) {
+        console.log("End of level");
+        lost = true;
+
+        if (Flag === "gameOver") {
+            gameOver.bitmap.alpha = 1;
+            stage.addChild(gameOver.bitmap);
+        } else if (Flag === "goodJob") {
+            if (level.lvl >= save.StudentProgress) {
+                save.StudentProgress += 1;
+                saveGame('save', save);
+            }
+            goodJob.bitmap.alpha = 1;
+            stage.addChild(goodJob.bitmap);
+        }
+        msg.alpha = 1;
+        stage.addChild(msg);
+        createjs.Ticker.removeEventListener("tick", handle);
+        stage.update();
+    }
+
     function createMenu() {
+        var audioFunction = function(ev){
+            clickHandlerAudio(ev, flags);
+        }
+        var mouseFunction = function (ev) {
+            mouseHandler(ev,flags);
+        }
         //Loads container
         var img = new Image();
         img.src = "../Resources/Options/ChalkBoard.png";
@@ -147,8 +218,8 @@ function MapsTeacherMode(stage, levelStr, save) {
             var hitExit = new createjs.Shape();
             hitExit.graphics.beginFill("#000").drawRect(0, 0, exit.getMeasuredWidth(), exit.getMeasuredHeight());
             exit.hitArea = hitExit;
-            exit.on("mouseover", mouseHandler);
-            exit.on("mouseout", mouseHandler);
+            exit.on("mouseover", mouseFunction);
+            exit.on("mouseout", mouseFunction);
             exit.on("click", KeyHandler);
             container.addChild(exit);
 
@@ -162,8 +233,8 @@ function MapsTeacherMode(stage, levelStr, save) {
             var hitCont = new createjs.Shape();
             hitCont.graphics.beginFill("#000").drawRect(0, 0, cont.getMeasuredWidth(), cont.getMeasuredHeight());
             cont.hitArea = hitCont;
-            cont.on("mouseover", mouseHandler);
-            cont.on("mouseout", mouseHandler);
+            cont.on("mouseover", mouseFunction);
+            cont.on("mouseout", mouseFunction);
             cont.on("click", KeyHandler);
             container.addChild(cont);
 
@@ -190,9 +261,9 @@ function MapsTeacherMode(stage, levelStr, save) {
             var hit_ON = new createjs.Shape();
             hit_ON.graphics.beginFill("#000").drawRect(0, 0, Sound_btn.getMeasuredWidth(), Sound_btn.getMeasuredHeight());
             Sound_btn.hitArea = hit_ON;
-            Sound_btn.on("mouseover", mouseHandler);
-            Sound_btn.on("mouseout", mouseHandler);
-            Sound_btn.on("click", clickHandlerAudio);
+            Sound_btn.on("mouseover", mouseFunction);
+            Sound_btn.on("mouseout", mouseFunction);
+            Sound_btn.on("click", audioFunction);
             container.addChild(Sound_btn);
 
             var Music_btn = new createjs.Text("On", "35px Georgia", "#ffffff");
@@ -204,9 +275,9 @@ function MapsTeacherMode(stage, levelStr, save) {
             var hit_ON_M = new createjs.Shape();
             hit_ON_M.graphics.beginFill("#000").drawRect(0, 0, Music_btn.getMeasuredWidth(), Music_btn.getMeasuredHeight());
             Music_btn.hitArea = hit_ON_M;
-            Music_btn.on("mouseover", mouseHandler);
-            Music_btn.on("mouseout", mouseHandler);
-            Music_btn.on("click", clickHandlerAudio);
+            Music_btn.on("mouseover", mouseFunction);
+            Music_btn.on("mouseout", mouseFunction);
+            Music_btn.on("click", audioFunction);
             container.addChild(Music_btn);
         };
 
@@ -215,6 +286,9 @@ function MapsTeacherMode(stage, levelStr, save) {
     }
 
     function createExitMenu() {
+        var mouseFunction = function (ev) {
+            mouseHandler(ev,flags);
+        }
         var img = new Image();
         img.src = "../Resources/Options/ChalkBoard.png";
         img.onload = function () {
@@ -243,8 +317,8 @@ function MapsTeacherMode(stage, levelStr, save) {
             var hitNo = new createjs.Shape();
             hitNo.graphics.beginFill("#000").drawRect(0, 0, no.getMeasuredWidth(), no.getMeasuredHeight());
             no.hitArea = hitNo;
-            no.on("mouseover", mouseHandler);
-            no.on("mouseout", mouseHandler);
+            no.on("mouseover", mouseFunction);
+            no.on("mouseout", mouseFunction);
             no.on("click", KeyHandler);
             containerEx.addChild(no);
 
@@ -256,8 +330,8 @@ function MapsTeacherMode(stage, levelStr, save) {
             var hitYes = new createjs.Shape();
             hitYes.graphics.beginFill("#000").drawRect(0, 0, yes.getMeasuredWidth(), yes.getMeasuredHeight());
             yes.hitArea = hitYes;
-            yes.on("mouseover", mouseHandler);
-            yes.on("mouseout", mouseHandler);
+            yes.on("mouseover", mouseFunction);
+            yes.on("mouseout", mouseFunction);
             yes.on("click", KeyHandler);
             containerEx.addChild(yes);
 
@@ -300,6 +374,11 @@ function MapsTeacherMode(stage, levelStr, save) {
 
     }
 
+    function timeOut() {
+        menuFlag = false;
+        createjs.Ticker.paused = false;
+    }
+
     function playMenuSong() {
         createjs.Sound.stop("gameMusic");
         var instance = createjs.Sound.play("menuMusic");
@@ -310,77 +389,6 @@ function MapsTeacherMode(stage, levelStr, save) {
         createjs.Sound.stop("menuMusic");
         var instance = createjs.Sound.play("gameMusic");
         instance.on("complete", playGameSong);
-    }
-
-
-    function timeOut() {
-        menuFlag = false;
-        createjs.Ticker.paused = false;
-    }
-
-    function KeyHandler(ev) {
-        if (ev.keyCode === 27 && !menuFlag && !lost) {
-            clearTimeout(timeoutId);
-            menuFlag = true;
-            container.alpha = 1;
-            //Disable Character Movement -> A flag?
-            createjs.Ticker.paused = true;
-        }
-        else if (ev.keyCode === 27 && menuFlag && !lost || ev.target.text === "Continue") {
-            if (!isExit) {
-                container.alpha = 0;
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(timeOut, 300);
-            }
-        }
-
-        else if (ev.target.text === "Exit") {
-            containerEx.alpha = 1;
-            container.alpha = 0;
-            isExit = true;
-        }
-        else if (ev.target.text === "Yes") {
-            playMenuSong();
-            createjs.Ticker.paused = false;
-            createjs.Ticker.removeEventListener("tick", handle);
-            window.removeEventListener("keydown", KeyHandler);
-            stage.removeAllChildren();
-            Teacher_Menu(stage, save);
-        }
-        else if (ev.target.text === "No") {
-            containerEx.alpha = 0;
-            container.alpha = 1;
-            isExit = false;
-        }
-
-        else if (ev.keyCode === 27 && lost) {
-            playMenuSong();
-            lost = false;
-            stage.removeAllChildren();
-            window.removeEventListener("keydown", KeyHandler);
-            Teacher_Menu(stage, save);
-        }
-    }
-
-    function gameStatus(Flag, save) {
-        console.log("End of level");
-        lost = true;
-
-        if (Flag === "gameOver") {
-            gameOver.bitmap.alpha = 1;
-            stage.addChild(gameOver.bitmap);
-        } else if (Flag === "goodJob") {
-            if (level.lvl >= save.StudentProgress) {
-                save.StudentProgress += 1;
-                saveGame('save', save);
-            }
-            goodJob.bitmap.alpha = 1;
-            stage.addChild(goodJob.bitmap);
-        }
-        msg.alpha = 1;
-        stage.addChild(msg);
-        createjs.Ticker.removeEventListener("tick", handle);
-        stage.update();
     }
 }
 
