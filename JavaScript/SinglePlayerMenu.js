@@ -1,6 +1,6 @@
 "use strict";
 
-function SP_Menu(stage,save, flags, isArcade) {
+function SinglePlayerMenu(stage,save, flags, isArcade) {
     document.getElementById("Menu").style.backgroundImage="url(../Resources/Background.png)";
 
     var mouseFunction = function(ev){

@@ -1,11 +1,11 @@
 "use strict";
 
-function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
+function TeacherArcade(stage, levelStr, save, flags, isArcade) {
     //Game Menu Information
-    var container, containerEx, timer, init, goodJob, gameOver,timeoutId, msg;
+    var container, containerEx, timer, init, goodJob, gameOver, timeoutId, msg,currTime;
     var menuFlag = false, isExit = false, lost = false;
     createMenu();
-    playGameSong();
+    playGameSong(flags);
 
     window.addEventListener("keydown", KeyHandler);
     var despawn = function () {
@@ -16,22 +16,25 @@ function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
     var level;
     switch (levelStr) {
         case "level1":
-            level = new LevelOneTeacherMode(stage,save);
+            level = new LevelOneTeacherMode(stage, save);
             break;
         case "level2":
-            level = new LevelTwoTeacherMode(stage,save);
+            level = new LevelTwoTeacherMode(stage, save);
             break;
         case "level3":
-            level = new LevelThreeTeacherMode(stage,save);
+            level = new LevelThreeTeacherMode(stage, save);
             break;
         case "level4":
-            level = new LevelFourTeacherMode(stage,save);
+            level = new LevelFourTeacherMode(stage, save);
+            break;
+        case "level5":
+            level = new LevelFiveTeacherMode(stage, save);
             break;
     }
 
-    for(let i=0; i<level.lives; i++) {
+    for (let i = 0; i < level.lives; i++) {
         stage.addChild(level.hearts[i]);
-        level.hearts[i].x = 10+(i*5) + i*32;
+        level.hearts[i].x = 10 + (i * 5) + i * 32;
         level.hearts[i].y = 10;
         stage.update();
     }
@@ -43,6 +46,7 @@ function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
         for (let i = 0; i < level.npcs.length; i++) {
             var pt = level.npcs[i].spriteA.globalToLocal(stage.mouseX, stage.mouseY);
             if (level.npcs[i].spriteA.hitTest(pt.x, pt.y)) {
+                playSound(false, "hit", flags);
                 level.npcs[i].spriteA.visible = false;
                 level.npcs[i].isUsed = false;
             }
@@ -60,19 +64,19 @@ function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
             for (let i = 0; i < level.npcs.length; i++) {
                 if (level.npcs[i].isUsed == true) {
                     if (level.npcs[i].spriteA.x > 848 || level.npcs[i].spriteA.x < -48 || (level.npcs[i].spriteA.y > 800 + level.npcs[i].spriteA.getTransformedBounds().height)) {
-                        console.log("faleceu");
+                        playSound(false, "lives", flags);
                         level.npcs[i].isUsed = false;
                         level.npcs[i].spriteA.visible = false;
                         level.lives -= 1;
                         level.hearts[level.lives].visible = false;
                     } else {
                         if (level.npcs[i].spriteA.originalX < 400) {
-                            if(level.npcs[i].spriteA.x == level.npcs[i].spriteA.originalX) {
+                            if (level.npcs[i].spriteA.x == level.npcs[i].spriteA.originalX) {
                                 level.npcs[i].spriteA.gotoAndPlay("run_right");
                             }
                             level.npcs[i].moveRight(level.platforms);
                         } else {
-                            if(level.npcs[i].spriteA.x == level.npcs[i].spriteA.originalX) {
+                            if (level.npcs[i].spriteA.x == level.npcs[i].spriteA.originalX) {
                                 level.npcs[i].spriteA.gotoAndPlay("run_left");
                             }
                             level.npcs[i].moveLeft(level.platforms);
@@ -81,9 +85,9 @@ function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
                     }
                 }
             }
-            var currTime = createjs.Ticker.getTime(true);
+            currTime = createjs.Ticker.getTime(true);
             if (level.lives == 0) {
-                gameStatus("gameOver", save);
+                gameStatus("gameOver", save, Math.ceil(((currTime - gameStart)) / 1000));
             }
             if (currTime - init >= level.npcInterval) {
                 for (let i = 0; i < level.npcs.length; i++) {
@@ -116,7 +120,7 @@ function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
             if (!isExit) {
                 container.alpha = 0;
                 clearTimeout(timeoutId);
-                timeoutId = setTimeout(timeOut, 2000);
+                timeoutId = setTimeout(timeOut, 500);
             }
         }
 
@@ -126,12 +130,12 @@ function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
             isExit = true;
         }
         else if (ev.target.text === "Yes") {
-            playMenuSong();
+            playMenuSong(flags);
             createjs.Ticker.paused = false;
             createjs.Ticker.removeEventListener("tick", handle);
             window.removeEventListener("keydown", KeyHandler);
             stage.removeAllChildren();
-            Student_Menu(stage, save, flags, isArcade);
+            Teacher_Menu(stage, save, flags, isArcade);
         }
         else if (ev.target.text === "No") {
             containerEx.alpha = 0;
@@ -141,22 +145,25 @@ function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
 
         else if (ev.keyCode === 27 && lost) {
             lost = false;
-            playMenuSong();
+            playMenuSong(flags);
             stage.removeAllChildren();
             window.removeEventListener("keydown", KeyHandler);
-            Student_Menu(stage, save, flags, isArcade);
+            Teacher_Menu(stage, save, flags, isArcade);
         }
     }
 
-    function gameStatus(Flag, save) {
+    function gameStatus(Flag, save, timer) {
         console.log("End of level");
         lost = true;
 
         if (Flag === "gameOver") {
+            playSound(true, "gameOver", flags);
+            leaderBoardUpdate(save, level.lvl, "Teacher", timer);
             gameOver.bitmap.alpha = 1;
             stage.addChild(gameOver.bitmap);
         } else if (Flag === "goodJob") {
-            if (level.lvl >= save.StudentProgress) {
+            playSound("true", "goodJob", flags);
+            if (level.lvl >= save.StudentProgress || save.StudentProgress < 5) {
                 save.StudentProgress += 1;
                 saveGame('save', save);
             }
@@ -170,12 +177,12 @@ function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
     }
 
     function createMenu() {
-        var audioFunction = function(ev){
-            clickHandlerAudio(ev, flags);
-        }
+        var audioFunction = function (ev) {
+            clickHandlerAudio(ev, flags, "gameMusic");
+        };
         var mouseFunction = function (ev) {
-            mouseHandler(ev,flags);
-        }
+            mouseHandler(ev, flags);
+        };
         //Loads container
         var img = new Image();
         img.src = "../Resources/Options/ChalkBoard.png";
@@ -240,34 +247,49 @@ function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
             sounds.y = img.height * 0.55;
             container.addChild(sounds);
 
-            //On/Off Buttons and Hitboxes
-            var Sound_btn = new createjs.Text("On", "35px Georgia", "#ffffff");
-            Sound_btn.id = "Sound_btn";
-            Sound_btn.alpha = 0.8;
-            Sound_btn.x = img.width / 2 - Sound_btn.getMeasuredWidth() / 2;
-            Sound_btn.y = img.height * 0.55;
-            Sound_btn.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-            var hit_ON = new createjs.Shape();
-            hit_ON.graphics.beginFill("#000").drawRect(0, 0, Sound_btn.getMeasuredWidth(), Sound_btn.getMeasuredHeight());
-            Sound_btn.hitArea = hit_ON;
-            Sound_btn.on("mouseover", mouseFunction);
-            Sound_btn.on("mouseout", mouseFunction);
-            Sound_btn.on("click", audioFunction);
-            container.addChild(Sound_btn);
 
-            var Music_btn = new createjs.Text("On", "35px Georgia", "#ffffff");
-            Music_btn.id = "Music_btn";
-            Music_btn.alpha = 0.8;
-            Music_btn.x = img.width / 2 - Music_btn.getMeasuredWidth() / 2;
-            Music_btn.y = img.height * 0.4;
-            Music_btn.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+            //On/Off Buttons and Hitboxes
+            var soundButton = new createjs.Text("", "35px Georgia", "#ffffff");
+            if (flags.sState) {
+                soundButton.text = "On";
+                soundButton.id = "SoundState";
+            }
+            else {
+                soundButton.text = "Off";
+                soundButton.id = "SoundState";
+            }
+            soundButton.alpha = 0.8;
+            soundButton.x = img.width / 2 - soundButton.getMeasuredWidth() / 2;
+            soundButton.y = img.height * 0.55;
+            soundButton.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+            var hit_ON = new createjs.Shape();
+            hit_ON.graphics.beginFill("#000").drawRect(0, 0, soundButton.getMeasuredWidth(), soundButton.getMeasuredHeight());
+            soundButton.hitArea = hit_ON;
+            soundButton.on("mouseover", mouseFunction);
+            soundButton.on("mouseout", mouseFunction);
+            soundButton.on("click", audioFunction);
+            container.addChild(soundButton);
+
+            var musicButton = new createjs.Text("", "35px Georgia", "#ffffff");
+            if (flags.mState) {
+                musicButton.text = "On";
+                musicButton.id = "MusicState";
+            }
+            else {
+                musicButton.text = "Off";
+                musicButton.id = "MusicState";
+            }
+            musicButton.alpha = 0.8;
+            musicButton.x = img.width / 2 - musicButton.getMeasuredWidth() / 2;
+            musicButton.y = img.height * 0.4;
+            musicButton.shadow = new createjs.Shadow("#000000", 5, 5, 10);
             var hit_ON_M = new createjs.Shape();
-            hit_ON_M.graphics.beginFill("#000").drawRect(0, 0, Music_btn.getMeasuredWidth(), Music_btn.getMeasuredHeight());
-            Music_btn.hitArea = hit_ON_M;
-            Music_btn.on("mouseover", mouseFunction);
-            Music_btn.on("mouseout", mouseFunction);
-            Music_btn.on("click", audioFunction);
-            container.addChild(Music_btn);
+            hit_ON_M.graphics.beginFill("#000").drawRect(0, 0, musicButton.getMeasuredWidth(), musicButton.getMeasuredHeight());
+            musicButton.hitArea = hit_ON_M;
+            musicButton.on("mouseover", mouseFunction);
+            musicButton.on("mouseout", mouseFunction);
+            musicButton.on("click", audioFunction);
+            container.addChild(musicButton);
         };
 
         createExitMenu();
@@ -276,7 +298,7 @@ function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
 
     function createExitMenu() {
         var mouseFunction = function (ev) {
-            mouseHandler(ev,flags);
+            mouseHandler(ev, flags);
         }
         var img = new Image();
         img.src = "../Resources/Options/ChalkBoard.png";
@@ -367,15 +389,20 @@ function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
         createjs.Ticker.paused = false;
     }
 
-    function playMenuSong() {
-        createjs.Sound.stop("gameMusic");
-        var instance = createjs.Sound.play("menuMusic");
-        instance.on("complete", playMenuSong);
+    function playMenuSong(flags) {
+        createjs.Sound.stop("gameOver");
+        if (flags.mState) {
+            createjs.Sound.stop("gameMusic");
+            var instance = createjs.Sound.play("menuMusic");
+            instance.on("complete", playMenuSong);
+        }
     }
 
-    function playGameSong() {
-        createjs.Sound.stop("menuMusic");
-        var instance = createjs.Sound.play("gameMusic");
-        instance.on("complete", playGameSong);
+    function playGameSong(flags) {
+        if (flags.mState) {
+            createjs.Sound.stop("menuMusic");
+            var instance = createjs.Sound.play("gameMusic");
+            instance.on("complete", playGameSong);
+        }
     }
 }

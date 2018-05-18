@@ -95,19 +95,22 @@ function Teacher_Menu(stage, save, flags, isArcade) {
         if (flags.isCanvas) {
             if (ev.target.text === "Back") {
                 stage.removeAllChildren();
-                SP_Menu(stage, save, flags, isArcade);
+                SinglePlayerMenu(stage, save, flags, isArcade);
             } else if (ev.target.text === "level1") {
                 stage.removeAllChildren();
-                MapsTeacherModeArcade(stage, "level1", save, flags, isArcade);
+                TeacherArcade(stage, "level1", save, flags, isArcade);
             } else if (ev.target.text === "level2") {
                 stage.removeAllChildren();
-                MapsTeacherModeArcade(stage, "level2", save, flags, isArcade);
+                TeacherArcade(stage, "level2", save, flags, isArcade);
             } else if (ev.target.text === "level3") {
                 stage.removeAllChildren();
-                MapsTeacherModeArcade(stage, "level3", save, flags, isArcade);
+                TeacherArcade(stage, "level3", save, flags, isArcade);
             }else if (ev.target.text === "level4") {
                 stage.removeAllChildren();
-                MapsTeacherModeArcade(stage, "level4", save, flags, isArcade);
+                TeacherArcade(stage, "level4", save, flags, isArcade);
+            }else if (ev.target.text === "level5") {
+                stage.removeAllChildren();
+                TeacherArcade(stage, "level5", save, flags, isArcade);
             }
         }
     }
@@ -120,7 +123,7 @@ function Teacher_Menu(stage, save, flags, isArcade) {
         if (flags.isCanvas) {
             if (ev.target.text === "Back") {
                 stage.removeAllChildren();
-                SP_Menu(stage, save, flags, isArcade);
+                SinglePlayerMenu(stage, save, flags, isArcade);
             } else if (ev.target.text === "level1") {
                 stage.removeAllChildren();
                 var introVideo = document.getElementById("teacherVideo");
@@ -135,18 +138,19 @@ function Teacher_Menu(stage, save, flags, isArcade) {
                         exitStoryline();
                     }
                 };
+                TeacherGame(stage, "level1", save, flags, isArcade);
             } else if (ev.target.text === "level2") {
                 stage.removeAllChildren();
-                MapsTeacherMode(stage, "level2", save, flags, isArcade);
+                TeacherGame(stage, "level2", save, flags, isArcade);
             } else if (ev.target.text === "level3") {
                 stage.removeAllChildren();
-                MapsTeacherMode(stage, "level3", save, flags, isArcade);
+                TeacherGame(stage, "level3", save, flags, isArcade);
             } else if (ev.target.text === "level4") {
                 stage.removeAllChildren();
-                MapsTeacherMode(stage, "level4", save, flags, isArcade);
+                TeacherGame(stage, "level4", save, flags, isArcade);
             } else if (ev.target.text === "level5") {
                 stage.removeAllChildren();
-                MapsTeacherMode(stage, "level5", save, flags, isArcade);
+                TeacherGame(stage, "level5", save, flags, isArcade);
             }
         }
     }

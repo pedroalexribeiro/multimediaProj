@@ -29,8 +29,8 @@ function Student_Menu(stage, save, flags, isArcade) {
     queue.loadFile({id: "level1", src: "../Resources/levels/thumbnails/student/level1.PNG"});
     queue.loadFile({id: "level2", src: "../Resources/levels/thumbnails/student/level2.PNG"});
     queue.loadFile({id: "level3", src: "../Resources/levels/thumbnails/student/level3.PNG"});
-    queue.loadFile({id: "level4", src: "../Resources/levels/Level4/background.png"});
-    queue.loadFile({id: "level5", src: "../Resources/levels/Level5/background.png"});
+    queue.loadFile({id: "level4", src: "../Resources/levels/thumbnails/student/level4.PNG"});
+    queue.loadFile({id: "level5", src: "../Resources/levels/thumbnails/student/level5.PNG"});
 
     queue.load();
     queue.on("complete", loadLevels);
@@ -100,23 +100,23 @@ function Student_Menu(stage, save, flags, isArcade) {
         if (flags.isCanvas) {
             if (ev.target.text === "Back") {
                 stage.removeAllChildren();
-                SP_Menu(stage, save, flags, isArcade);
+                SinglePlayerMenu(stage, save, flags, isArcade);
             }
             else if (ev.target.text === "level1") {
                 stage.removeAllChildren();
-                MapsArcade(stage, "level1", save, flags, isArcade);
+                StudentArcade(stage, "level1", save, flags, isArcade);
             } else if (ev.target.text === "level2") {
                 stage.removeAllChildren();
-                MapsArcade(stage, "level2", save, flags, isArcade);
+                StudentArcade(stage, "level2", save, flags, isArcade);
             } else if (ev.target.text === "level3") {
                 stage.removeAllChildren();
-                MapsArcade(stage, "level3", save, flags, isArcade);
+                StudentArcade(stage, "level3", save, flags, isArcade);
             }else if (ev.target.text === "level4") {
                 stage.removeAllChildren();
-                MapsArcade(stage, "level4", save, flags, isArcade);
+                StudentArcade(stage, "level4", save, flags, isArcade);
             }else if (ev.target.text === "level5") {
                 stage.removeAllChildren();
-                MapsArcade(stage, "level5", save, flags, isArcade);
+                StudentArcade(stage, "level5", save, flags, isArcade);
             }
         }
     }
@@ -130,7 +130,7 @@ function Student_Menu(stage, save, flags, isArcade) {
         if (flags.isCanvas) {
             if (ev.target.text === "Back") {
                 stage.removeAllChildren();
-                SP_Menu(stage, save, flags, isArcade);
+                SinglePlayerMenu(stage, save, flags, isArcade);
             }
             else if (ev.target.text === "level1") {
                 stage.removeAllChildren();
@@ -146,18 +146,19 @@ function Student_Menu(stage, save, flags, isArcade) {
                         exitStoryline();
                     }
                 };
+                StudentGame(stage, "level1", save, flags, isArcade);
             } else if (ev.target.text === "level2") {
                 stage.removeAllChildren();
-                Maps(stage, "level2", save, flags, isArcade);
+                StudentGame(stage, "level2", save, flags, isArcade);
             } else if (ev.target.text === "level3") {
                 stage.removeAllChildren();
-                Maps(stage, "level3", save, flags, isArcade);
+                StudentGame(stage, "level3", save, flags, isArcade);
             }else if (ev.target.text === "level4") {
                 stage.removeAllChildren();
-                Maps(stage, "level4", save, flags, isArcade);
+                StudentGame(stage, "level4", save, flags, isArcade);
             }else if (ev.target.text === "level5") {
                 stage.removeAllChildren();
-                Maps(stage, "level5", save, flags, isArcade);
+                StudentGame(stage, "level5", save, flags, isArcade);
             }
         }
     }
