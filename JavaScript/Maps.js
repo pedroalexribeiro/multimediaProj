@@ -21,6 +21,9 @@ function Maps(stage, levelStr, save, flags, isArcade) {
         case "level4":
             level = new LevelFour(stage, save);
             break;
+        case "level5":
+            level = new LevelFive(stage, save);
+            break;
     }
 
 
@@ -731,7 +734,7 @@ class LevelFour extends Map {
             else { //Left
                 xNew = 0 - widthObj;
             }
-            yNew = Math.floor((Math.random() * ((this.platforms[0].platform.bitmap.y - heightObj) - (this.platforms[0].platform.bitmap.y / 5 + heightObj))) + (this.platforms[0].platform.bitmap.y / 5 + heightObj));
+            yNew = Math.floor((Math.random() * ((this.platforms[0].platform.bitmap.y - heightObj) - (this.platforms[1].platform.bitmap.y + heightObj))) + (this.platforms[1].platform.bitmap.y + heightObj));
 
         } else if (flag === "Vertical") {
             xNew = Math.random() * ((this.platforms[0].platform.bitmap.x + 261) - this.platforms[0].platform.bitmap.x) + (this.platforms[0].platform.bitmap.x);
@@ -771,8 +774,10 @@ class LevelFive extends Map {
         //Level Platforms
         let x= 350;
         let y=200;
-        this.platforms.push(new Platform(stage, "../Resources/levels/Level5/.png", x, y));
-
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level5/platformPcG.png", x, y));
+        y=400;
+        x = 320;
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level5/platformKeyboardG.png", x, y));
         //Level Buffs
         var initCords = this.Position(100, 100, "Horizontal", stage); // Beer -> Slows permanently the character
         this.objects.push(new Objectt(stage, "../Resources/levels/Extras/Beer.png", initCords[0], initCords[1]));
@@ -820,7 +825,7 @@ class LevelFive extends Map {
             else { //Left
                 xNew = 0 - widthObj;
             }
-            yNew = Math.floor((Math.random() * ((this.platforms[0].platform.bitmap.y - heightObj) - (this.platforms[0].platform.bitmap.y / 5 + heightObj))) + (this.platforms[0].platform.bitmap.y / 5 + heightObj));
+            yNew = Math.floor((Math.random() * ((this.platforms[0].platform.bitmap.y - heightObj) - (this.platforms[1].platform.bitmap.y + heightObj))) + (this.platforms[1].platform.bitmap.y + heightObj));
 
         } else if (flag === "Vertical") {
             xNew = Math.random() * ((this.platforms[0].platform.bitmap.x + 261) - this.platforms[0].platform.bitmap.x) + (this.platforms[0].platform.bitmap.x);

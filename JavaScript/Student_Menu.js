@@ -30,7 +30,7 @@ function Student_Menu(stage, save, flags, isArcade) {
     queue.loadFile({id: "level2", src: "../Resources/levels/thumbnails/student/level2.PNG"});
     queue.loadFile({id: "level3", src: "../Resources/levels/thumbnails/student/level3.PNG"});
     queue.loadFile({id: "level4", src: "../Resources/levels/Level4/background.png"});
-    //queue.loadFile({id: "level5", src: "../Resources/levels/thumbnails/student/level5.PNG"});
+    queue.loadFile({id: "level5", src: "../Resources/levels/Level5/background.png"});
 
     queue.load();
     queue.on("complete", loadLevels);
@@ -114,6 +114,9 @@ function Student_Menu(stage, save, flags, isArcade) {
             }else if (ev.target.text === "level4") {
                 stage.removeAllChildren();
                 MapsArcade(stage, "level4", save, flags, isArcade);
+            }else if (ev.target.text === "level5") {
+                stage.removeAllChildren();
+                MapsArcade(stage, "level5", save, flags, isArcade);
             }
         }
     }
@@ -136,6 +139,9 @@ function Student_Menu(stage, save, flags, isArcade) {
             }else if (ev.target.text === "level4") {
                 stage.removeAllChildren();
                 Maps(stage, "level4", save, flags, isArcade);
+            }else if (ev.target.text === "level5") {
+                stage.removeAllChildren();
+                Maps(stage, "level5", save, flags, isArcade);
             }
         }
     }
