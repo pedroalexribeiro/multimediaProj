@@ -93,7 +93,7 @@ class Character {
                 if (move.y >= 0) {
                     this.onGround = true;
                 }
-                this.velocity.y -= 1;
+                this.velocity.y = 0;
             }
             if (this.isMoving === true) {
                 if (this.keys[37]) {
