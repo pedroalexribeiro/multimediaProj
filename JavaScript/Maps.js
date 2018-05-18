@@ -239,9 +239,11 @@ function Maps(stage, levelStr, save, flags, isArcade) {
         lost = true;
 
         if (Flag === "gameOver") {
+            playSound(true,"gameOver");
             gameOver.bitmap.alpha = 1;
             stage.addChild(gameOver.bitmap);
         } else if (Flag === "goodJob") {
+            playSound("true","goodJob");
             if (level.lvl >= save.StudentProgress || save.StudentProgress < 5) {
                 save.StudentProgress += 1;
                 saveGame('save', save);

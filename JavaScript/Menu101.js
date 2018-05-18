@@ -17,6 +17,13 @@ function mainMenu(teste) {
     createjs.Sound.on("fileload", playMenuSong);
     createjs.Sound.registerSound("../Resources/Audio/menuMusic.mp3", "menuMusic", 1);
     createjs.Sound.registerSound("../Resources/Audio/gameMusic.mp3", "gameMusic", 2);
+    createjs.Sound.registerSound("../Resources/Audio/gameOver.mp3", "gameOver", 2);
+    createjs.Sound.registerSound("../Resources/Audio/goodJob.mp3", "goodJob", 2);
+    createjs.Sound.registerSound("../Resources/Audio/hit.mp3", "hit", 2);
+    createjs.Sound.registerSound("../Resources/Audio/jump.wav", "jump", 2);
+    createjs.Sound.registerSound("../Resources/Audio/gulp.mp3", "gulp", 2);
+    createjs.Sound.registerSound("../Resources/Audio/lives.wav", "lives", 2);
+
 
 
     /*Background Information*/
@@ -125,6 +132,13 @@ function playGameSong() {
     createjs.Sound.stop("menuMusic");
     var instance = createjs.Sound.play("gameMusic");
     instance.on("complete", playGameSong);
+}
+
+function playSound(flag,string){
+    if(flag){
+        createjs.Sound.stop("gameMusic");
+    }
+    createjs.Sound.play(string);
 }
 
 function saveGame(SAVE, state) {

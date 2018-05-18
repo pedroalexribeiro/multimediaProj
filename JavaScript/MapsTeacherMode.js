@@ -52,6 +52,7 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
         for (let i = 0; i < level.npcs.length; i++) {
             var pt = level.npcs[i].spriteA.globalToLocal(stage.mouseX, stage.mouseY);
             if (level.npcs[i].spriteA.hitTest(pt.x, pt.y)) {
+                playSound(false,"hit");
                 level.npcs[i].spriteA.visible = false;
                 level.npcs[i].isUsed = false;
             }
@@ -69,7 +70,7 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
             for (let i = 0; i < level.npcs.length; i++) {
                 if (level.npcs[i].isUsed == true) {
                     if (level.npcs[i].spriteA.x > 848 || level.npcs[i].spriteA.x < -48 || (level.npcs[i].spriteA.y > 800 + level.npcs[i].spriteA.getTransformedBounds().height)) {
-                        console.log("faleceu");
+                        playSound(false,"lives");
                         level.npcs[i].isUsed = false;
                         level.npcs[i].spriteA.visible = false;
                         level.lives -= 1;
@@ -167,9 +168,11 @@ function MapsTeacherMode(stage, levelStr, save, flags, isArcade) {
         lost = true;
 
         if (Flag === "gameOver") {
+            playSound(true,"gameOver");
             gameOver.bitmap.alpha = 1;
             stage.addChild(gameOver.bitmap);
         } else if (Flag === "goodJob") {
+            playSound(true,"goodJob");
             if (level.lvl >= save.TeacherProgress || save.TeacherProgress < 5) {
                 save.TeacherProgress += 1;
                 saveGame('save', save);
