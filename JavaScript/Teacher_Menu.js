@@ -81,6 +81,9 @@ function Teacher_Menu(stage,save) {
         } else if(ev.target.text === "level3") {
             stage.removeAllChildren();
             MapsTeacherMode(stage,"level3",save);
+        } else if(ev.target.text === "level4") {
+            stage.removeAllChildren();
+            MapsTeacherMode(stage,"level4",save);
         }
     }
 

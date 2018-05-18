@@ -33,6 +33,9 @@ function MapsTeacherMode(stage, levelStr, save) {
         case "level3":
             level = new LevelThreeTeacherMode(stage);
             break;
+        case "level4":
+            level = new LevelFourTeacherMode(stage);
+            break;
     }
 
     for(let i=0; i<level.lives; i++) {
@@ -473,6 +476,34 @@ class LevelThreeTeacherMode extends MapTeacherMode {
         //Level Game Related Information
         this.totalTime = 60000; // Tempo total do jogo
         this.npcInterval = 800; //Intervalo entre cada NPC
+
+        //Level NPCs
+        var neededNPCs = this.totalTime / this.npcInterval;
+        for (let i = 0; i < neededNPCs; i++) {
+            this.npcs.push(new Character(stage, 200, 0));//325
+            this.npcs[i].spriteA.visible = false;
+        }
+    }
+
+    position(widthObj, stage) { //For level One
+        var x = Math.floor(Math.random() * 799);
+        return x;
+    }
+}
+
+class LevelFourTeacherMode extends MapTeacherMode {
+    constructor(stage) {
+        super(stage);
+        //Level Background
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level4/background.png)";
+
+        //Level Platforms
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level4/platform.png", 0, 400));
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level4/table.png", 200, 100));
+
+        //Level Game Related Information
+        this.totalTime = 60000; // Tempo total do jogo
+        this.npcInterval = 1000; //Intervalo entre cada NPC
 
         //Level NPCs
         var neededNPCs = this.totalTime / this.npcInterval;
