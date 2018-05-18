@@ -239,7 +239,6 @@ function StudentGame(stage, levelStr, save, flags, isArcade) {
     }
 
     function gameStatus(Flag, save) {
-        console.log("End of level");
         lost = true;
 
         if (Flag === "gameOver") {
@@ -905,7 +904,6 @@ class Objectt {
     }
 
     Move(x, y, speed, xReset, yReset) {
-        console.log("Move-> x: " + x + " y:" + y);
         this.object.bitmap.visible = true;
         createjs.Tween.get(this.object.bitmap).to({y: y, x: x}, speed, createjs.Ease.linear).call(Reset);
 

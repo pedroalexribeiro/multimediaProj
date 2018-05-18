@@ -247,7 +247,6 @@ function mouseHandlerContainer(ev, flags) {
 }
 
 function clickHandlerAudio(ev, flags,musicId) {
-    console.log(ev.target.id);
     if (ev.target.id === "SoundState") {
         if (ev.target.text === "On") {
             ev.target.text = "Off";

@@ -153,7 +153,6 @@ function TeacherArcade(stage, levelStr, save, flags, isArcade) {
     }
 
     function gameStatus(Flag, save, timer) {
-        console.log("End of level");
         lost = true;
 
         if (Flag === "gameOver") {
