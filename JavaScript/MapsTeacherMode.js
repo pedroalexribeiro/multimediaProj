@@ -537,11 +537,14 @@ class LevelFiveTeacherMode extends MapTeacherMode {
     constructor(stage,save) {
         super(stage,save);
         //Level Background
-        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/TeacherModeLevels/Level4/background.png)";
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level5/background.png)";
 
         //Level Platforms
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level4/platform_pc.png", 0, 400));
-        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level4/table.png", 200, 100));
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level5/platform_pc.png", 0, 78));
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level5/platform_keyboard.png", 40, 240));
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level5/platform_pc.png", 664, 78));
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level5/platform_keyboard.png", 500, 240));
+        this.platforms.push(new Platform(stage, "../Resources/levels/TeacherModeLevels/Level5/platform_pc.png", 330, 400));
 
         //Level Game Related Information
         this.totalTime = 60000; // Tempo total do jogo
