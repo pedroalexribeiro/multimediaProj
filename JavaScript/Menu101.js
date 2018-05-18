@@ -81,14 +81,14 @@ function mainMenu(teste) {
         console.log(ev.target.text);
         if (flags.isCanvas && ev.target.text === "SinglePlayer") {
             stage.removeAllChildren();
-            SP_Menu(stage, save, flags, false);
+            SinglePlayerMenu(stage, save, flags, false);
         }
         else if (flags.isCanvas && ev.target.text === "MultiPlayer") {
 
         }
         else if (flags.isCanvas && ev.target.text === "Arcade") {
             stage.removeAllChildren();
-            SP_Menu(stage, save, flags, true)
+            SinglePlayerMenu(stage, save, flags, true)
         } else if (flags.isCanvas && ev.target.text === "Leaderboard") {
             stage.removeAllChildren();
             Leaderboard(stage, save, flags);

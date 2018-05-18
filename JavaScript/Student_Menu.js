@@ -100,23 +100,23 @@ function Student_Menu(stage, save, flags, isArcade) {
         if (flags.isCanvas) {
             if (ev.target.text === "Back") {
                 stage.removeAllChildren();
-                SP_Menu(stage, save, flags, isArcade);
+                SinglePlayerMenu(stage, save, flags, isArcade);
             }
             else if (ev.target.text === "level1") {
                 stage.removeAllChildren();
-                MapsArcade(stage, "level1", save, flags, isArcade);
+                StudentArcade(stage, "level1", save, flags, isArcade);
             } else if (ev.target.text === "level2") {
                 stage.removeAllChildren();
-                MapsArcade(stage, "level2", save, flags, isArcade);
+                StudentArcade(stage, "level2", save, flags, isArcade);
             } else if (ev.target.text === "level3") {
                 stage.removeAllChildren();
-                MapsArcade(stage, "level3", save, flags, isArcade);
+                StudentArcade(stage, "level3", save, flags, isArcade);
             }else if (ev.target.text === "level4") {
                 stage.removeAllChildren();
-                MapsArcade(stage, "level4", save, flags, isArcade);
+                StudentArcade(stage, "level4", save, flags, isArcade);
             }else if (ev.target.text === "level5") {
                 stage.removeAllChildren();
-                MapsArcade(stage, "level5", save, flags, isArcade);
+                StudentArcade(stage, "level5", save, flags, isArcade);
             }
         }
     }
@@ -125,23 +125,23 @@ function Student_Menu(stage, save, flags, isArcade) {
         if (flags.isCanvas) {
             if (ev.target.text === "Back") {
                 stage.removeAllChildren();
-                SP_Menu(stage, save, flags, isArcade);
+                SinglePlayerMenu(stage, save, flags, isArcade);
             }
             else if (ev.target.text === "level1") {
                 stage.removeAllChildren();
-                Maps(stage, "level1", save, flags, isArcade);
+                StudentGame(stage, "level1", save, flags, isArcade);
             } else if (ev.target.text === "level2") {
                 stage.removeAllChildren();
-                Maps(stage, "level2", save, flags, isArcade);
+                StudentGame(stage, "level2", save, flags, isArcade);
             } else if (ev.target.text === "level3") {
                 stage.removeAllChildren();
-                Maps(stage, "level3", save, flags, isArcade);
+                StudentGame(stage, "level3", save, flags, isArcade);
             }else if (ev.target.text === "level4") {
                 stage.removeAllChildren();
-                Maps(stage, "level4", save, flags, isArcade);
+                StudentGame(stage, "level4", save, flags, isArcade);
             }else if (ev.target.text === "level5") {
                 stage.removeAllChildren();
-                Maps(stage, "level5", save, flags, isArcade);
+                StudentGame(stage, "level5", save, flags, isArcade);
             }
         }
     }
