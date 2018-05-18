@@ -43,6 +43,7 @@ function mainMenu(teste) {
     };
 
     var save = loadGame('save');
+    save = null;
     if (save === null) {
         save = state;
         saveGame('save', save);
