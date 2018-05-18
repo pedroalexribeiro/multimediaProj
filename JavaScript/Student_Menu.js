@@ -96,13 +96,13 @@ function Student_Menu(stage,save, flags, isArcade) {
         }
         else if (ev.target.text === "level1") {
             stage.removeAllChildren();
-            MapsArcade(stage,"level1",save, isArcade);
+            MapsArcade(stage,"level1",save, flags, isArcade);
         } else if (ev.target.text === "level2") {
             stage.removeAllChildren();
-            Maps(stage,"level2",save, isArcade);
+            MapsArcade(stage,"level2",save, flags, isArcade);
         } else if (ev.target.text === "level3") {
             stage.removeAllChildren();
-            Maps(stage,"level3",save, isArcade);
+            MapsArcade(stage,"level3",save, flags, isArcade);
         }
     }
 
@@ -114,13 +114,13 @@ function Student_Menu(stage,save, flags, isArcade) {
         }
         else if (ev.target.text === "level1") {
             stage.removeAllChildren();
-            Maps(stage,"level1",save, isArcade);
+            Maps(stage,"level1",save, flags, isArcade);
         } else if (ev.target.text === "level2") {
             stage.removeAllChildren();
-            Maps(stage,"level2",save, isArcade);
+            Maps(stage,"level2",save, flags, isArcade);
         } else if (ev.target.text === "level3") {
             stage.removeAllChildren();
-            Maps(stage,"level3",save, isArcade);
+            Maps(stage,"level3",save, flags, isArcade);
         }
     }
 

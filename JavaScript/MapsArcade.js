@@ -1,15 +1,12 @@
 "use strict";
 
-function MapsArcade(stage, levelStr, save, isArcade) {
+function MapsArcade(stage, levelStr, save, flags, isArcade) {
     //Game Menu Information
     var container, containerEx, timer, init, goodJob, gameOver, msg, flag, flag2, timeoutId;
     var menuFlag = false, isExit = false, lost = false;
     createMenu();
     playGameSong();
-    var keyHandlerFunction = function(ev){
-        KeyHandler(isArcade, ev);
-    }
-    window.addEventListener("keydown", keyHandlerFunction);
+    window.addEventListener("keydown", KeyHandler);
     var level;
     switch (levelStr) {
         case "level1":
@@ -190,7 +187,7 @@ function MapsArcade(stage, levelStr, save, isArcade) {
         createjs.Ticker.framerate = 60;
     }
 
-    function KeyHandler(isArcade, ev) {
+    function KeyHandler(ev) {
         if (ev.keyCode === 27 && !menuFlag && !lost) {
             clearTimeout(timeoutId);
             menuFlag = true;
@@ -217,7 +214,7 @@ function MapsArcade(stage, levelStr, save, isArcade) {
             createjs.Ticker.removeEventListener("tick", handle);
             window.removeEventListener("keydown", KeyHandler);
             stage.removeAllChildren();
-            Student_Menu(stage, save, isArcade);
+            Student_Menu(stage, save, flags, isArcade);
         }
         else if (ev.target.text === "No") {
             containerEx.alpha = 0;
@@ -230,7 +227,7 @@ function MapsArcade(stage, levelStr, save, isArcade) {
             playMenuSong();
             stage.removeAllChildren();
             window.removeEventListener("keydown", KeyHandler);
-            Student_Menu(stage, save, isArcade);
+            Student_Menu(stage, save, flags, isArcade);
         }
     }
 

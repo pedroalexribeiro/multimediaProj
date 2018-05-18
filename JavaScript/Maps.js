@@ -1,6 +1,6 @@
 "use strict";
 
-function Maps(stage, levelStr, save) {
+function Maps(stage, levelStr, save, flags, isArcade) {
     //Game Menu Information
     var container, containerEx, timer, init, goodJob, gameOver, msg, flag, flag2, timeoutId;
     var menuFlag = false, isExit = false, lost = false;
@@ -214,7 +214,7 @@ function Maps(stage, levelStr, save) {
             createjs.Ticker.removeEventListener("tick", handle);
             window.removeEventListener("keydown", KeyHandler);
             stage.removeAllChildren();
-            Student_Menu(stage, save);
+            Student_Menu(stage, save, flags, isArcade);
         }
         else if (ev.target.text === "No") {
             containerEx.alpha = 0;
@@ -227,7 +227,7 @@ function Maps(stage, levelStr, save) {
             playMenuSong();
             stage.removeAllChildren();
             window.removeEventListener("keydown", KeyHandler);
-            Student_Menu(stage, save);
+            Student_Menu(stage, save, flags, isArcade);
         }
     }
 
