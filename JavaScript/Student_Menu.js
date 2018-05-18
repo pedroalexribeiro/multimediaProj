@@ -29,7 +29,7 @@ function Student_Menu(stage, save, flags, isArcade) {
     queue.loadFile({id: "level1", src: "../Resources/levels/thumbnails/student/level1.PNG"});
     queue.loadFile({id: "level2", src: "../Resources/levels/thumbnails/student/level2.PNG"});
     queue.loadFile({id: "level3", src: "../Resources/levels/thumbnails/student/level3.PNG"});
-    //queue.loadFile({id: "level4", src: "../Resources/levels/thumbnails/student/level4.PNG"});
+    queue.loadFile({id: "level4", src: "../Resources/levels/Level4/background.png"});
     //queue.loadFile({id: "level5", src: "../Resources/levels/thumbnails/student/level5.PNG"});
 
     queue.load();
