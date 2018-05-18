@@ -10,13 +10,16 @@ function Maps(stage, levelStr, save, flags, isArcade) {
     var level;
     switch (levelStr) {
         case "level1":
-            level = new LevelOne(stage,save);
+            level = new LevelOne(stage, save);
             break;
         case "level2":
-            level = new LevelTwo(stage,save);
+            level = new LevelTwo(stage, save);
             break;
         case "level3":
-            level = new LevelThree(stage,save);
+            level = new LevelThree(stage, save);
+            break;
+        case "level4":
+            level = new LevelFour(stage, save);
             break;
     }
 
@@ -236,10 +239,12 @@ function Maps(stage, levelStr, save, flags, isArcade) {
         lost = true;
 
         if (Flag === "gameOver") {
+            playSound(true,"gameOver");
             gameOver.bitmap.alpha = 1;
             stage.addChild(gameOver.bitmap);
         } else if (Flag === "goodJob") {
-            if (level.lvl >= save.StudentProgress) {
+            playSound("true","goodJob");
+            if (level.lvl >= save.StudentProgress || save.StudentProgress < 5) {
                 save.StudentProgress += 1;
                 saveGame('save', save);
             }
@@ -253,11 +258,11 @@ function Maps(stage, levelStr, save, flags, isArcade) {
     }
 
     function createMenu() {
-        var audioFunction = function(ev){
+        var audioFunction = function (ev) {
             clickHandlerAudio(ev, flags);
         }
         var mouseFunction = function (ev) {
-            mouseHandler(ev,flags);
+            mouseHandler(ev, flags);
         }
         //Loads container
         var img = new Image();
@@ -359,7 +364,7 @@ function Maps(stage, levelStr, save, flags, isArcade) {
 
     function createExitMenu() {
         var mouseFunction = function (ev) {
-            mouseHandler(ev,flags);
+            mouseHandler(ev, flags);
         }
         var img = new Image();
         img.src = "../Resources/Options/ChalkBoard.png";
@@ -467,15 +472,15 @@ function Maps(stage, levelStr, save, flags, isArcade) {
 
 
 class Map {
-    constructor(stage,save) {
+    constructor(stage, save) {
         this.platforms = new Array();
         this.objects = new Array();
     }
 }
 
 class LevelOne extends Map {
-    constructor(stage,save) {
-        super(stage,save);
+    constructor(stage, save) {
+        super(stage, save);
         //Level Background
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level1/background.png)";
 
@@ -529,8 +534,8 @@ class LevelOne extends Map {
 }
 
 class LevelTwo extends Map {
-    constructor(stage,save) {
-        super(stage,save);
+    constructor(stage, save) {
+        super(stage, save);
         //Level Background
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level2/background.png)";
 
@@ -593,8 +598,8 @@ class LevelTwo extends Map {
 }
 
 class LevelThree extends Map {
-    constructor(stage,save) {
-        super(stage,save);
+    constructor(stage, save) {
+        super(stage, save);
         //Level Background
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level3/background.png)";
 
@@ -614,7 +619,7 @@ class LevelThree extends Map {
         //Level Objects
         initCords = this.Position(100, 100, "Horizontal", stage);
         this.objects.push(new Objectt(stage, "../Resources/levels/Level3/hamBurguer.png", initCords[0], initCords[1]));
-        initCords = this.Position(100, 100, "Vertical", stage);
+        initCords = this.Position(100, 100, "Diagonal", stage);
         this.objects.push(new Objectt(stage, "../Resources/levels/Level3/coffee.png", initCords[0], initCords[1]));
         initCords = this.Position(150, 150, "Diagonal", stage);
         this.objects.push(new Objectt(stage, "../Resources/levels/Level3/nata.png", initCords[0], initCords[1]));
@@ -676,18 +681,19 @@ class LevelThree extends Map {
 }
 
 class LevelFour extends Map {
-    constructor(stage,save) {
-        super(stage,save);
+    constructor(stage, save) {
+        super(stage, save);
         //Level Background
         document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level4/background.png)";
 
         //Level Platforms
-        let x = 60;
-        let y = 400;
-        for (let i = 0; i < 3; i++) {
-            this.platforms.push(new Platform(stage, "../Resources/levels/Level4 /platform.png", x, y));
-            x += 250;
-        }
+        let x= 350;
+        let y=200;
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level4/pongPlatform.png", x, y));
+        x = 450;
+        y= 420;
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level4/tablePlatform.png", x, y));
+
         //Level Buffs
         var initCords = this.Position(100, 100, "Horizontal", stage); // Beer -> Slows permanently the character
         this.objects.push(new Objectt(stage, "../Resources/levels/Extras/Beer.png", initCords[0], initCords[1]));
@@ -696,22 +702,109 @@ class LevelFour extends Map {
 
         //Level Objects
         initCords = this.Position(100, 100, "Horizontal", stage);
-        this.objects.push(new Objectt(stage, "../Resources/levels/Level4/.png", initCords[0], initCords[1]));
-        initCords = this.Position(100, 100, "Vertical", stage);
-        this.objects.push(new Objectt(stage, "../Resources/levels/Level4/.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level4/tableSmall.png", initCords[0], initCords[1]));
         initCords = this.Position(150, 150, "Diagonal", stage);
-        this.objects.push(new Objectt(stage, "../Resources/levels/Level4/.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level4/ball.png", initCords[0], initCords[1]));
         initCords = this.Position(100, 100, "Vertical", stage);
-        this.objects.push(new Objectt(stage, "../Resources/levels/Level4/.png", initCords[0], initCords[1]));
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level4/racket.png", initCords[0], initCords[1]));
 
 
         this.hero = new Character(stage, 400, -200, save.Senior);
 
         //Level Game Related Information
-        this.lvl = 3;
+        this.lvl = 4;
         this.totalTime = 15000; // Tempo total do jogo
-        this.objInterval = 1800; //Intervalo entre cada Objeto
+        this.objInterval = 2000; //Intervalo entre cada Objeto
         this.speed = [1300, 1700]; //Max e Min de speed dos Objetos
+        this.nObj = 2;
+        this.nBuffs = 2;
+    }
+
+    Position(widthObj, heightObj, flag, stage) {
+
+        var yNew, xNew;
+        if (flag === "Horizontal") {
+            var side = Math.random();
+            if (side > 0.5) { // Right
+                xNew = stage.canvas.width + widthObj;
+            }
+            else { //Left
+                xNew = 0 - widthObj;
+            }
+            yNew = Math.floor((Math.random() * ((this.platforms[0].platform.bitmap.y - heightObj) - (this.platforms[0].platform.bitmap.y / 5 + heightObj))) + (this.platforms[0].platform.bitmap.y / 5 + heightObj));
+
+        } else if (flag === "Vertical") {
+            xNew = Math.random() * ((this.platforms[0].platform.bitmap.x + 261) - this.platforms[0].platform.bitmap.x) + (this.platforms[0].platform.bitmap.x);
+            yNew = 0 - heightObj;
+        }
+
+        else if (flag === "Diagonal") {
+            let rand = Math.random();
+            if (0 < rand < 0.25) {
+                xNew = stage.canvas.width + widthObj;
+                yNew = 0 - heightObj;
+            }
+            else if (0.25 <= rand < 0.5) {
+                xNew = stage.canvas.width + widthObj;
+                yNew = stage.canvas.height + heightObj;
+            }
+            else if (0.5 <= rand < 0.75) {
+                xNew = 0 - widthObj;
+                yNew = 0 - heightObj;
+            }
+            else {
+                xNew = 0 - widthObj;
+                yNew = stage.canvas.height + heightObj;
+            }
+
+        }
+        return [xNew, yNew];
+    }
+}
+
+class LevelFive extends Map {
+    constructor(stage, save) {
+        super(stage, save);
+        //Level Background
+        document.getElementById("Menu").style.backgroundImage = "url(../Resources/levels/Level5/background.png)";
+
+        //Level Platforms
+        let x= 350;
+        let y=200;
+        this.platforms.push(new Platform(stage, "../Resources/levels/Level5/.png", x, y));
+
+        //Level Buffs
+        var initCords = this.Position(100, 100, "Horizontal", stage); // Beer -> Slows permanently the character
+        this.objects.push(new Objectt(stage, "../Resources/levels/Extras/Beer.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "Horizontal", stage); //DeadLine -> Speeds permanently the character
+        this.objects.push(new Objectt(stage, "../Resources/levels/Extras/deadLine.png", initCords[0], initCords[1]));
+
+        //Level Objects
+        initCords = this.Position(100, 100, "Diagonal", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level5/appleG.png", initCords[0], initCords[1]));
+        initCords = this.Position(150, 150, "Horizontal", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level5/asusG.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "Vertical", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level5/cssG.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "Vertical", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level5/htmlG.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "Vertical", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level5/jsG.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "Horizontal", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level5/linuxG.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "Diagonal", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level5/windowsG.png", initCords[0], initCords[1]));
+        initCords = this.Position(100, 100, "Horizontal", stage);
+        this.objects.push(new Objectt(stage, "../Resources/levels/Level5/deflateG.png", initCords[0], initCords[1]));
+
+
+        this.hero = new Character(stage, 400, -200, save.Senior);
+
+        //Level Game Related Information
+        this.lvl = 5;
+        this.totalTime = 15000; // Tempo total do jogo
+        this.objInterval = 2000; //Intervalo entre cada Objeto
+        this.speed = [1100, 1500]; //Max e Min de speed dos Objetos
         this.nObj = 2;
         this.nBuffs = 2;
     }

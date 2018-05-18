@@ -75,6 +75,7 @@ class Character {
                 if (this.keys[38]) {
                     this.onGround = false;
                     this.velocity.y = -20;
+                    playSound(false,"jump");
                 }
             }
 
@@ -171,6 +172,7 @@ class Character {
                     var collide = ndgmr.checkPixelCollision(this.spriteA, obj.object.bitmap, 0, true);
                     if (collide) {
                         if (obj.flag === "../Resources/levels/Extras/Beer.png") {
+                            playSound(false,"gulp");
                             this.velocity.x -= 0.2;
                             this.velocity.y -= 0.05;
                         }

@@ -5,7 +5,7 @@ function Extras(stage, save, flags) {
 
 
 
-    ContainerMenu(stage, "Help", flags);
+    ContainerMenu(stage, "Help", flags,"Unlock New character when you finish the game!\n Reset -> Deletes your save game!!");
     ContainerMenu(stage, "Options", flags);
     createHelp(stage, flags);
     createOptions(stage, flags);

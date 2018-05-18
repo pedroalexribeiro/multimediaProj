@@ -16,13 +16,16 @@ function MapsTeacherModeArcade(stage, levelStr, save, flags, isArcade) {
     var level;
     switch (levelStr) {
         case "level1":
-            level = new LevelOneTeacherMode(stage);
+            level = new LevelOneTeacherMode(stage,save);
             break;
         case "level2":
-            level = new LevelTwoTeacherMode(stage);
+            level = new LevelTwoTeacherMode(stage,save);
             break;
         case "level3":
-            level = new LevelThreeTeacherMode(stage);
+            level = new LevelThreeTeacherMode(stage,save);
+            break;
+        case "level4":
+            level = new LevelFourTeacherMode(stage,save);
             break;
     }
 
