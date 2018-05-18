@@ -107,7 +107,6 @@ function Student_Menu(stage,save, flags, isArcade) {
     }
 
     function Click_Handler(ev) {
-        console.log(ev.target.text);
         if (ev.target.text === "Back") {
             stage.removeAllChildren();
             SP_Menu(stage,save, flags, isArcade);
@@ -135,7 +134,6 @@ function Student_Menu(stage,save, flags, isArcade) {
     if(!isArcade){
         back.on("click", Click_Handler);
     }else{
-        console.log("IM HERE");
         back.on("click", ClickHandlerArcade);
     }
     stage.addChild(back);
