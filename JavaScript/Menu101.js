@@ -66,7 +66,7 @@ function mainMenu(teste) {
         stage.addChild(text);
     }
 
-    ContainerMenu(stage, "Help", flags);
+    ContainerMenu(stage, "Help", flags,"You really clicked help on the Main screen?");
     ContainerMenu(stage, "Options", flags);
     createHelp(stage, flags);
     createOptions(stage, flags);
